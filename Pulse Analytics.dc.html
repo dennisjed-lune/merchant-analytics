@@ -498,393 +498,448 @@ code, pre, kbd { font-family: var(--font-mono); }
 
 <div style="display: flex; min-height: 100vh; font-family: var(--font-sans); color: var(--lune-teal); background: var(--neutral-25);">
 
-  <aside style="width: 232px; flex: 0 0 232px; background: var(--lune-ink); padding: 24px 16px; display: flex; flex-direction: column; gap: 32px; position: sticky; top: 0; height: 100vh; box-sizing: border-box;">
-    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjgwIiBoZWlnaHQ9IjI4MCIgdmlld0JveD0iMCAwIDY4MCAyODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjE0MCIgcj0iMTAwIiBmaWxsPSJ3aGl0ZSI+PC9jaXJjbGU+CjxwYXRoIGQ9Ik0yMDMuNDM1IDYyLjc3MzRDMjA2LjA0IDY0LjkwOTggMjA4LjU1OSA2Ny4xODk0IDIxMC45OTEgNjkuNjEyM0MyMTIuNDIzIDcxLjA0MzkgMjEzLjgwMiA3Mi41MDk0IDIxNS4xMjkgNzQuMDAzOUMyMzAuNjEgOTEuNjEzNyAyNDAgMTE0LjcxIDI0MCAxNDBDMjQwIDE5NS4yMjggMTk1LjIyOCAyNDAgMTQwIDI0MEMxMTIuOTA4IDI0MCA4OC4zMzIyIDIyOS4yMjUgNzAuMzIzMiAyMTEuNzI5QzcwLjA3OTggMjExLjQ5IDY5LjgzNjMgMjExLjI1IDY5LjU5NDcgMjExLjAwOUw2OS41NzAzIDIxMC45ODRDNjcuMTQ0NCAyMDguNTUyIDY0Ljg2NTIgMjA2LjAzMiA2Mi43MzI0IDIwMy40MjdDMTA1LjUxMSAyMzguMzQ1IDE2OC40OTEgMjMxLjk2NSAyMDMuNDA1IDE4OS4xODNDMjE3Ljk2NiAxNzEuMzM5IDIyNS45MiAxNDkuMDE1IDIyNS45MjYgMTI1Ljk4M0MyMjUuOTMxIDEwMi45NTIgMjE3Ljk4NiA4MC42MjQyIDIwMy40MzUgNjIuNzczNFoiIGZpbGw9IiMwMEI2OEEiPjwvcGF0aD4KPHBhdGggZD0iTTI4OS4zMjkgMTYyLjA5OEMyODguNTk1IDE2Mi4wOTggMjg4IDE2MS41MDMgMjg4IDE2MC43NjlWNDUuMzI4OEMyODggNDQuNTk0OSAyODguNTk1IDQ0IDI4OS4zMjkgNDRIMzA2LjgwM0MzMDcuNTM3IDQ0IDMwOC4xMzIgNDQuNTk0OSAzMDguMTMyIDQ1LjMyODhWMTQyLjg1NkMzMDguMTMyIDE0My41OSAzMDguNzI3IDE0NC4xODUgMzA5LjQ2MSAxNDQuMTg1SDM1Ny42ODhDMzU4LjQyMiAxNDQuMTg1IDM1OS4wMTcgMTQ0Ljc4IDM1OS4wMTcgMTQ1LjUxNFYxNjAuNzY5QzM1OS4wMTcgMTYxLjUwMyAzNTguNDIyIDE2Mi4wOTggMzU3LjY4OCAxNjIuMDk4SDI4OS4zMjlaIiBmaWxsPSJ3aGl0ZSI+PC9wYXRoPgo8cGF0aCBkPSJNNDAyLjc3MSAxNjRDMzk2LjIxOSAxNjQgMzkwLjQ2IDE2Mi41MiAzODUuNDkzIDE1OS41NjFDMzgwLjYzMSAxNTYuNjAyIDM3Ni44OCAxNTIuNTM0IDM3NC4yMzggMTQ3LjM1NUMzNzEuNTk2IDE0Mi4wNzEgMzcwLjI3NSAxMzUuOTQyIDM3MC4yNzUgMTI4Ljk2N1Y3Ny41MDg1QzM3MC4yNzUgNzYuNzc0NiAzNzAuODcgNzYuMTc5NyAzNzEuNjAzIDc2LjE3OTdIMzg4LjI4NUMzODkuMDE5IDc2LjE3OTcgMzg5LjYxNCA3Ni43NzQ2IDM4OS42MTQgNzcuNTA4NVYxMjcuMjIzQzM4OS42MTQgMTMxLjAyOCAzOTAuMzU0IDEzNC4zNTcgMzkxLjgzMyAxMzcuMjFDMzkzLjQxOSAxNDAuMDYzIDM5NS41ODUgMTQyLjI4MyAzOTguMzMzIDE0My44NjhDNDAxLjA4IDE0NS4zNDcgNDA0LjI1MSAxNDYuMDg3IDQwNy44NDQgMTQ2LjA4N0M0MTEuNDM3IDE0Ni4wODcgNDE0LjYwNyAxNDUuMjk1IDQxNy4zNTUgMTQzLjcwOUM0MjAuMTAzIDE0Mi4xMjQgNDIyLjIxNiAxMzkuOTA1IDQyMy42OTYgMTM3LjA1MkM0MjUuMjgxIDEzNC4wOTIgNDI2LjA3NCAxMzAuNjU4IDQyNi4wNzQgMTI2Ljc0OFY3Ny41MDg1QzQyNi4wNzQgNzYuNzc0NiA0MjYuNjY5IDc2LjE3OTcgNDI3LjQwMyA3Ni4xNzk3SDQ0NC4wODRDNDQ0LjgxOCA3Ni4xNzk3IDQ0NS40MTMgNzYuNzc0NiA0NDUuNDEzIDc3LjUwODVWMTYwLjc2OUM0NDUuNDEzIDE2MS41MDMgNDQ0LjgxOCAxNjIuMDk4IDQ0NC4wODQgMTYyLjA5OEg0MjguMzU0QzQyNy42MiAxNjIuMDk4IDQyNy4wMjUgMTYxLjUwMyA0MjcuMDI1IDE2MC43NjlWMTQ3Ljk1OEM0MjcuMDI1IDE0Ny4wODQgNDI4LjE0OCAxNDYuNzI4IDQyOC42NTIgMTQ3LjQ0MlYxNDcuNDQyQzQyOC44MjQgMTQ3LjY4NSA0MjguODY1IDE0Ny45OTggNDI4Ljc1NCAxNDguMjc1QzQyNi43MyAxNTMuMzQgNDIzLjQ1OSAxNTcuMjA4IDQxOC45NCAxNTkuODc4QzQxNC4yOSAxNjIuNjI2IDQwOC45MDEgMTY0IDQwMi43NzEgMTY0WiIgZmlsbD0id2hpdGUiPjwvcGF0aD4KPHBhdGggZD0iTTQ2Ni42OTUgMTYyLjA5OEM0NjUuOTYxIDE2Mi4wOTggNDY1LjM2NiAxNjEuNTAzIDQ2NS4zNjYgMTYwLjc2OVY3Ny41MDg1QzQ2NS4zNjYgNzYuNzc0NiA0NjUuOTYxIDc2LjE3OTcgNDY2LjY5NSA3Ni4xNzk3SDQ4Mi40MjVDNDgzLjE1OSA3Ni4xNzk3IDQ4My43NTQgNzYuNzc0NiA0ODMuNzU0IDc3LjUwODVWOTAuMzM1OEM0ODMuNzU0IDkxLjE0MzIgNDgyLjcxMiA5MS40NjY5IDQ4Mi4yNTUgOTAuODAxNVY5MC44MDE1QzQ4Mi4xMDIgOTAuNTc5MiA0ODIuMDY3IDkwLjI5NTQgNDgyLjE2NyA5MC4wNDQ2QzQ4NC4xODYgODQuOTU4NCA0ODcuNDEgODEuMDc2NSA0OTEuODM5IDc4LjM5OUM0OTYuNDg5IDc1LjY1MTMgNTAxLjg3OCA3NC4yNzc0IDUwOC4wMDggNzQuMjc3NEM1MTQuMzQ5IDc0LjI3NzQgNTE5Ljk1IDc1LjY1MTMgNTI0LjgxMSA3OC4zOTlDNTI5Ljc3OCA4MS4xNDY2IDUzMy42MzUgODQuOTUxMSA1MzYuMzgzIDg5LjgxMjRDNTM5LjEzMSA5NC42NzM3IDU0MC41MDUgMTAwLjI3NSA1NDAuNTA1IDEwNi42MTZWMTYwLjc2OUM1NDAuNTA1IDE2MS41MDMgNTM5LjkxIDE2Mi4wOTggNTM5LjE3NiAxNjIuMDk4SDUyMi40OTRDNTIxLjc2IDE2Mi4wOTggNTIxLjE2NSAxNjEuNTAzIDUyMS4xNjUgMTYwLjc2OVYxMTEuNTNDNTIxLjE2NSAxMDcuNTE0IDUyMC4zNzIgMTA0LjA3OSA1MTguNzg3IDEwMS4yMjZDNTE3LjMwOCA5OC4yNjY4IDUxNS4xOTQgOTUuOTk0NyA1MTIuNDQ2IDk0LjQwOTVDNTA5LjgwNCA5Mi44MjQzIDUwNi42ODcgOTIuMDMxNyA1MDMuMDk0IDkyLjAzMTdDNDk5LjUwMSA5Mi4wMzE3IDQ5Ni4yNzcgOTIuODI0MyA0OTMuNDI0IDk0LjQwOTVDNDkwLjY3NiA5NS45OTQ3IDQ4OC41MSA5OC4yNjY4IDQ4Ni45MjUgMTAxLjIyNkM0ODUuNDQ1IDEwNC4wNzkgNDg0LjcwNSAxMDcuNTE0IDQ4NC43MDUgMTExLjUzVjE2MC43NjlDNDg0LjcwNSAxNjEuNTAzIDQ4NC4xMSAxNjIuMDk4IDQ4My4zNzcgMTYyLjA5OEg0NjYuNjk1WiIgZmlsbD0id2hpdGUiPjwvcGF0aD4KPHBhdGggZD0iTTU5OS4yOTUgMTY0QzU5MC42MjkgMTY0IDU4Mi45NjcgMTYxLjk5MiA1NzYuMzA5IDE1Ny45NzZDNTY5LjY1MSAxNTMuOTYgNTY0LjQ3MyAxNDguNTcxIDU2MC43NzQgMTQxLjgwN0M1NTcuMDc1IDEzNC45MzggNTU1LjIyNiAxMjcuMjc2IDU1NS4yMjYgMTE4LjgyMkM1NTUuMjI2IDExMC4yNjIgNTU3LjA3NSAxMDIuNjUzIDU2MC43NzQgOTUuOTk0N0M1NjQuNTc5IDg5LjIzMTIgNTY5LjcwNCA4My45NDcyIDU3Ni4xNTEgODAuMTQyN0M1ODIuNTk3IDc2LjIzMjUgNTg5LjgzNiA3NC4yNzc0IDU5Ny44NjggNzQuMjc3NEM2MDQuNDIgNzQuMjc3NCA2MTAuMjMyIDc1LjM4NzEgNjE1LjMwNSA3Ny42MDYzQzYyMC40ODMgNzkuNzIgNjI0LjgxNiA4Mi43MzE4IDYyOC4zMDQgODYuNjQyQzYzMS44OTcgOTAuNTUyMiA2MzQuNTkyIDk1LjA0MzYgNjM2LjM4OCAxMDAuMTE2QzYzOC4yOTEgMTA1LjA4MyA2MzkuMjQyIDExMC4zNjcgNjM5LjI0MiAxMTUuOTY4QzYzOS4yNDIgMTE3LjQ0OCA2MzkuMTg5IDExOC45OCA2MzkuMDgzIDEyMC41NjVDNjM5LjAwMyAxMjEuNjk1IDYzOC44MjkgMTIyLjc2MyA2MzguNTY0IDEyMy43NjlDNjM4LjQxOCAxMjQuMzIyIDYzNy45MDUgMTI0LjY4NyA2MzcuMzMzIDEyNC42ODdINTcyLjI0OEM1NzEuNTE0IDEyNC42ODcgNTcwLjkxOSAxMjQuMDkyIDU3MC45MTkgMTIzLjM1OFYxMTAuOTU2QzU3MC45MTkgMTEwLjIyMiA1NzEuNTE0IDEwOS42MjcgNTcyLjI0OCAxMDkuNjI3SDYyMy4zMjlDNjI0LjYxIDEwOS42MjcgNjI1LjE0OSAxMTEuMjYxIDYyNC4xMjEgMTEyLjAyNEw2MjAuOTgxIDExNC4zNTJDNjE5Ljk5NyAxMTUuMDgxIDYxOC41OCAxMTQuMTkyIDYxOC42OSAxMTIuOTczQzYxOS4wMTQgMTA5LjM4NSA2MTguNTcyIDEwNi4xMDQgNjE3LjM2NiAxMDMuMTI4QzYxNS43ODEgOTkuMTEyMyA2MTMuMjk3IDk1Ljk5NDcgNjA5LjkxNSA5My43NzU0QzYwNi41MzQgOTEuNDUwNSA2MDIuNTE4IDkwLjI4OCA1OTcuODY4IDkwLjI4OEM1OTMuMzI0IDkwLjI4OCA1ODkuMjU1IDkxLjQ1MDUgNTg1LjY2MiA5My43NzU0QzU4Mi4xNzQgOTUuOTk0NyA1NzkuNDggOTkuMjcwOCA1NzcuNTc3IDEwMy42MDRDNTc1LjY4NSAxMDcuODA4IDU3NC45NDMgMTEyLjkwMSA1NzUuMzUxIDExOC44ODNDNTc1LjM1NiAxMTguOTQ4IDU3NS4zNTUgMTE5LjAxMyA1NzUuMzUxIDExOS4wNzdDNTc0Ljk0NCAxMjQuNjM4IDU3NS43MzkgMTI5LjUyIDU3Ny43MzYgMTMzLjcyM0M1NzkuNzQ0IDEzNy45NSA1ODIuNjUgMTQxLjIyNiA1ODYuNDU0IDE0My41NTFDNTkwLjI1OSAxNDUuNzcgNTk0LjU5MiAxNDYuODggNTk5LjQ1MyAxNDYuODhDNjA0LjUyNiAxNDYuODggNjA4Ljc1MyAxNDUuODIzIDYxMi4xMzUgMTQzLjcwOUM2MTUuMjczIDE0MS43MTIgNjE3Ljg1NSAxMzkuMjAyIDYxOS44ODEgMTM2LjE3OEM2MjAuMjY1IDEzNS42MDUgNjIxLjAxMSAxMzUuMzg0IDYyMS42MyAxMzUuNjlMNjM1LjExIDE0Mi4zNjJDNjM1LjczOSAxNDIuNjc0IDYzNi4wMiAxNDMuNDIzIDYzNS43MTkgMTQ0LjA1N0M2MzQuMDI1IDE0Ny42MTYgNjMxLjU1MyAxNTAuODI5IDYyOC4zMDQgMTUzLjY5NkM2MjQuNzExIDE1Ni44NjcgNjIwLjQzMSAxNTkuNDAzIDYxNS40NjQgMTYxLjMwNUM2MTAuNjAyIDE2My4xMDIgNjA1LjIxMyAxNjQgNTk5LjI5NSAxNjRaIiBmaWxsPSJ3aGl0ZSI+PC9wYXRoPgo8cGF0aCBkPSJNMjg4LjQ5IDIzNS4zMTNDMjg4LjIxOSAyMzUuMzEzIDI4OCAyMzUuMDk0IDI4OCAyMzQuODIzVjE5My4xNzdDMjg4IDE5Mi45MDYgMjg4LjIxOSAxOTIuNjg3IDI4OC40OSAxOTIuNjg3SDMwMy45MDZDMzA2LjgwNSAxOTIuNjg3IDMwOS4zNjEgMTkzLjIyMSAzMTEuNTczIDE5NC4yODlDMzEzLjgyNCAxOTUuMzE5IDMxNS41NzkgMTk2Ljg0NCAzMTYuODM3IDE5OC44NjZDMzE4LjA5NiAyMDAuODUgMzE4LjcyNiAyMDMuMjcyIDMxOC43MjYgMjA2LjEzM0MzMTguNzI2IDIwOC45NTUgMzE4LjA3NyAyMTEuMzc4IDMxNi43OCAyMTMuMzk5QzMxNS41MjEgMjE1LjM4MyAzMTMuNzg2IDIxNi45MDkgMzExLjU3MyAyMTcuOTc3QzMwOS4zNjEgMjE5LjA0NSAzMDYuODA1IDIxOS41NzkgMzAzLjkwNiAyMTkuNTc5SDI5Ni4yNzJDMjk2LjAwMSAyMTkuNTc5IDI5NS43ODIgMjE5Ljc5OCAyOTUuNzgyIDIyMC4wNjlWMjM0LjgyM0MyOTUuNzgyIDIzNS4wOTQgMjk1LjU2MiAyMzUuMzEzIDI5NS4yOTIgMjM1LjMxM0gyODguNDlaTTI5NS43ODIgMjEyLjIyM0MyOTUuNzgyIDIxMi40OTMgMjk2LjAwMSAyMTIuNzEzIDI5Ni4yNzIgMjEyLjcxM0gzMDQuMDIxQzMwNS40MzIgMjEyLjcxMyAzMDYuNjUzIDIxMi40NDYgMzA3LjY4MyAyMTEuOTEyQzMwOC43MTMgMjExLjMzOSAzMDkuNTE0IDIxMC41NTcgMzEwLjA4NiAyMDkuNTY2QzMxMC42NTggMjA4LjU3NCAzMTAuOTQ0IDIwNy40MyAzMTAuOTQ0IDIwNi4xMzNDMzEwLjk0NCAyMDQuNzk4IDMxMC42NTggMjAzLjY1MyAzMTAuMDg2IDIwMi43QzMwOS41MTQgMjAxLjcwOCAzMDguNzEzIDIwMC45NDUgMzA3LjY4MyAyMDAuNDExQzMwNi42NTMgMTk5LjgzOSAzMDUuNDMyIDE5OS41NTMgMzA0LjAyMSAxOTkuNTUzSDI5Ni4yNzJDMjk2LjAwMSAxOTkuNTUzIDI5NS43ODIgMTk5Ljc3MiAyOTUuNzgyIDIwMC4wNDNWMjEyLjIyM1oiIGZpbGw9IiMwMEI2OEEiPjwvcGF0aD4KPHBhdGggZD0iTTM0Mi4wOTUgMjM2QzMzOC44MTUgMjM2IDMzNS44OTcgMjM1LjMxMyAzMzMuMzQxIDIzMy45NEMzMzAuODIzIDIzMi41NjcgMzI4Ljg0IDIzMC42NzkgMzI3LjM5IDIyOC4yNzZDMzI1Ljk0MSAyMjUuODczIDMyNS4yMTYgMjIzLjE0NSAzMjUuMjE2IDIyMC4wOTRWMTkzLjE3N0MzMjUuMjE2IDE5Mi45MDYgMzI1LjQzNiAxOTIuNjg3IDMyNS43MDYgMTkyLjY4N0gzMzIuNTA4QzMzMi43NzggMTkyLjY4NyAzMzIuOTk4IDE5Mi45MDYgMzMyLjk5OCAxOTMuMTc3VjIxOS42OTNDMzMyLjk5OCAyMjEuNDQ4IDMzMy4zNzkgMjIzLjAzMSAzMzQuMTQyIDIyNC40NDJDMzM0Ljk0MyAyMjUuODUzIDMzNi4wMyAyMjYuOTYgMzM3LjQwMyAyMjcuNzYxQzMzOC43NzcgMjI4LjUyNCAzNDAuMzQxIDIyOC45MDUgMzQyLjA5NSAyMjguOTA1QzM0My44ODggMjI4LjkwNSAzNDUuNDUyIDIyOC41MjQgMzQ2Ljc4NyAyMjcuNzYxQzM0OC4xNiAyMjYuOTYgMzQ5LjIyOCAyMjUuODUzIDM0OS45OTEgMjI0LjQ0MkMzNTAuNzkyIDIyMy4wMzEgMzUxLjE5MyAyMjEuNDQ4IDM1MS4xOTMgMjE5LjY5M1YxOTMuMTc3QzM1MS4xOTMgMTkyLjkwNiAzNTEuNDEyIDE5Mi42ODcgMzUxLjY4MyAxOTIuNjg3SDM1OC40ODRDMzU4Ljc1NSAxOTIuNjg3IDM1OC45NzQgMTkyLjkwNiAzNTguOTc0IDE5My4xNzdWMjIwLjA5NEMzNTguOTc0IDIyMy4xNDUgMzU4LjI1IDIyNS44NzMgMzU2LjggMjI4LjI3NkMzNTUuMzUxIDIzMC42NzkgMzUzLjM0OCAyMzIuNTY3IDM1MC43OTIgMjMzLjk0QzM0OC4yNzUgMjM1LjMxMyAzNDUuMzc2IDIzNiAzNDIuMDk1IDIzNloiIGZpbGw9IiMwMEI2OEEiPjwvcGF0aD4KPHBhdGggZD0iTTM2Ny44MDUgMjM1LjMxM0MzNjcuNTM0IDIzNS4zMTMgMzY3LjMxNSAyMzUuMDk0IDM2Ny4zMTUgMjM0LjgyM1YxOTMuMTc3QzM2Ny4zMTUgMTkyLjkwNiAzNjcuNTM0IDE5Mi42ODcgMzY3LjgwNSAxOTIuNjg3SDM3NC42MDdDMzc0Ljg3NyAxOTIuNjg3IDM3NS4wOTcgMTkyLjkwNiAzNzUuMDk3IDE5My4xNzdWMjI3Ljk1N0MzNzUuMDk3IDIyOC4yMjggMzc1LjMxNiAyMjguNDQ3IDM3NS41ODcgMjI4LjQ0N0gzOTIuODU5QzM5My4xMjkgMjI4LjQ0NyAzOTMuMzQ5IDIyOC42NjcgMzkzLjM0OSAyMjguOTM3VjIzNC44MjNDMzkzLjM0OSAyMzUuMDk0IDM5My4xMjkgMjM1LjMxMyAzOTIuODU5IDIzNS4zMTNIMzY3LjgwNVoiIGZpbGw9IiMwMEI2OEEiPjwvcGF0aD4KPHBhdGggZD0iTTQxNC4xNzQgMjM2QzQxMS40NjYgMjM2IDQwOC45NDggMjM1LjUwNCA0MDYuNjIxIDIzNC41MTJDNDA0LjMzMyAyMzMuNTIxIDQwMi4zNDkgMjMyLjE0NyA0MDAuNjcxIDIzMC4zOTNDMzk5LjEyOSAyMjguNzA3IDM5Ny45NzQgMjI2Ljc2OSAzOTcuMjA4IDIyNC41NzdDMzk3LjEyNSAyMjQuMzM5IDM5Ny4yNDMgMjI0LjA4IDM5Ny40NzQgMjIzLjk3OUw0MDMuMDc4IDIyMS41NDlDNDAzLjMyOCAyMjEuNDQxIDQwMy42MTcgMjIxLjU1OCA0MDMuNzMxIDIyMS44MDVDNDA0Ljc1IDIyNC4wMzMgNDA2LjE3MSAyMjUuODA4IDQwNy45OTUgMjI3LjEzMUM0MDkuOTQgMjI4LjUwNSA0MTIuMTMzIDIyOS4xOTEgNDE0LjU3NSAyMjkuMTkxQzQxNS45NDggMjI5LjE5MSA0MTcuMTMgMjI4Ljk4MSA0MTguMTIyIDIyOC41NjJDNDE5LjE1MiAyMjguMTA0IDQxOS45MzQgMjI3LjQ5NCA0MjAuNDY4IDIyNi43MzFDNDIxLjA0IDIyNS45NjggNDIxLjMyNiAyMjUuMDUyIDQyMS4zMjYgMjIzLjk4NEM0MjEuMzI2IDIyMi43MjYgNDIwLjk0NSAyMjEuNjk2IDQyMC4xODIgMjIwLjg5NUM0MTkuNDU3IDIyMC4wNTUgNDE4LjM1MSAyMTkuNDA3IDQxNi44NjMgMjE4Ljk0OUw0MDguNjgxIDIxNi4zMTdDNDA1LjM2MyAyMTUuMjg3IDQwMi44NjQgMjEzLjc0MyA0MDEuMTg2IDIxMS42ODNDMzk5LjUwNyAyMDkuNjIzIDM5OC42NjggMjA3LjIwMSAzOTguNjY4IDIwNC40MTZDMzk4LjY2OCAyMDEuOTc1IDM5OS4yNiAxOTkuODIgNDAwLjQ0MiAxOTcuOTUxQzQwMS42NjMgMTk2LjA4MSA0MDMuMzQxIDE5NC42MzIgNDA1LjQ3NyAxOTMuNjAyQzQwNy42NTEgMTkyLjUzNCA0MTAuMTMxIDE5MiA0MTIuOTE1IDE5MkM0MTUuNDcxIDE5MiA0MTcuODE3IDE5Mi40NTggNDE5Ljk1MyAxOTMuMzczQzQyMi4wODkgMTk0LjI1MSA0MjMuOTIgMTk1LjQ5IDQyNS40NDYgMTk3LjA5MkM0MjYuOTA1IDE5OC41NTIgNDI4LjAxNiAyMDAuMjYgNDI4Ljc3OCAyMDIuMjE3QzQyOC44NyAyMDIuNDU2IDQyOC43NTYgMjAyLjcyMyA0MjguNTIyIDIwMi44MjdMNDIyLjk5NiAyMDUuMjk0QzQyMi43NDEgMjA1LjQwOCA0MjIuNDQzIDIwNS4yODUgNDIyLjMzMSAyMDUuMDI5QzQyMS40OTcgMjAzLjEyMyA0MjAuMzA0IDIwMS42NDEgNDE4Ljc1MSAyMDAuNTgzQzQxNy4wNzMgMTk5LjQgNDE1LjEyOCAxOTguODA5IDQxMi45MTUgMTk4LjgwOUM0MTEuNjE4IDE5OC44MDkgNDEwLjQ3NCAxOTkuMDM4IDQwOS40ODIgMTk5LjQ5NUM0MDguNDkxIDE5OS45MTUgNDA3LjcwOSAyMDAuNTI1IDQwNy4xMzYgMjAxLjMyNkM0MDYuNjAyIDIwMi4wODkgNDA2LjMzNSAyMDMuMDA1IDQwNi4zMzUgMjA0LjA3M0M0MDYuMzM1IDIwNS4yNTUgNDA2LjcxNyAyMDYuMzA0IDQwNy40OCAyMDcuMjJDNDA4LjI0MyAyMDguMDk3IDQwOS40MDYgMjA4Ljc4NCA0MTAuOTcgMjA5LjI4TDQxOC44MDkgMjExLjc0QzQyMi4yMDQgMjEyLjg0NiA0MjQuNzQgMjE0LjM3MiA0MjYuNDE5IDIxNi4zMTdDNDI4LjEzNSAyMTguMjYzIDQyOC45OTMgMjIwLjY2NiA0MjguOTkzIDIyMy41MjdDNDI4Ljk5MyAyMjUuOTY4IDQyOC4zNjQgMjI4LjEyMyA0MjcuMTA1IDIyOS45OTJDNDI1Ljg0NiAyMzEuODYxIDQyNC4xMTEgMjMzLjMzIDQyMS44OTggMjM0LjM5OEM0MTkuNjg2IDIzNS40NjYgNDE3LjExMSAyMzYgNDE0LjE3NCAyMzZaIiBmaWxsPSIjMDBCNjhBIj48L3BhdGg+CjxwYXRoIGQ9Ik00MzcuMDYyIDIzNS4zMTNDNDM2Ljc5MiAyMzUuMzEzIDQzNi41NzIgMjM1LjA5NCA0MzYuNTcyIDIzNC44MjNWMTkzLjE3N0M0MzYuNTcyIDE5Mi45MDYgNDM2Ljc5MiAxOTIuNjg3IDQzNy4wNjIgMTkyLjY4N0g0NjQuNDA1QzQ2NC42NzYgMTkyLjY4NyA0NjQuODk1IDE5Mi45MDYgNDY0Ljg5NSAxOTMuMTc3VjE5OS4wNjNDNDY0Ljg5NSAxOTkuMzMzIDQ2NC42NzYgMTk5LjU1MyA0NjQuNDA1IDE5OS41NTNINDQ0Ljg0NEM0NDQuNTczIDE5OS41NTMgNDQ0LjM1NCAxOTkuNzcyIDQ0NC4zNTQgMjAwLjA0M1YyMDkuOTkxQzQ0NC4zNTQgMjEwLjI2MiA0NDQuNTczIDIxMC40ODEgNDQ0Ljg0NCAyMTAuNDgxSDQ2My4yNjFDNDYzLjUzMSAyMTAuNDgxIDQ2My43NTEgMjEwLjcwMSA0NjMuNzUxIDIxMC45NzFWMjE2Ljg1N0M0NjMuNzUxIDIxNy4xMjggNDYzLjUzMSAyMTcuMzQ3IDQ2My4yNjEgMjE3LjM0N0g0NDQuODQ0QzQ0NC41NzMgMjE3LjM0NyA0NDQuMzU0IDIxNy41NjcgNDQ0LjM1NCAyMTcuODM3VjIyNy45NTdDNDQ0LjM1NCAyMjguMjI4IDQ0NC41NzMgMjI4LjQ0NyA0NDQuODQ0IDIyOC40NDdINDY0LjQwNUM0NjQuNjc2IDIyOC40NDcgNDY0Ljg5NSAyMjguNjY3IDQ2NC44OTUgMjI4LjkzN1YyMzQuODIzQzQ2NC44OTUgMjM1LjA5NCA0NjQuNjc2IDIzNS4zMTMgNDY0LjQwNSAyMzUuMzEzSDQzNy4wNjJaIiBmaWxsPSIjMDBCNjhBIj48L3BhdGg+CjxwYXRoIGQ9Ik01MzIuODk1IDE5MC44NUM1MzIuODk1IDE5MC4xNDIgNTMyLjEwNiAxODkuNzQ1IDUzMS41NjggMTkwLjE4M0w1MjMuMzY2IDE5Ni44NTFDNTIzLjE2OSAxOTcuMDEyIDUyMy4wNTQgMTk3LjI1OCA1MjMuMDUzIDE5Ny41MTlWMjMwLjQ4QzUyMy4wNTQgMjMwLjc0MSA1MjMuMTY5IDIzMC45ODcgNTIzLjM2NiAyMzEuMTQ4TDUzMS41NjggMjM3LjgxN0M1MzIuMTA2IDIzOC4yNTUgNTMyLjg5NSAyMzcuODU4IDUzMi44OTUgMjM3LjE1VjE5MC44NVoiIGZpbGw9IiMwMEI2OEEiPjwvcGF0aD4KPHBhdGggZD0iTTUxNS4zOTkgMTkwLjg1QzUxNS4zOTkgMTkwLjE0MiA1MTQuNjEgMTg5Ljc0NSA1MTQuMDcyIDE5MC4xODNMNTA0Ljc3NyAxOTcuNzRDNTA0LjU3OSAxOTcuOSA1MDQuNDY0IDE5OC4xNDcgNTA0LjQ2NCAxOTguNDA3VjIyOS41OTJDNTA0LjQ2NCAyMjkuODUyIDUwNC41NzkgMjMwLjA5OCA1MDQuNzc3IDIzMC4yNTlMNTE0LjA3MiAyMzcuODE3QzUxNC42MSAyMzguMjU1IDUxNS4zOTkgMjM3Ljg1OCA1MTUuMzk5IDIzNy4xNVYxOTAuODVaIiBmaWxsPSIjMDBCNjhBIj48L3BhdGg+CjxwYXRoIGQ9Ik00OTYuODA5IDE5MC44NUM0OTYuODA5IDE5MC4xNDIgNDk2LjAyIDE4OS43NDUgNDk1LjQ4MiAxOTAuMTgzTDQ4NS4xOTcgMTk4LjU0NUM0ODUuMDA2IDE5OC43IDQ4NC44OTUgMTk4LjkzMyA0ODQuODk1IDE5OS4xOFYyMjguODE5QzQ4NC44OTUgMjI5LjA2NSA0ODUuMDA2IDIyOS4yOTkgNDg1LjE5NyAyMjkuNDU0TDQ5NS40ODIgMjM3LjgxN0M0OTYuMDIgMjM4LjI1NSA0OTYuODA5IDIzNy44NTggNDk2LjgwOSAyMzcuMTVWMTkwLjg1WiIgZmlsbD0iIzAwQjY4QSI+PC9wYXRoPgo8L3N2Zz4=" alt="Lune Pulse" style="height: 26px; width: auto; align-self: flex-start; margin-left: 8px;">
-    <nav style="display: flex; flex-direction: column; gap: 4px;">
-      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.62);" style-hover="background: rgba(255,255,255,0.06); color: #fff;">Campaigns</div>
-      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; color: #fff; background: rgba(16,163,127,0.22); box-shadow: inset 0 0 0 1px rgba(16,163,127,0.45);">Analytics</div>
-      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.62);" style-hover="background: rgba(255,255,255,0.06); color: #fff;">Transactions</div>
-      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.62);" style-hover="background: rgba(255,255,255,0.06); color: #fff;">Brands &amp; outlets</div>
-      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.62);" style-hover="background: rgba(255,255,255,0.06); color: #fff;">Settings</div>
+  <aside style="width: 224px; flex: 0 0 224px; background: #fff; border-right: 1px solid var(--neutral-100); padding: 20px 14px; display: flex; flex-direction: column; gap: 28px; position: sticky; top: 0; height: 100vh; box-sizing: border-box;">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px;">
+      <span style="width: 30px; height: 30px; border-radius: 99px; background: var(--lune-ink); display: flex; align-items: center; justify-content: center; flex: none;"><span style="width: 12px; height: 12px; border-radius: 99px; background: #fff; display: block; margin-left: 5px;"></span></span>
+      <span style="font-size: 17px; font-weight: 700; letter-spacing: -0.01em;">Lune</span>
+      <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.08em; color: var(--neutral-400); margin-top: 4px;">PULSE</span>
+    </div>
+    <nav style="display: flex; flex-direction: column; gap: 2px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--neutral-500); cursor: default;" style-hover="background: var(--neutral-25); color: var(--lune-teal);">Campaigns</div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--neutral-500); cursor: default;" style-hover="background: var(--neutral-25); color: var(--lune-teal);">Brands</div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--lune-teal-700); background: rgba(16,163,127,0.10);">Analytics</div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--neutral-500); cursor: default;" style-hover="background: var(--neutral-25); color: var(--lune-teal);">Settings</div>
     </nav>
     <div style="margin-top: auto; display: flex; flex-direction: column; gap: 12px;">
-      <div style="padding: 14px; border-radius: 10px; background: rgba(255,255,255,0.05); font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.55);">
-        Figures follow the settled transaction feed, not live authorisations.
-        <div style="margin-top: 8px; color: var(--lune-mint); font-weight: 600;">{{ freshness }}</div>
+      <div style="padding: 12px; border-radius: 10px; background: var(--neutral-25); font-size: 11.5px; line-height: 1.5; color: var(--neutral-500);">
+        Figures follow the settled transaction feed. Reported figures never revise; late transactions accrue forward.
+        <div style="margin-top: 6px; color: var(--lune-teal-700); font-weight: 600;">{{ freshness }}</div>
       </div>
-      <div style="position: relative;">
-        <sc-if value="{{ switcherOpen }}" hint-placeholder-val="{{ false }}">
-          <div style="position: absolute; bottom: calc(100% + 8px); left: 0; right: 0; background: #14101F; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 6px; box-shadow: 0 12px 32px rgba(7,3,18,0.55); z-index: 20;">
-            <div style="padding: 8px 10px 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,0.4);">{{ merchantName }} · Brand accounts</div>
-            <sc-for list="{{ brandOptions }}" as="b" hint-placeholder-count="3">
-              <div onClick="{{ b.pick }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; background: {{ b.bg }};" style-hover="background: rgba(255,255,255,0.08);">
-                <span style="width: 28px; height: 28px; border-radius: 7px; background: {{ b.color }}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex: none;">{{ b.initials }}</span>
-                <span style="flex: 1; min-width: 0;">
-                  <span style="display: block; font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ b.name }}</span>
-                  <span style="display: block; font-size: 11px; color: rgba(255,255,255,0.45);">{{ b.meta }}</span>
-                </span>
-                <span style="font-size: 12px; font-weight: 700; color: var(--lune-mint); flex: none;">{{ b.check }}</span>
-              </div>
-            </sc-for>
-          </div>
-        </sc-if>
-        <div onClick="{{ toggleSwitcher }}" style="display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.06); cursor: pointer; user-select: none;" style-hover="background: rgba(255,255,255,0.1);">
-          <span style="width: 32px; height: 32px; border-radius: 8px; background: {{ brandColor }}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex: none;">{{ brandInitials }}</span>
-          <span style="flex: 1; min-width: 0;">
-            <span style="display: block; font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ brandName }}</span>
-            <span style="display: block; font-size: 11px; color: rgba(255,255,255,0.45);">Switch brand account</span>
-          </span>
-          <span style="font-size: 11px; color: rgba(255,255,255,0.45); flex: none;">{{ switcherChevron }}</span>
-        </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--neutral-100);">
+        <span style="width: 28px; height: 28px; border-radius: 99px; background: var(--lune-teal-700); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex: none;">DJ</span>
+        <span style="font-size: 12px; color: var(--neutral-600); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">dennis@chalhoub.com</span>
       </div>
     </div>
   </aside>
 
-  <main style="flex: 1; min-width: 1140px; padding: 28px 32px 64px; display: flex; flex-direction: column; gap: 20px;">
+  <main style="flex: 1; min-width: 0; padding: 28px 32px 64px; display: flex; flex-direction: column; gap: 24px;">
 
-    <header style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;">
-      <div>
-        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">Brand analytics</div>
-        <h1 style="margin: 6px 0 0; font-size: 32px; font-weight: 700; letter-spacing: -0.02em;">{{ brandName }}</h1>
+    <header style="display: flex; flex-direction: column; gap: 14px;">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em;">Analytics</h1>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="width: 36px; height: 36px; border-radius: 9px; background: var(--lune-ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">FA</span>
+          <span style="font-size: 20px; font-weight: 700;">Faces</span>
+          <span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; background: var(--neutral-50); color: var(--neutral-600);">Chalhoub Group</span>
+        </div>
+        <button style="height: 38px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); font-size: 13.5px; font-weight: 600; color: var(--lune-teal); cursor: pointer;" style-hover="border-color: var(--neutral-300); background: var(--neutral-25);">Download report</button>
       </div>
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <button style="height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--lune-teal); cursor: pointer;" style-hover="border-color: var(--neutral-300); background: var(--neutral-25);">Compare periods</button>
-        <button style="height: 40px; padding: 0 18px; border-radius: 8px; border: none; background: var(--lune-emerald); font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: #fff; cursor: pointer;" style-hover="background: #0E9173;">Download report</button>
-      </div>
+      <p style="margin: 0; font-size: 14px; color: var(--neutral-500);">Performance and customer insights for Faces.</p>
     </header>
 
-    <section style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px; background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px;">
-      <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400); padding-left: 4px;">Filters</span>
-      <div style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border: 1px solid var(--neutral-200); border-radius: 8px; font-size: 14px; font-weight: 500;">Campaign<span style="color: var(--neutral-400);">All live</span><span style="color: var(--neutral-300);">▾</span></div>
+    <section style="display: flex; align-items: center; gap: 10px;">
+      <input onInput="{{ onSearch }}" placeholder="Search campaign or bank" style="height: 38px; width: 240px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); font-size: 13.5px; color: var(--lune-teal); outline: none;">
       <div style="display: flex; gap: 2px; padding: 3px; background: var(--neutral-50); border-radius: 8px;">
-        <sc-for list="{{ channels }}" as="ch" hint-placeholder-count="3">
-          <button onClick="{{ ch.pick }}" style="height: 30px; padding: 0 14px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 14px; font-weight: 600; cursor: pointer; background: {{ ch.bg }}; color: {{ ch.fg }}; box-shadow: {{ ch.shadow }};">{{ ch.label }}</button>
+        <sc-for list="{{ statusToggle }}" as="s" hint-placeholder-count="3">
+          <button onClick="{{ s.pick }}" style="height: 30px; padding: 0 14px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; background: {{ s.bg }}; color: {{ s.fg }}; box-shadow: {{ s.shadow }};">{{ s.label }}</button>
         </sc-for>
       </div>
-      <div style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border: 1px solid var(--neutral-200); border-radius: 8px; font-size: 14px; font-weight: 500; margin-left: auto;"><span style="color: var(--neutral-400);">1 Jul – 31 Jul 2026</span><span style="color: var(--neutral-300);">▾</span></div>
+      <span style="margin-left: auto; font-size: 13px; font-weight: 600; color: var(--neutral-600); padding: 8px 14px; border: 1px solid var(--neutral-200); border-radius: 8px; background: #fff;">Last 90 days</span>
     </section>
 
     <section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
-      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="9">
-        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; min-height: 118px;">
-          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
-            <span style="font-size: 13px; font-weight: 500; color: var(--neutral-500); line-height: 1.35;">{{ k.label }}</span>
-            <span style="font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: var(--neutral-300); border: 1px solid var(--neutral-100); border-radius: 4px; padding: 2px 4px; white-space: nowrap;">{{ k.source }}</span>
-          </div>
-          <div style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-top: auto;">{{ k.value }}</div>
-          <div style="font-size: 12px; color: {{ k.subColor }}; font-weight: 500;">{{ k.sub }}</div>
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 13px; font-weight: 500; color: var(--neutral-500);">{{ k.label }}</span>
+          <span style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">{{ k.value }}</span>
+          <span style="font-size: 12px; color: var(--neutral-400);">{{ k.sub }}</span>
         </div>
       </sc-for>
     </section>
 
-    <section style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px; align-items: start;">
+    <section style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Campaign Performance</h2>
+      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">GMV and transaction trends across the period, and how each campaign compares.</p>
 
       <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 4px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px;">
           <div>
-            <h2 style="margin: 0; font-size: 18px; font-weight: 600;">Cashback &amp; spend over time</h2>
-            <p style="margin: 4px 0 0; font-size: 13px; color: var(--neutral-500);">Campaign-driven GMV against cashback allocated, from qualifying transactions.</p>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Performance Over Time</h3>
+            <p style="margin: 3px 0 0; font-size: 13px; color: var(--neutral-500);">Weekly totals across the selected period. One axis, one metric at a time.</p>
           </div>
           <div style="display: flex; gap: 2px; padding: 3px; background: var(--neutral-50); border-radius: 8px; flex: none;">
-            <sc-for list="{{ buckets }}" as="b" hint-placeholder-count="3">
-              <button onClick="{{ b.pick }}" style="height: 28px; padding: 0 12px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; background: {{ b.bg }}; color: {{ b.fg }}; box-shadow: {{ b.shadow }};">{{ b.label }}</button>
+            <sc-for list="{{ metricToggle }}" as="m" hint-placeholder-count="2">
+              <button onClick="{{ m.pick }}" style="height: 28px; padding: 0 12px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; background: {{ m.bg }}; color: {{ m.fg }}; box-shadow: {{ m.shadow }};">{{ m.label }}</button>
             </sc-for>
           </div>
         </div>
-        <div style="display: flex; gap: 18px; margin: 14px 0 16px;">
-          <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--neutral-600);"><i style="width: 10px; height: 10px; border-radius: 2px; background: var(--lune-emerald); display: block;"></i>GMV</span>
-          <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--neutral-600);"><i style="width: 10px; height: 10px; border-radius: 2px; background: var(--lune-mint); display: block;"></i>Cashback allocated</span>
-        </div>
         <div style="display: flex; gap: 12px;">
-          <div style="display: flex; flex-direction: column; justify-content: space-between; height: 248px; text-align: right; flex: none;">
-            <sc-for list="{{ yTicks }}" as="t" hint-placeholder-count="5">
-              <span style="font-size: 11px; font-weight: 500; color: var(--neutral-400); line-height: 1;">{{ t }}</span>
+          <div style="display: flex; flex-direction: column; justify-content: space-between; height: 214px; text-align: right; flex: none; padding-bottom: 26px;">
+            <sc-for list="{{ chartTicks }}" as="t" hint-placeholder-count="6">
+              <span style="font-size: 11px; font-weight: 500; color: var(--neutral-400); line-height: 1;">{{ t.label }}</span>
             </sc-for>
           </div>
           <div style="flex: 1; min-width: 0;">
-            <div style="position: relative; height: 248px; border-bottom: 1px solid var(--neutral-200);">
-              <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between;">
-                <sc-for list="{{ yTicks }}" as="t" hint-placeholder-count="5">
-                  <div style="height: 1px; background: var(--neutral-50);"></div>
-                </sc-for>
-              </div>
-              <div style="position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: space-around; gap: 8px;">
-                <sc-for list="{{ series }}" as="row" hint-placeholder-count="6">
-                  <div style="flex: 1; display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 100%;" title="{{ row.tip }}">
-                    <div style="width: 26px; max-width: 26px; background: var(--lune-emerald); border-radius: 3px 3px 0 0; height: {{ row.gmvPct }}%; min-height: 2px;"></div>
-                    <div style="width: 26px; max-width: 26px; background: var(--lune-mint); border-radius: 3px 3px 0 0; height: {{ row.cbPct }}%; min-height: 2px;"></div>
-                  </div>
-                </sc-for>
-              </div>
-            </div>
-            <div style="display: flex; justify-content: space-around; gap: 8px; padding-top: 8px;">
-              <sc-for list="{{ series }}" as="row" hint-placeholder-count="6">
-                <span style="flex: 1; text-align: center; font-size: 12px; font-weight: 600; color: var(--neutral-500);">{{ row.label }}</span>
+            <svg viewBox="0 0 720 240" style="width: 100%; height: auto; display: block;">
+              <sc-for list="{{ chartTicks }}" as="t" hint-placeholder-count="6">
+                <line x1="8" x2="712" y1="{{ t.y }}" y2="{{ t.y }}" stroke="var(--neutral-50)" stroke-width="1"></line>
               </sc-for>
+              <path d="{{ areaPath }}" fill="rgba(16,163,127,0.10)"></path>
+              <path d="{{ linePath }}" fill="none" stroke="var(--lune-emerald)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
+              <sc-for list="{{ dots }}" as="d" hint-placeholder-count="13">
+                <circle cx="{{ d.cx }}" cy="{{ d.cy }}" r="3.5" fill="#fff" stroke="var(--lune-emerald)" stroke-width="2"><title>{{ d.tip }}</title></circle>
+              </sc-for>
+              <sc-for list="{{ xLabels }}" as="x" hint-placeholder-count="13">
+                <text x="{{ x.x }}" y="234" text-anchor="middle" font-size="11" font-family="inherit" fill="var(--neutral-400)">{{ x.label }}</text>
+              </sc-for>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px; margin-top: 10px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
+          <div>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 600;">All Campaigns</h3>
+            <p style="margin: 3px 0 0; font-size: 13px; color: var(--neutral-500);">Every live and completed campaign for this brand. Each campaign runs with a single bank partner.</p>
+          </div>
+          <span style="font-size: 12px; color: var(--neutral-400);">{{ campaignCount }} shown</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr; gap: 14px; padding: 16px 0 10px; border-bottom: 1px solid var(--neutral-100); font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
+          <span>Campaign</span><span>Status</span><span>GMV</span><span>Transactions</span><span>ROI</span><span>Cashback</span><span>Budget Used</span>
+        </div>
+        <sc-for list="{{ campaigns }}" as="c" hint-placeholder-count="6">
+          <div style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr; gap: 14px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--neutral-50);" style-hover="background: var(--neutral-25);">
+            <div>
+              <div style="font-size: 14px; font-weight: 600;">{{ c.name }}</div>
+              <div style="font-size: 12px; color: var(--neutral-400); margin-top: 2px;">{{ c.meta }}</div>
+            </div>
+            <span style="justify-self: start; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: {{ c.statusBg }}; color: {{ c.statusFg }};">{{ c.status }}</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="height: 8px; border-radius: 3px; background: var(--lune-emerald); width: {{ c.gmvPct }}%; min-width: 2px;"></div>
+              <span style="font-size: 13px; font-weight: 600; white-space: nowrap;">{{ c.gmv }}</span>
+            </div>
+            <span style="font-size: 14px; font-weight: 500;">{{ c.tx }}</span>
+            <span style="font-size: 14px; font-weight: 700; color: var(--lune-teal-700);">{{ c.roi }}</span>
+            <span style="font-size: 14px; font-weight: 500;">{{ c.cashback }}</span>
+            <div>
+              <div style="height: 8px; border-radius: 3px; background: var(--neutral-50); overflow: hidden;">
+                <div style="height: 100%; border-radius: 3px; background: {{ c.budgetColor }}; width: {{ c.budgetPct }}%;"></div>
+              </div>
+              <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 4px;">{{ c.budgetLabel }}</div>
             </div>
           </div>
-          <div style="display: flex; flex-direction: column; justify-content: space-between; height: 248px; flex: none;">
-            <sc-for list="{{ yTicksCb }}" as="t" hint-placeholder-count="5">
-              <span style="font-size: 11px; font-weight: 500; color: var(--neutral-400); line-height: 1;">{{ t }}</span>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Cashback Ledger</h2>
+      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Append-only: every figure is a ledger entry, payable is derived from the hold window, and reversals are apportioned on the refunded share.</p>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;">
+        <sc-for list="{{ ledger }}" as="l" hint-placeholder-count="5">
+          <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12.5px; font-weight: 500; color: var(--neutral-500);">{{ l.label }}</span>
+            <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">{{ l.value }}</span>
+            <span style="font-size: 11.5px; color: var(--neutral-400);">{{ l.sub }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Customer Insights</h2>
+      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Who this brand's campaigns are reaching and converting.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;">
+        <sc-for list="{{ insightStats }}" as="s" hint-placeholder-count="5">
+          <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12.5px; font-weight: 500; color: var(--neutral-500);">{{ s.label }}</span>
+            <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">{{ s.value }}</span>
+            <span style="font-size: 11.5px; color: var(--neutral-400);">{{ s.sub }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 12px; margin-top: 10px; align-items: start;">
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">New vs. Returning Customers</h3>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ nvr.insight }}</p>
+          <div style="display: flex; align-items: baseline; gap: 8px;">
+            <span style="font-size: 28px; font-weight: 700; letter-spacing: -0.02em;">{{ nvr.total }}</span>
+            <span style="font-size: 13px; color: var(--neutral-500);">customers</span>
+          </div>
+          <div style="display: flex; height: 12px; border-radius: 4px; overflow: hidden; margin: 12px 0 8px;">
+            <div style="background: var(--lune-emerald); width: {{ nvr.newPct }}%;"></div>
+            <div style="background: var(--lune-mint); width: {{ nvr.retPct }}%;"></div>
+          </div>
+          <div style="display: flex; gap: 16px; font-size: 12.5px; color: var(--neutral-600); margin-bottom: 16px;">
+            <span style="display: flex; align-items: center; gap: 6px;"><i style="width: 9px; height: 9px; border-radius: 2px; background: var(--lune-emerald); display: block;"></i>New {{ nvr.newPct }}% ({{ nvr.newCount }})</span>
+            <span style="display: flex; align-items: center; gap: 6px;"><i style="width: 9px; height: 9px; border-radius: 2px; background: var(--lune-mint); display: block;"></i>Returning {{ nvr.retPct }}% ({{ nvr.retCount }})</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <sc-for list="{{ nvr.cols }}" as="col" hint-placeholder-count="2">
+              <div style="border: 1px solid var(--neutral-100); border-radius: 10px; padding: 12px;">
+                <div style="font-size: 12.5px; font-weight: 600; margin-bottom: 8px;">{{ col.title }}</div>
+                <div style="display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0;"><span style="color: var(--neutral-500);">GMV</span><span style="font-weight: 600;">{{ col.gmv }}</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0;"><span style="color: var(--neutral-500);">Transactions</span><span style="font-weight: 600;">{{ col.tx }}</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0;"><span style="color: var(--neutral-500);">Avg. spend / tx</span><span style="font-weight: 600;">{{ col.avg }}</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0;"><span style="color: var(--neutral-500);">Purchases / customer</span><span style="font-weight: 600;">{{ col.freq }}</span></div>
+              </div>
             </sc-for>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 11px; color: var(--neutral-400);">
-          <span>Left axis: GMV</span>
-          <span>Right axis: cashback allocated</span>
+
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Customer Value</h3>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">How much customers spend, in total, across all campaigns.</p>
+          <div style="display: flex; flex-direction: column; gap: 13px;">
+            <sc-for list="{{ valueDist }}" as="v" hint-placeholder-count="5">
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px;">
+                  <span style="font-weight: 600;">{{ v.label }}</span>
+                </div>
+                <div style="height: 10px; border-radius: 3px; background: var(--neutral-50); overflow: hidden;">
+                  <div style="height: 100%; border-radius: 3px; background: var(--lune-emerald); width: {{ v.pct }}%;"></div>
+                </div>
+                <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 4px;">{{ v.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Purchase Frequency</h3>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">How many times customers purchased.</p>
+          <div style="padding: 12px 14px; border-radius: 10px; background: rgba(16,163,127,0.08); margin-bottom: 16px;">
+            <div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--lune-teal-700);">REPEAT PURCHASE RATE</div>
+            <div style="font-size: 24px; font-weight: 700; margin-top: 2px;">{{ repeatRate }}%</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 13px;">
+            <sc-for list="{{ frequency }}" as="f" hint-placeholder-count="4">
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px;">
+                  <span style="font-weight: 600;">{{ f.label }}</span>
+                </div>
+                <div style="height: 10px; border-radius: 3px; background: var(--neutral-50); overflow: hidden;">
+                  <div style="height: 100%; border-radius: 3px; background: var(--lune-sea); width: {{ f.pct }}%;"></div>
+                </div>
+                <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 4px;">{{ f.note }}</div>
+              </div>
+            </sc-for>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
-        <h2 style="margin: 0; font-size: 18px; font-weight: 600;">Engagement funnel</h2>
-        <p style="margin: 4px 0 20px; font-size: 13px; color: var(--neutral-500);">Unique customers at each stage, from offer view to cashback settlement.</p>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <sc-for list="{{ funnel }}" as="st" hint-placeholder-count="5">
-            <div>
-              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px;">
-                <span style="font-size: 14px; font-weight: 600;">{{ st.label }}</span>
-                <span style="font-size: 14px; font-weight: 700;">{{ st.value }}</span>
+    <section style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Engagement</h2>
+      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">From offer exposure to rewarded transaction, and where it breaks down.</p>
+
+      <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 12px; align-items: start;">
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Engagement Funnel</h3>
+          <p style="margin: 3px 0 18px; font-size: 13px; color: var(--neutral-500);">Unique customers at each stage; each bar is the share of the stage before it.</p>
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <sc-for list="{{ funnel }}" as="st" hint-placeholder-count="5">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 5px;">
+                  <span style="font-size: 13.5px; font-weight: 600;">{{ st.label }}</span>
+                  <span style="font-size: 13.5px; font-weight: 700;">{{ st.value }}</span>
+                </div>
+                <div style="height: 18px; border-radius: 4px; background: var(--neutral-50); overflow: hidden;">
+                  <div style="height: 100%; border-radius: 4px; background: var(--lune-emerald); width: {{ st.pct }}%;"></div>
+                </div>
+                <div style="margin-top: 4px; font-size: 11.5px; color: var(--neutral-500);">{{ st.note }}</div>
               </div>
-              <div style="height: 22px; border-radius: 4px; background: var(--neutral-50); overflow: hidden;">
-                <div style="height: 100%; border-radius: 4px; background: {{ st.color }}; width: {{ st.pct }}%;"></div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 18px; padding: 12px 14px; border-radius: 10px; background: rgba(251,218,125,0.20);">
+            <div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--status-warning-ink);">BIGGEST DROP-OFF</div>
+            <div style="font-size: 18px; font-weight: 700; color: var(--status-warning-ink); margin-top: 2px;">{{ dropoff }}</div>
+            <div style="font-size: 12px; color: var(--status-warning-ink); margin-top: 2px;">{{ dropoffNote }}</div>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Why Transactions Didn't Qualify</h3>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ rejTotal }} settled transactions from activated customers were rejected by the cashback engine. First failing gate recorded, so counts are stable.</p>
+          <div style="display: flex; flex-direction: column; gap: 13px;">
+            <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="8">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 4px;">
+                  <span style="font-size: 13px; font-weight: 600;">{{ r.label }}</span>
+                  <span style="font-size: 12.5px; font-weight: 700; white-space: nowrap;">{{ r.count }} · {{ r.share }}</span>
+                </div>
+                <div style="height: 8px; border-radius: 3px; background: var(--neutral-50); overflow: hidden;">
+                  <div style="height: 100%; border-radius: 3px; background: var(--cat-dining); width: {{ r.pct }}%;"></div>
+                </div>
+                <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 4px;">{{ r.tip }}</div>
               </div>
-              <div style="margin-top: 5px; font-size: 12px; color: var(--neutral-500);">{{ st.note }}</div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 18px; padding: 12px 14px; border-radius: 10px; background: var(--neutral-25); border: 1px solid var(--neutral-100);">
+            <div style="font-size: 12.5px; font-weight: 600; margin-bottom: 6px;">Couldn't be assessed: {{ dqTotal }} transactions with incomplete bank data</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <sc-for list="{{ dataQuality }}" as="d" hint-placeholder-count="3">
+                <span style="font-size: 12px; padding: 3px 10px; border-radius: 99px; background: #fff; border: 1px solid var(--neutral-100); color: var(--neutral-600);">{{ d.label }} · {{ d.count }}</span>
+              </sc-for>
+            </div>
+            <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 8px;">These ingest but can never earn. Fixing them is a bank-feed integration task, not a campaign setting.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Location &amp; Channel</h2>
+      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Which locations and channels are driving this brand's performance.</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start;">
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Top Locations</h3>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">This brand's strongest locations, by GMV.</p>
+          <div style="display: flex; flex-direction: column; gap: 13px;">
+            <sc-for list="{{ topLocations }}" as="l" hint-placeholder-count="4">
+              <div style="display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start;">
+                <span style="width: 24px; height: 24px; border-radius: 99px; background: var(--neutral-50); color: var(--neutral-600); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">{{ l.rank }}</span>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                    <span style="font-weight: 600;">{{ l.name }}</span>
+                    <span style="color: var(--neutral-500);">{{ l.note }}</span>
+                  </div>
+                  <div style="height: 8px; border-radius: 3px; background: var(--neutral-50); overflow: hidden;">
+                    <div style="height: 100%; border-radius: 3px; background: var(--lune-emerald); width: {{ l.pct }}%;"></div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: grid; grid-template-columns: 1.4fr 1.2fr 1fr 0.7fr 0.6fr; gap: 10px; padding: 16px 0 8px; border-bottom: 1px solid var(--neutral-100); font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400); margin-top: 8px;">
+          <span>Location</span><span>Terminals</span><span>GMV</span><span>AOV</span><span>Cust.</span>
+          </div>
+          <sc-for list="{{ locationRows }}" as="lr" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 1.4fr 1.2fr 1fr 0.7fr 0.6fr; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--neutral-50); font-size: 12.5px;">
+              <span style="font-weight: 600;">{{ lr.name }}</span>
+              <span style="color: var(--neutral-500);">{{ lr.tids }}</span>
+              <span style="font-weight: 600;">{{ lr.gmv }}</span>
+              <span style="color: var(--neutral-600);">{{ lr.aov }}</span>
+              <span style="color: var(--neutral-600);">{{ lr.cust }}</span>
             </div>
           </sc-for>
         </div>
-      </div>
-    </section>
 
-    <section style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
-      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
-        <div>
-          <h2 style="margin: 0; font-size: 18px; font-weight: 600;">Campaign performance</h2>
-          <p style="margin: 4px 0 0; font-size: 13px; color: var(--neutral-500);">GMV driven, cashback allocated and budget consumed per live offer. Each campaign runs with a single bank partner.</p>
-        </div>
-        <span style="font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: var(--neutral-300); border: 1px solid var(--neutral-100); border-radius: 4px; padding: 3px 6px;">S1 · S4</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 1.4fr 0.7fr 1.2fr 0.6fr 0.7fr 0.5fr 1.1fr; gap: 16px; padding: 16px 0 10px; border-bottom: 1px solid var(--neutral-100); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
-        <span>Campaign</span><span>Bank</span><span>GMV driven</span><span>Tracked tx</span><span>Cashback</span><span>ROI</span><span>Budget used</span>
-      </div>
-      <sc-for list="{{ campaigns }}" as="c" hint-placeholder-count="4">
-        <div style="display: grid; grid-template-columns: 1.4fr 0.7fr 1.2fr 0.6fr 0.7fr 0.5fr 1.1fr; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--neutral-50);">
-          <div>
-            <div style="font-size: 14px; font-weight: 600;">{{ c.name }}</div>
-            <div style="font-size: 12px; color: var(--neutral-400); margin-top: 2px;">{{ c.meta }}</div>
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Channel Behaviour</h3>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">Online vs. in-store, compared. Channel is validated at ingestion (in-store / online).</p>
+          <div style="display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 0; border: 1px solid var(--neutral-100); border-radius: 10px; overflow: hidden;">
+            <div style="padding: 10px 14px; background: var(--neutral-25); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">Metric</div>
+            <div style="padding: 10px 14px; background: var(--neutral-25); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">Online</div>
+            <div style="padding: 10px 14px; background: var(--neutral-25); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">In-store</div>
+            <sc-for list="{{ channels }}" as="ch" hint-placeholder-count="5">
+              <div style="padding: 12px 14px; border-top: 1px solid var(--neutral-50); font-size: 13px; color: var(--neutral-500);">{{ ch.metric }}</div>
+              <div style="padding: 12px 14px; border-top: 1px solid var(--neutral-50); font-size: 13.5px; font-weight: 600;">{{ ch.online }}</div>
+              <div style="padding: 12px 14px; border-top: 1px solid var(--neutral-50); font-size: 13.5px; font-weight: 600;">{{ ch.instore }}</div>
+            </sc-for>
           </div>
-          <span style="justify-self: start; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; background: var(--neutral-50); color: var(--neutral-600);">{{ c.bank }}</span>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="height: 10px; border-radius: 3px; background: var(--lune-emerald); width: {{ c.gmvPct }}%; min-width: 2px;"></div>
-            <span style="font-size: 13px; font-weight: 600; white-space: nowrap;">{{ c.gmv }}</span>
-          </div>
-          <span style="font-size: 14px; font-weight: 500;">{{ c.tx }}</span>
-          <span style="font-size: 14px; font-weight: 500;">{{ c.cashback }}</span>
-          <span style="font-size: 14px; font-weight: 700; color: var(--lune-teal-700);">{{ c.roi }}</span>
-          <div>
-            <div style="height: 10px; border-radius: 3px; background: var(--neutral-50); overflow: hidden;">
-              <div style="height: 100%; border-radius: 3px; background: {{ c.budgetColor }}; width: {{ c.budgetPct }}%;"></div>
-            </div>
-            <div style="font-size: 12px; color: var(--neutral-500); margin-top: 5px;">{{ c.budgetLabel }}</div>
-          </div>
-        </div>
-      </sc-for>
-    </section>
-
-    <section>
-      <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
-        <h2 style="margin: 0; font-size: 18px; font-weight: 600;">Why transactions didn't qualify</h2>
-        <p style="margin: 4px 0 20px; font-size: 13px; color: var(--neutral-500);">Rejection reasons recorded by the cashback engine this period.</p>
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-          <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="6">
-            <div style="display: grid; grid-template-columns: 148px 1fr 52px; gap: 12px; align-items: center;">
-              <span style="font-size: 13px; font-weight: 500; color: var(--neutral-600);">{{ r.label }}</span>
-              <div style="height: 12px; border-radius: 3px; background: var(--neutral-50); overflow: hidden;">
-                <div style="height: 100%; border-radius: 3px; background: {{ r.color }}; width: {{ r.pct }}%;"></div>
-              </div>
-              <span style="font-size: 13px; font-weight: 600; text-align: right;">{{ r.count }}</span>
-            </div>
-          </sc-for>
-        </div>
-      </div>
-
-    </section>
-
-    <section style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
-      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px;">
-        <div>
-          <h2 style="margin: 0; font-size: 18px; font-weight: 600;">Transaction log</h2>
-          <p style="margin: 4px 0 0; font-size: 13px; color: var(--neutral-500);">Qualifying transactions, masked to card last four.</p>
-        </div>
-        <span style="font-size: 13px; font-weight: 600; color: var(--lune-emerald); cursor: pointer;">View all {{ txTotal }}</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 132px 1fr 110px 1.1fr 116px 120px; gap: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--neutral-100); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
-        <span>Date</span><span>Customer</span><span>Amount</span><span>Location</span><span>Channel</span><span>Status</span>
-      </div>
-      <sc-for list="{{ transactions }}" as="t" hint-placeholder-count="7">
-        <div style="display: grid; grid-template-columns: 132px 1fr 110px 1.1fr 116px 120px; gap: 16px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--neutral-50); font-size: 14px;">
-          <span style="color: var(--neutral-600);">{{ t.date }}</span>
-          <span style="font-weight: 500;">{{ t.customer }}</span>
-          <span style="font-weight: 600;">{{ t.amount }}</span>
-          <span style="color: var(--neutral-600);">{{ t.location }}</span>
-          <span style="color: var(--neutral-600);">{{ t.channel }}</span>
-          <span style="justify-self: start; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; background: {{ t.statusBg }}; color: {{ t.statusFg }};">{{ t.status }}</span>
-        </div>
-      </sc-for>
-      <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; font-size: 13px; color: var(--neutral-500);">
-        <span>{{ txRange }}</span>
-        <div style="display: flex; gap: 8px;">
-          <button style="height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--neutral-400);">Previous</button>
-          <button style="height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--lune-teal); cursor: pointer;" style-hover="background: var(--neutral-25);">Next</button>
         </div>
       </div>
     </section>
-
-    <sc-if value="{{ showRoiGate }}" hint-placeholder-val="{{ true }}">
-      <section style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px; display: flex; gap: 24px; align-items: center;">
-        <div style="flex: 1;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <h2 style="margin: 0; font-size: 18px; font-weight: 600;">Campaign ROI</h2>
-            <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: var(--primary-10); color: var(--lune-teal-700);">GMV ÷ cashback</span>
-          </div>
-          <p style="margin: 8px 0 0; font-size: 13px; line-height: 1.6; color: var(--neutral-500); max-width: 62ch;">ROI is the sales multiplier on cashback spend: GMV driven by qualifying transactions divided by cashback allocated. Both figures come from the settled feed, so no merchant-margin data is required.</p>
-        </div>
-        <div style="flex: 0 0 260px; text-align: right;">
-          <div style="font-size: 40px; font-weight: 700; letter-spacing: -0.02em; color: var(--lune-emerald);">{{ roi }}</div>
-          <div style="font-size: 12px; color: var(--neutral-400); margin-top: 4px;">{{ roiDetail }}</div>
-        </div>
-      </section>
-    </sc-if>
 
   </main>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;merchantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nero Coffee Group&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;freshnessLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;As of 1 Aug 2026, 06:00 UTC&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRoiGate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { brand: "nero-coffee", bucket: "Week", channel: "All channels", switcherOpen: false };
+  state = { metric: "GMV", q: "", status: "All" };
 
-  // GMV / cashback-allocated time-series SHAPE across the Nero group. Each
-  // brand view scales this shape by its exact share of July GMV / cashback,
-  // so the Jul bar always equals the brand's KPI and the Day rows still sum
-  // to the Wk 30 bar. Blended cashback rate ~4.5% of GMV.
-  data() {
+  // ===== Ground truth (Faces · Chalhoub Group · last 90 days, AED) =====
+  // One set of totals; every module below derives from it and cross-foots.
+  // Vocabulary follows the cashback ERDs: accrued / reversed / balance /
+  // payable (derived, past hold), decision-log gate codes, audience snapshot.
+  totals() {
     return {
-      Day: [
-        ["Mon 20", 7620, 343], ["Tue 21", 8715, 392], ["Wed 22", 10050, 452],
-        ["Thu 23", 11075, 498], ["Fri 24", 14490, 652], ["Sat 25", 16610, 747], ["Sun 26", 10750, 484]
-      ],
-      Week: [
-        ["Wk 27", 58420, 2628], ["Wk 28", 66180, 2978], ["Wk 29", 71940, 3237],
-        ["Wk 30", 79310, 3568], ["Wk 31", 84360, 3796]
-      ],
-      Month: [
-        ["Mar", 142600, 6417], ["Apr", 188400, 8478], ["May", 216900, 9760],
-        ["Jun", 274300, 12343], ["Jul", 316036, 14204]
-      ]
+      gmv: 1207025, tx: 5745, rewarded: 5380, customers: 4195,
+      accrued: 124047, reversed: 3912, balance: 120135, payable: 89210, hold: 30925,
+      newC: 3418, retC: 777, newGmv: 735000, retGmv: 472025, newTx: 3418, retTx: 2327,
+      refundEvents: 214, refundedValue: 41270,
+      audience: 54022, viewed: 22940, activated: 9410, transactedC: 4195, rewardedC: 3978
     };
   }
 
-  GROUP_GMV = 316036;
-  GROUP_CB = 14204;
+  campaignData() {
+    return [
+      { name: "Summer Cashback", bank: "Emirates NBD", status: "Active", window: "ends 28 Sep", channel: "In-store", gmv: 331200, tx: 1380, cb: 33115, budget: 50000 },
+      { name: "Midyear Beauty Bonanza", bank: "ADIB", status: "Completed", window: "ended 12 Jul", channel: "All channels", gmv: 240260, tx: 1172, cb: 24604, budget: 26000 },
+      { name: "August Radiance Rewards", bank: "FAB", status: "Completed", window: "ended 31 Aug", channel: "In-store", gmv: 193140, tx: 1073, cb: 15023, budget: 20000 },
+      { name: "Skincare Refresh Week", bank: "Mashreq", status: "Active", window: "ends 21 Sep", channel: "Online", gmv: 172575, tx: 767, cb: 15345, budget: 22000 },
+      { name: "Beauty Flash Sale", bank: "RAKBANK", status: "Active", window: "ends 14 Sep", channel: "Online", gmv: 164910, tx: 717, cb: 20065, budget: 30000 },
+      { name: "June Glow Weekend", bank: "DIB", status: "Completed", window: "ended 28 Jun", channel: "In-store", gmv: 104940, tx: 636, cb: 15895, budget: 18000 }
+    ];
+  }
 
-  // One analytics page per brand account. Every figure derives from these
-  // totals or the campaign slices below, and they always cross-foot:
-  // In-store + Online == All channels, campaigns sum to the brand totals,
-  // paid + held == allocated. Reach/Activated are audience-level per brand
-  // and do not split by channel.
-  brands() {
+  series() {
     return {
-      "nero-coffee": {
-        name: "Nero Coffee", initials: "NC", color: "var(--lune-emerald)",
-        meta: "2 live campaigns",
-        channels: ["All channels", "In-store", "Online"],
-        reach: 342000, viewed: 124600, activated: 27360,
-        totals: {
-          "All channels": { gmv: 224600, tx: 9946, settledTx: 9371, cb: 10410, paid: 7225, held: 3185, uniques: 2981, newC: 1142, settledC: 2808, paidC: 1963 },
-          "In-store":     { gmv: 184768, tx: 8247, settledTx: 7770, cb: 8369,  paid: 5808, held: 2561, uniques: 2410, newC: 894,  settledC: 2270, paidC: 1587 },
-          "Online":       { gmv: 39832,  tx: 1699, settledTx: 1601, cb: 2041,  paid: 1417, held: 624,  uniques: 571,  newC: 248,  settledC: 538,  paidC: 376 }
-        },
-        reasons: {
-          "All channels": [1426, 932, 608, 412, 300, 187, 74],
-          "In-store":     [1182, 773, 504, 412, 249, 155, 61],
-          "Online":       [244, 159, 104, 0, 51, 32, 13]
-        },
-        campaigns: [
-          { name: "Summer Sips 5%", bank: "Monzo", meta: "In-store · ends 31 Aug", budget: 8000,
-            by: { "In-store": { gmv: 128400, tx: 5842, cb: 5480 } } },
-          { name: "Weekend Brunch 8%", bank: "Barclays", meta: "All channels · ends 23 Aug", budget: 6500,
-            by: { "In-store": { gmv: 56368, tx: 2405, cb: 2889 }, "Online": { gmv: 39832, tx: 1699, cb: 2041 } } }
-        ],
-        txLog: [
-          ["31 Jul, 18:42", "•••• 4417", 32.40, "Shoreditch, London", "In-store", "Paid"],
-          ["31 Jul, 17:05", "•••• 9082", 18.90, "Online", "Online", "Held"],
-          ["31 Jul, 12:18", "•••• 3310", 46.15, "Leeds City", "In-store", "Paid"],
-          ["30 Jul, 09:51", "•••• 5583", 21.75, "Bristol Harbourside", "In-store", "Paid"],
-          ["29 Jul, 19:26", "•••• 6140", 27.30, "Glasgow Queen St", "In-store", "Held"]
-        ]
-      },
-      "nero-market": {
-        name: "Nero Market", initials: "NM", color: "var(--lune-sea)",
-        meta: "2 live campaigns",
-        channels: ["All channels", "Online"],
-        reach: 96000, viewed: 34200, activated: 7680,
-        totals: {
-          "All channels": { gmv: 61300, tx: 1842, settledTx: 1736, cb: 2610, paid: 1812, held: 798, uniques: 634, newC: 402, settledC: 597, paidC: 417 },
-          "Online":       { gmv: 61300, tx: 1842, settledTx: 1736, cb: 2610, paid: 1812, held: 798, uniques: 634, newC: 402, settledC: 597, paidC: 417 }
-        },
-        reasons: {
-          "All channels": [255, 166, 109, 0, 54, 33, 13],
-          "Online":       [255, 166, 109, 0, 54, 33, 13]
-        },
-        campaigns: [
-          { name: "Online First Order 10%", bank: "HSBC", meta: "Online · ends 30 Sep", budget: 3000,
-            by: { "Online": { gmv: 38900, tx: 1046, cb: 1660 } } },
-          { name: "Free Delivery Weekend 6%", bank: "Revolut", meta: "Online · ends 6 Sep", budget: 2000,
-            by: { "Online": { gmv: 22400, tx: 796, cb: 950 } } }
-        ],
-        txLog: [
-          ["31 Jul, 15:44", "•••• 8821", 64.35, "Online", "Online", "Held"],
-          ["30 Jul, 14:07", "•••• 1264", 88.20, "Online", "Online", "Paid"],
-          ["30 Jul, 11:02", "•••• 2207", 102.80, "Online", "Online", "Paid"]
-        ]
-      },
-      "nero-bakehouse": {
-        name: "Nero Bakehouse", initials: "NB", color: "var(--cat-household)",
-        meta: "1 live campaign",
-        channels: ["All channels", "In-store"],
-        reach: 48000, viewed: 17800, activated: 3840,
-        totals: {
-          "All channels": { gmv: 30136, tx: 1059, settledTx: 998, cb: 1184, paid: 823, held: 361, uniques: 297, newC: 84, settledC: 280, paidC: 196 },
-          "In-store":     { gmv: 30136, tx: 1059, settledTx: 998, cb: 1184, paid: 823, held: 361, uniques: 297, newC: 84, settledC: 280, paidC: 196 }
-        },
-        reasons: {
-          "All channels": [161, 106, 69, 100, 34, 21, 9],
-          "In-store":     [161, 106, 69, 100, 34, 21, 9]
-        },
-        campaigns: [
-          { name: "Loyalty Top-up 4%", bank: "Lloyds", meta: "In-store · ends 31 Oct", budget: 4000,
-            by: { "In-store": { gmv: 30136, tx: 1059, cb: 1184 } } }
-        ],
-        txLog: [
-          ["31 Jul, 08:36", "•••• 5019", 9.40, "Camden, London", "In-store", "Paid"],
-          ["30 Jul, 20:33", "•••• 7729", 12.60, "Manchester Piccadilly", "In-store", "Held"],
-          ["29 Jul, 16:20", "•••• 3382", 14.75, "Edinburgh Waverley", "In-store", "Paid"]
-        ]
-      }
+      labels: ["Jun 8", "Jun 15", "Jun 22", "Jun 29", "Jul 6", "Jul 13", "Jul 20", "Jul 27", "Aug 3", "Aug 10", "Aug 17", "Aug 24", "Aug 31"],
+      GMV: [76400, 79800, 83500, 80900, 87200, 91600, 95400, 90100, 97800, 101900, 105400, 109300, 107725],
+      Transactions: [364, 380, 397, 385, 415, 436, 454, 429, 466, 485, 502, 520, 512]
     };
   }
 
-  slice(c) {
-    if (this.state.channel === "All channels") {
-      return Object.values(c.by).reduce(
-        (a, p) => ({ gmv: a.gmv + p.gmv, tx: a.tx + p.tx, cb: a.cb + p.cb }),
-        { gmv: 0, tx: 0, cb: 0 }
-      );
-    }
-    return c.by[this.state.channel] || null;
+  // Decision-log rejection reasons: the engine's ten gates, fixed order,
+  // first failure recorded (ERD-2 D-1). Activation and audience are
+  // candidate-query conditions (D-17), so they never appear here.
+  rejections() {
+    return [
+      { code: "mid_mismatch", label: "Location not covered by the campaign", n: 121, tip: "The transaction happened at one of your locations the campaign doesn't include. Add the location, or leave it out deliberately." },
+      { code: "below_minimum_spend", label: "Minimum spend not met", n: 94, tip: "Consider lowering the minimum spend threshold to make more baskets eligible." },
+      { code: "cap_reached", label: "Per-customer cashback cap reached", n: 52, tip: "Raise the per-customer cap if you want repeat customers to keep earning." },
+      { code: "bin_not_selected", label: "Card not eligible for the offer", n: 43, tip: "Check that the offer's selected card ranges cover the cards your customers actually use." },
+      { code: "tid_mismatch", label: "Terminal not configured for the campaign", n: 26, tip: "Check that all terminals at covered locations are linked to this campaign." },
+      { code: "offer_not_live", label: "Outside the campaign window", n: 15, tip: "Transactions dated before the start or after the end never qualify." },
+      { code: "tid_missing", label: "Terminal id missing on the transaction", n: 8, tip: "A feed issue, not a campaign issue: the bank sent no terminal id where the campaign requires one." },
+      { code: "budget_exhausted", label: "Campaign budget exhausted", n: 6, tip: "Top up the budget to keep rewarding eligible transactions." }
+    ];
+  }
+
+  dataQuality() {
+    return [
+      { code: "card_bin_missing", label: "Card BIN missing", n: 41 },
+      { code: "occurred_at_missing", label: "Timestamp missing", n: 12 },
+      { code: "currency_missing", label: "Invalid currency", n: 5 }
+    ];
+  }
+
+  valueDist() {
+    return [
+      { label: "< AED 100", c: 126, gmv: 9025 },
+      { label: "AED 100–250", c: 2056, gmv: 415000 },
+      { label: "AED 250–500", c: 1510, gmv: 445000 },
+      { label: "AED 500–1,000", c: 378, gmv: 231000 },
+      { label: "AED 1,000+", c: 125, gmv: 107000 }
+    ];
+  }
+
+  frequency() {
+    return [
+      { label: "1 purchase", c: 3418 },
+      { label: "2 purchases", c: 420 },
+      { label: "3 purchases", c: 210 },
+      { label: "4+ purchases", c: 147 }
+    ];
+  }
+
+  locations() {
+    return [
+      { name: "faces.ae checkout", tids: "TID-00922", gmv: 629765, tx: 2959, cust: 2161 },
+      { name: "Mall of the Emirates", tids: "TID-00931 · TID-00932", gmv: 369243, tx: 1779, cust: 1299 },
+      { name: "Yas Mall, Abu Dhabi", tids: "TID-00921", gmv: 119010, tx: 561, cust: 410 },
+      { name: "Dubai Mall", tids: "TID-00930", gmv: 89007, tx: 446, cust: 326 }
+    ];
   }
 
   money(n) {
-    return "£" + n.toLocaleString("en-GB", { maximumFractionDigits: 0 });
+    return "AED " + n.toLocaleString("en-GB", { maximumFractionDigits: 0 });
   }
 
   num(n) {
@@ -892,118 +947,52 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    const brands = this.brands();
-    const brand = brands[this.state.brand];
-    const ch = brand.totals[this.state.channel];
-    const gmvMult = ch.gmv / this.GROUP_GMV;
-    const cbMult = ch.cb / this.GROUP_CB;
+    const T = this.totals();
 
-    const rows = this.data()[this.state.bucket];
-    const nice = v => {
-      const mag = Math.pow(10, Math.floor(Math.log10(v)));
-      return Math.ceil(v / (mag / 2)) * (mag / 2);
-    };
-    const gMax = nice(Math.max(...rows.map(r => r[1])) * gmvMult);
-    const cMax = nice(Math.max(...rows.map(r => r[2])) * cbMult);
-    const series = rows.map(([label, gmv, cb]) => {
-      const g = Math.round(gmv * gmvMult), c = Math.round(cb * cbMult);
-      return {
-        label, gmv: this.money(g), cb: this.money(c),
-        tip: label + " — GMV " + this.money(g) + " · cashback " + this.money(c),
-        gmvPct: Math.round((g / gMax) * 100),
-        cbPct: Math.round((c / cMax) * 100)
-      };
-    });
-    const ticks = max => [4, 3, 2, 1, 0].map(i => {
-      const v = (max / 4) * i;
-      return v >= 1000 ? "£" + Math.round(v / 1000) + "k" : "£" + Math.round(v);
-    });
-
-    const inView = brand.campaigns
-      .map(c => ({ c, s: this.slice(c) }))
-      .filter(x => x.s);
-    const committed = brand.campaigns.reduce((a, c) => a + c.budget, 0);
-    const allocAll = brand.totals["All channels"].cb;
-
-    // Campaign ROI leads, Unique customers second; the rest run highest
-    // value to lowest.
     const kpis = [
-      { label: "Campaign ROI", source: "S1 · S2", value: (ch.gmv / ch.cb).toFixed(1) + "×", sub: "GMV ÷ cashback allocated", subColor: "var(--neutral-400)" },
-      { label: "Unique customers", source: "S1", value: this.num(ch.uniques), sub: ((ch.uniques / brand.activated) * 100).toFixed(1) + "% of activated", subColor: "var(--neutral-400)" },
-      ...[
-        { n: ch.gmv, label: "GMV driven", source: "S1 · S2", value: this.money(ch.gmv), sub: "+15.2% vs June", subColor: "var(--lune-emerald)" },
-        { n: ch.tx, label: "Tracked transactions", source: "S1", value: this.num(ch.tx), sub: (ch.tx / ch.uniques).toFixed(1) + " per customer", subColor: "var(--neutral-400)" },
-        { n: ch.settledTx, label: "Transactions settled", source: "S1", value: this.num(ch.settledTx), sub: ((ch.settledTx / ch.tx) * 100).toFixed(1) + "% of tracked", subColor: "var(--neutral-400)" },
-        { n: ch.cb, label: "Cashback allocated", source: "S1", value: this.money(ch.cb), sub: this.money(ch.paid) + " paid · " + this.money(ch.held) + " held", subColor: "var(--neutral-400)" },
-        // Budget is consumed across all channels, so this card stays at the
-        // brand's total allocation regardless of the channel filter.
-        { n: Math.round((allocAll / committed) * 100), label: "Budget used", source: "S1 · S4", value: Math.round((allocAll / committed) * 100) + "%", sub: this.money(allocAll) + " of " + this.money(committed) + " committed", subColor: "var(--neutral-400)" },
-        { n: ch.gmv / ch.tx, label: "Avg transaction value", source: "S1 · S2", value: "£" + (ch.gmv / ch.tx).toFixed(2), sub: "+£1.80 vs June", subColor: "var(--lune-emerald)" },
-        { n: ch.cb / ch.newC, label: "CAC", source: "S1 · S2", value: "£" + (ch.cb / ch.newC).toFixed(2), sub: this.num(ch.newC) + " new customers acquired", subColor: "var(--neutral-400)" }
-      ].sort((a, b) => b.n - a.n)
+      { label: "Total GMV", value: this.money(T.gmv), sub: "Settled, qualifying-campaign spend" },
+      { label: "Transactions", value: this.num(T.tx), sub: this.num(T.rewarded) + " rewarded · " + this.num(T.tx - T.rewarded) + " rejected" },
+      { label: "ROI", value: (T.gmv / T.accrued).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" },
+      { label: "Cashback Accrued", value: this.money(T.accrued), sub: this.money(T.balance) + " balance after reversals" },
+      { label: "Customers", value: this.num(T.customers), sub: this.num(T.newC) + " new · " + this.num(T.retC) + " returning" },
+      { label: "Avg. Transaction Value", value: this.money(Math.round(T.gmv / T.tx)), sub: "Across all campaigns" }
     ];
 
-    // Customer-count funnel: unique customers at each stage, audience-level
-    // for the first three stages, per-channel from "transacted" down.
-    const stages = [
-      ["Audience reached", brand.reach, "var(--lune-ink)", "Audience sized at go-live"],
-      ["Viewed", brand.viewed, "var(--lune-teal)", null],
-      ["Activated", brand.activated, "var(--lune-teal-700)", null],
-      ["Customers who transacted", ch.uniques, "var(--lune-emerald)", null],
-      ["Customers with settled transactions", ch.settledC, "var(--lune-sea)", null],
-      ["Customers who have been settled", ch.paidC, "var(--lune-mint)", null]
-    ];
-    const stageNoun = ["", "of audience", "of viewed", "of activated", "of transacted", "of settled"];
-    const funnel = stages.map(([label, v, color, note], i) => ({
-      label, color,
-      value: this.num(v),
-      note: note || ((v / stages[i - 1][1]) * 100).toFixed(1) + "% " + stageNoun[i],
-      pct: Math.max(4, Math.round((v / stages[0][1]) * 100))
+    // ---- Performance-over-time chart (single axis; metric toggle) ----
+    const S = this.series();
+    const vals = S[this.state.metric];
+    const maxV = Math.max(...vals);
+    const niceStep = max => {
+      const mag = Math.pow(10, Math.floor(Math.log10(max / 4)));
+      for (const m of [1, 2, 2.5, 5, 10]) {
+        const step = m * mag;
+        if (Math.ceil(max / step) <= 5) return step;
+      }
+      return mag * 10;
+    };
+    const step = niceStep(maxV);
+    const divisions = Math.ceil(maxV / step);
+    const yMax = divisions * step;
+    const fmtTick = v => this.state.metric === "GMV"
+      ? (v >= 1000 ? "AED " + (v / 1000) + "k" : "AED " + v)
+      : this.num(v);
+    const W = 720, H = 240, padL = 8, padR = 8, top = 10, bottom = 26;
+    const plotW = W - padL - padR, plotH = H - top - bottom;
+    const px = i => padL + (i * plotW) / (vals.length - 1);
+    const py = v => top + plotH - (v / yMax) * plotH;
+    const pts = vals.map((v, i) => px(i).toFixed(1) + "," + py(v).toFixed(1));
+    const linePath = "M" + pts.join(" L");
+    const areaPath = linePath + " L" + px(vals.length - 1).toFixed(1) + "," + (top + plotH) + " L" + padL + "," + (top + plotH) + " Z";
+    const chartTicks = [];
+    for (let d = divisions; d >= 0; d--) {
+      chartTicks.push({ label: fmtTick(d * step), y: py(d * step).toFixed(1) });
+    }
+    const xLabels = S.labels.map((label, i) => ({
+      label: i % 2 === 0 ? label : "", x: px(i).toFixed(1)
     }));
-
-    const campMax = Math.max(...inView.map(x => x.s.gmv));
-    const campaigns = inView.map(({ c, s }) => {
-      // Budget is consumed across every channel the campaign runs in, so the
-      // budget column always shows the campaign's full allocation.
-      const alloc = Object.values(c.by).reduce((a, p) => a + p.cb, 0);
-      const pct = Math.round((alloc / c.budget) * 100);
-      return {
-        name: c.name, meta: c.meta, bank: c.bank,
-        gmv: this.money(s.gmv),
-        gmvPct: Math.round((s.gmv / campMax) * 78),
-        tx: this.num(s.tx),
-        cashback: this.money(s.cb),
-        roi: (s.gmv / s.cb).toFixed(1) + "×",
-        budgetPct: pct,
-        budgetColor: pct > 80 ? "var(--status-error)" : pct > 60 ? "var(--lune-emerald)" : "var(--lune-sea)",
-        budgetLabel: this.money(alloc) + " of " + this.money(c.budget) + " · " + pct + "%"
-      };
-    });
-
-    // TID mismatches are terminal-level, so they only exist in-store.
-    const reasonLabels = [
-      "Min spend not met", "Customer not activated", "Per-customer cap reached",
-      "Terminal (TID) unmatched", "Card BIN not eligible", "Outside target list",
-      "Offer budget exhausted"
-    ];
-    const reasonCounts = brand.reasons[this.state.channel];
-    const shownReasons = reasonLabels
-      .map((label, i) => ({ label, n: reasonCounts[i], i }))
-      .filter(r => r.n > 0);
-    const rMax = Math.max(...shownReasons.map(r => r.n));
-    const reasons = shownReasons.map(r => ({
-      label: r.label, count: this.num(r.n),
-      pct: Math.round((r.n / rMax) * 100),
-      color: r.i === 0 ? "var(--status-error)" : r.i < 3 ? "var(--cat-dining)" : "var(--neutral-300)"
-    }));
-
-    const txShown = brand.txLog
-      .filter(t => this.state.channel === "All channels" || t[4] === this.state.channel);
-    const transactions = txShown.map(([date, customer, amount, location, channel, status]) => ({
-      date, customer, location, channel, status,
-      amount: "£" + amount.toFixed(2),
-      statusBg: status === "Paid" ? "var(--status-success)" : "var(--status-warning)",
-      statusFg: status === "Paid" ? "var(--status-success-ink)" : "var(--status-warning-ink)"
+    const dots = vals.map((v, i) => ({
+      cx: px(i).toFixed(1), cy: py(v).toFixed(1),
+      tip: S.labels[i] + " · " + (this.state.metric === "GMV" ? this.money(v) : this.num(v) + " transactions")
     }));
 
     const mkToggle = (labels, current, key) => labels.map(label => ({
@@ -1014,34 +1003,146 @@ class Component extends DCLogic {
       pick: () => this.setState({ [key]: label })
     }));
 
-    const brandOptions = Object.entries(brands).map(([id, b]) => {
-      const active = id === this.state.brand;
+    // ---- Campaign table (search + status filter) ----
+    const q = this.state.q.trim().toLowerCase();
+    const rows = this.campaignData()
+      .filter(c => (this.state.status === "All" || c.status === this.state.status))
+      .filter(c => !q || c.name.toLowerCase().includes(q) || c.bank.toLowerCase().includes(q));
+    const campMax = Math.max(1, ...rows.map(c => c.gmv));
+    const campaigns = rows.map(c => {
+      const pct = Math.round((c.cb / c.budget) * 100);
       return {
-        name: b.name, initials: b.initials, color: b.color, meta: b.meta,
-        bg: active ? "rgba(16,163,127,0.18)" : "transparent",
-        check: active ? "✓" : "",
-        pick: () => this.setState({ brand: id, channel: "All channels", switcherOpen: false })
+        name: c.name,
+        meta: c.bank + " · " + c.channel + " · " + c.window,
+        status: c.status,
+        statusBg: c.status === "Active" ? "var(--status-success)" : "var(--neutral-100)",
+        statusFg: c.status === "Active" ? "var(--status-success-ink)" : "var(--neutral-500)",
+        gmv: this.money(c.gmv),
+        gmvPct: Math.round((c.gmv / campMax) * 76),
+        tx: this.num(c.tx),
+        roi: (c.gmv / c.cb).toFixed(1) + "×",
+        cashback: this.money(c.cb),
+        budgetPct: pct,
+        budgetColor: pct > 80 ? "var(--status-error)" : pct > 60 ? "var(--lune-emerald)" : "var(--lune-sea)",
+        budgetLabel: this.money(c.cb) + " of " + this.money(c.budget) + " · " + pct + "%"
       };
     });
 
+    // ---- Customer insights ----
+    const insightStats = [
+      { label: "Customers Reached", value: this.num(T.audience), sub: "Audience snapshot, frozen at go-live" },
+      { label: "Customers Who Transacted", value: this.num(T.transactedC), sub: ((T.transactedC / T.activated) * 100).toFixed(1) + "% of activated" },
+      { label: "New Customers", value: this.num(T.newC), sub: "First purchase in the period" },
+      { label: "Returning Customers", value: this.num(T.retC), sub: Math.round((T.retC / T.customers) * 100) + "% repeat purchase rate" },
+      { label: "Avg. Customer Value", value: this.money(Math.round(T.gmv / T.customers)), sub: "GMV per transacting customer" }
+    ];
+    const newAvg = T.newGmv / T.newTx;
+    const retPerCust = T.retGmv / T.retC;
+    const nvr = {
+      total: this.num(T.customers),
+      newPct: Math.round((T.newC / T.customers) * 100),
+      retPct: 100 - Math.round((T.newC / T.customers) * 100),
+      newCount: this.num(T.newC), retCount: this.num(T.retC),
+      insight: "Returning customers spend " + (retPerCust / newAvg).toFixed(1) + "× more over the period than a new customer's first purchase.",
+      cols: [
+        { title: "New Customers", gmv: this.money(T.newGmv), tx: this.num(T.newTx), avg: this.money(Math.round(newAvg)), freq: "1.0" },
+        { title: "Returning Customers", gmv: this.money(T.retGmv), tx: this.num(T.retTx), avg: this.money(Math.round(T.retGmv / T.retTx)), freq: (T.retTx / T.retC).toFixed(1) }
+      ]
+    };
+    const vdMax = Math.max(...this.valueDist().map(v => v.c));
+    const valueDist = this.valueDist().map(v => ({
+      label: v.label,
+      pct: Math.max(1, Math.round((v.c / vdMax) * 100)),
+      note: Math.round((v.c / T.customers) * 100) + "% of customers · " + this.money(v.gmv) + " (" + Math.round((v.gmv / T.gmv) * 100) + "% of GMV)"
+    }));
+    const frequency = this.frequency().map(f => ({
+      label: f.label,
+      pct: Math.max(1, Math.round((f.c / T.customers) * 100)),
+      note: Math.round((f.c / T.customers) * 100) + "% · " + this.num(f.c) + " customers"
+    }));
+    const repeatRate = Math.round((T.retC / T.customers) * 100);
+
+    // ---- Engagement funnel (unique customers; bars are % of previous) ----
+    const stages = [
+      ["Audience Reached", T.audience, "Snapshot at go-live, aggregated across campaigns"],
+      ["Viewed an Offer", T.viewed, null],
+      ["Activated", T.activated, null],
+      ["Transacted", T.transactedC, null],
+      ["Rewarded", T.rewardedC, null]
+    ];
+    let biggest = { lost: 0, from: "", to: "" };
+    const funnel = stages.map(([label, v, note], i) => {
+      const pctPrev = i === 0 ? 100 : Math.round((v / stages[i - 1][1]) * 100);
+      if (i > 0 && 100 - pctPrev > biggest.lost) {
+        biggest = { lost: 100 - pctPrev, from: stages[i - 1][0], to: label };
+      }
+      return {
+        label, value: this.num(v),
+        note: note || pctPrev + "% of previous",
+        pct: Math.max(2, pctPrev)
+      };
+    });
+
+    // ---- Rejections (decision log) + data quality ----
+    const rej = this.rejections();
+    const rejTotal = rej.reduce((a, r) => a + r.n, 0);
+    const rejMax = rej[0].n;
+    const reasons = rej.map(r => ({
+      label: r.label, code: r.code, tip: r.tip,
+      count: this.num(r.n),
+      share: Math.round((r.n / rejTotal) * 100) + "%",
+      pct: Math.max(2, Math.round((r.n / rejMax) * 100))
+    }));
+    const dq = this.dataQuality();
+    const dqTotal = dq.reduce((a, r) => a + r.n, 0);
+    const dataQuality = dq.map(r => ({ label: r.label, code: r.code, count: this.num(r.n) }));
+
+    // ---- Ledger ----
+    const ledger = [
+      { label: "Accrued", value: this.money(T.accrued), sub: "All cashback awarded" },
+      { label: "Reversed", value: "− " + this.money(T.reversed), sub: this.num(T.refundEvents) + " refunds · " + this.money(T.refundedValue) + " returned" },
+      { label: "Balance", value: this.money(T.balance), sub: "Accrued minus reversals" },
+      { label: "Payable Now", value: this.money(T.payable), sub: "Past the 30-day hold window" },
+      { label: "In Hold", value: this.money(T.hold), sub: "Inside the refund window" }
+    ];
+
+    // ---- Locations & channel ----
+    const locs = this.locations();
+    const locMax = locs[0].gmv;
+    const topLocations = locs.map((l, i) => ({
+      rank: i + 1, name: l.name,
+      note: this.money(l.gmv) + " · " + this.num(l.tx) + " transactions",
+      pct: Math.max(2, Math.round((l.gmv / locMax) * 100))
+    }));
+    const locationRows = locs.map(l => ({
+      name: l.name, tids: l.tids,
+      gmv: this.money(l.gmv), tx: this.num(l.tx),
+      aov: this.money(Math.round(l.gmv / l.tx)), cust: this.num(l.cust)
+    }));
+    const onG = 629765, onT = 2959, inG = T.gmv - onG, inT = T.tx - onT;
+    const channels = [
+      { metric: "GMV", online: this.money(onG), instore: this.money(inG) },
+      { metric: "Transactions", online: this.num(onT), instore: this.num(inT) },
+      { metric: "Customers", online: "2,158", instore: "2,084" },
+      { metric: "AOV", online: this.money(Math.round(onG / onT)), instore: this.money(Math.round(inG / inT)) },
+      { metric: "Repeat rate", online: "17%", instore: "19%" }
+    ];
+
     return {
-      merchantName: this.props.merchantName ?? "Nero Coffee Group",
-      freshness: this.props.freshnessLabel ?? "As of 1 Aug 2026, 06:00 UTC",
-      showRoiGate: this.props.showRoiGate ?? true,
-      brandName: brand.name,
-      brandInitials: brand.initials,
-      brandColor: brand.color,
-      brandOptions,
-      switcherOpen: this.state.switcherOpen,
-      switcherChevron: this.state.switcherOpen ? "▾" : "▴",
-      toggleSwitcher: () => this.setState({ switcherOpen: !this.state.switcherOpen }),
-      series, yTicks: ticks(gMax), yTicksCb: ticks(cMax), kpis, funnel, campaigns, reasons, transactions,
-      txTotal: this.num(ch.tx),
-      txRange: "1–" + transactions.length + " of " + this.num(ch.tx),
-      roi: (ch.gmv / ch.cb).toFixed(1) + "×",
-      roiDetail: this.money(ch.gmv) + " GMV ÷ " + this.money(ch.cb) + " cashback",
-      buckets: mkToggle(["Day", "Week", "Month"], this.state.bucket, "bucket"),
-      channels: mkToggle(brand.channels, this.state.channel, "channel")
+      kpis, campaigns, insightStats, nvr, valueDist, frequency, funnel, reasons, dataQuality, ledger,
+      topLocations, locationRows, channels,
+      repeatRate,
+      chartTicks, xLabels, dots, linePath, areaPath,
+      chartW: W, chartH: H,
+      dropoff: biggest.lost + "% lost",
+      dropoffNote: "between " + biggest.from + " → " + biggest.to,
+      rejTotal: this.num(rejTotal),
+      dqTotal: this.num(dqTotal),
+      campaignCount: campaigns.length,
+      metricToggle: mkToggle(["GMV", "Transactions"], this.state.metric, "metric"),
+      statusToggle: mkToggle(["All", "Active", "Completed"], this.state.status, "status"),
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      freshness: "As of 7 Sep 2026, 06:00 GST · nightly run"
     };
   }
 }
