@@ -768,7 +768,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 
         <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
           <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">Why Transactions Didn't Qualify</h3><button onClick="{{ noteFn.rejections }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
-          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ rejTotal }} settled transactions from activated customers were rejected by the cashback engine. First failing gate recorded, so counts are stable.</p>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ rejTotal }} settled transactions from activated customers at covered locations were rejected by the cashback engine. First failing gate recorded, so counts are stable.</p>
           <div style="display: flex; flex-direction: column; gap: 13px;">
             <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="8">
               <div>
@@ -909,7 +909,7 @@ class Component extends DCLogic {
       valueDist: { title: "Customer Value", why: "Where the money actually sits across the customer base. Directly informs minimum spend and per-customer cap settings: the levers in the campaign form.", market: "Customer-value banding is standard merchant analytics; Upside surfaces customer behavior distributions.", sources: [S.upsideDash] },
       frequency: { title: "Purchase Frequency", why: "Repeat behavior under the offer. With per-customer caps in the engine, this shows whether caps bind before habit forms.", market: "Repeat purchase rate is a standard loyalty metric across CLO and merchant analytics platforms.", sources: [S.openloyalty] },
       funnel: { title: "Engagement Funnel", why: "Unique customers at every stage, anchored on the audience snapshot frozen at go-live (the only defensible reach number). Activation is a stage because the engine contractually requires it before a customer can earn. Bars are share-of-previous so late stages stay readable.", market: "Amex and Chase offers are click-to-activate, so activation funnels are the bank-channel norm; nobody anchors theirs on an immutable go-live snapshot.", sources: [S.amex, S.erd1] },
-      rejections: { title: "Why Transactions Didn't Qualify", why: "Every row is a near-miss: an activated, in-audience customer who expected cashback and did not get it. It closes the rewarded-vs-transacted gap, maps each reason to a campaign setting the merchant controls, and deflects disputes (the engine doc calls rejections 'the support ticket'). Location rows count only this brand's own locations.", market: "A differentiator: Fidel records a rejection reason per non-qualified transaction but exposes it API-only to the program operator. No comparable merchant dashboard shows gate-level reasons.", sources: [S.fidel, S.erd2] },
+      rejections: { title: "Why Transactions Didn't Qualify", why: "Every row is a near-miss: an activated, in-audience customer paying at a covered location who expected cashback and did not get it. It closes the rewarded-vs-transacted gap, maps each reason to a campaign setting the merchant controls, and deflects disputes (the engine doc calls rejections 'the support ticket'). Only reasons the engine actually logs are shown; activation, audience and location codes never reach the log because the candidate query filters them first.", market: "A differentiator: Fidel records a rejection reason per non-qualified transaction but exposes it API-only to the program operator. No comparable merchant dashboard shows gate-level reasons.", sources: [S.fidel, S.erd2] },
       locations: { title: "Top Locations", why: "Performance by merchant location (MID) with its terminals (TIDs), matching how campaigns are actually configured: a MID list, optionally narrowed to terminals. This view is the natural consumer of the terminal data the contract collects.", market: "Upside compares promotion participation between locations; location tables are standard in merchant analytics.", sources: [S.upsideDash, S.erd1] },
       channel: { title: "Channel Behaviour", why: "In-store vs online, validated at ingestion (channel is a controlled value in the contract and can be null). Channel-level AOV and repeat rate show where the offer actually changes behavior.", market: "Cardlytics reports omni-channel performance, online and in-store, as a core capability.", sources: [S.cdlxMeasure, S.erd1] },
       reached: { title: "Customers Reached", why: "The audience snapshot, frozen at go-live and immutable: the only reach figure that can be audited later. Not impressions, not views.", market: "Comparables report reach as impressions, which drifts; the snapshot is stronger evidence.", sources: [S.erd1] },
@@ -954,19 +954,23 @@ class Component extends DCLogic {
     };
   }
 
-  // Decision-log rejection reasons: the engine's ten gates, fixed order,
-  // first failure recorded (ERD-2 D-1). Activation and audience are
-  // candidate-query conditions (D-17), so they never appear here.
+  // Decision-log rejection reasons: the engine's gates, fixed order, first
+  // failure recorded (ERD-2 D-1). Only reasons that can actually appear in
+  // the log are shown: the candidate query already filters to settled
+  // transactions at the campaign's MIDs from activated, in-audience
+  // customers, so activation, audience, settlement and location codes never
+  // produce a row (Dennis, 2026-09-09: the location row was removed as
+  // inaccurate; location coverage is a locations-module story, not a
+  // rejection).
   rejections() {
     return [
-      { code: "mid_mismatch", label: "Location not covered by the campaign", n: 121, tip: "The transaction happened at one of this brand's own locations the campaign doesn't include. Add the location, or leave it out deliberately. Only this brand's locations are counted here." },
-      { code: "below_minimum_spend", label: "Minimum spend not met", n: 94, tip: "Consider lowering the minimum spend threshold to make more baskets eligible." },
-      { code: "cap_reached", label: "Per-customer cashback cap reached", n: 52, tip: "Raise the per-customer cap if you want repeat customers to keep earning." },
-      { code: "bin_not_selected", label: "Card not eligible for the offer", n: 43, tip: "Check that the offer's selected card ranges cover the cards your customers actually use." },
-      { code: "tid_mismatch", label: "Terminal not configured for the campaign", n: 26, tip: "Check that all terminals at covered locations are linked to this campaign." },
-      { code: "offer_not_live", label: "Outside the campaign window", n: 15, tip: "Transactions dated before the start or after the end never qualify." },
-      { code: "tid_missing", label: "Terminal id missing on the transaction", n: 8, tip: "A feed issue, not a campaign issue: the bank sent no terminal id where the campaign requires one." },
-      { code: "budget_exhausted", label: "Campaign budget exhausted", n: 6, tip: "Top up the budget to keep rewarding eligible transactions." }
+      { code: "below_minimum_spend", label: "Minimum spend not met", n: 148, tip: "Consider lowering the minimum spend threshold to make more baskets eligible." },
+      { code: "cap_reached", label: "Per-customer cashback cap reached", n: 77, tip: "Raise the per-customer cap if you want repeat customers to keep earning." },
+      { code: "bin_not_selected", label: "Card not eligible for the offer", n: 68, tip: "The customer activated but paid with a card outside the offer's selected ranges. Check that the selected card ranges cover the cards your customers actually use." },
+      { code: "tid_mismatch", label: "Terminal not configured for the campaign", n: 34, tip: "The location is covered but this till isn't linked. Check that all terminals at covered locations are linked to this campaign." },
+      { code: "offer_not_live", label: "Outside the campaign window", n: 19, tip: "Transactions dated before the start or after the end never qualify." },
+      { code: "tid_missing", label: "Terminal id missing on the transaction", n: 12, tip: "A feed issue, not a campaign issue: the bank sent no terminal id where the campaign requires one." },
+      { code: "budget_exhausted", label: "Campaign budget exhausted", n: 7, tip: "Top up the budget to keep rewarding eligible transactions." }
     ];
   }
 
