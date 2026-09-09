@@ -557,6 +557,8 @@ code, pre, kbd { font-family: var(--font-mono); }
       </sc-for>
     </section>
 
+    <p style="margin: -12px 0 0; font-size: 12px; line-height: 1.5; color: var(--neutral-400);">{{ measurementNote }}</p>
+
     <section style="display: flex; flex-direction: column; gap: 6px;">
       <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Campaign Performance</h2>
       <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">GMV and transaction trends across the period, and how each campaign compares.</p>
@@ -651,8 +653,8 @@ code, pre, kbd { font-family: var(--font-mono); }
       <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Customer Insights</h2>
       <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Who this brand's campaigns are reaching and converting.</p>
 
-      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;">
-        <sc-for list="{{ insightStats }}" as="s" hint-placeholder-count="5">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
+        <sc-for list="{{ insightStats }}" as="s" hint-placeholder-count="6">
           <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
             <span style="font-size: 12.5px; font-weight: 500; color: var(--neutral-500);">{{ s.label }}</span>
             <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">{{ s.value }}</span>
@@ -739,7 +741,7 @@ code, pre, kbd { font-family: var(--font-mono); }
       <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 12px; align-items: start;">
         <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
           <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Engagement Funnel</h3>
-          <p style="margin: 3px 0 18px; font-size: 13px; color: var(--neutral-500);">Unique customers at each stage; each bar is the share of the stage before it.</p>
+          <p style="margin: 3px 0 18px; font-size: 13px; color: var(--neutral-500);">Unique customers at each stage; each bar is the share of the stage before it. Rewarded customers made at least one redemption.</p>
           <div style="display: flex; flex-direction: column; gap: 15px;">
             <sc-for list="{{ funnel }}" as="st" hint-placeholder-count="5">
               <div>
@@ -950,9 +952,9 @@ class Component extends DCLogic {
     const T = this.totals();
 
     const kpis = [
-      { label: "Total GMV", value: this.money(T.gmv), sub: "Settled, qualifying-campaign spend" },
+      { label: "Total GMV", value: this.money(T.gmv), sub: "+12.5% vs previous 90 days" },
       { label: "Transactions", value: this.num(T.tx), sub: this.num(T.rewarded) + " rewarded · " + this.num(T.tx - T.rewarded) + " rejected" },
-      { label: "ROI", value: (T.gmv / T.accrued).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" },
+      { label: "Campaign ROI (attributed)", value: (T.gmv / T.accrued).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" },
       { label: "Cashback Accrued", value: this.money(T.accrued), sub: this.money(T.balance) + " balance after reversals" },
       { label: "Customers", value: this.num(T.customers), sub: this.num(T.newC) + " new · " + this.num(T.retC) + " returning" },
       { label: "Avg. Transaction Value", value: this.money(Math.round(T.gmv / T.tx)), sub: "Across all campaigns" }
@@ -1034,6 +1036,7 @@ class Component extends DCLogic {
       { label: "Customers Who Transacted", value: this.num(T.transactedC), sub: ((T.transactedC / T.activated) * 100).toFixed(1) + "% of activated" },
       { label: "New Customers", value: this.num(T.newC), sub: "First purchase in the period" },
       { label: "Returning Customers", value: this.num(T.retC), sub: Math.round((T.retC / T.customers) * 100) + "% repeat purchase rate" },
+      { label: "Lapsed Customers", value: this.num(612), sub: "Transacted last period, not this one" },
       { label: "Avg. Customer Value", value: this.money(Math.round(T.gmv / T.customers)), sub: "GMV per transacting customer" }
     ];
     const newAvg = T.newGmv / T.newTx;
@@ -1142,6 +1145,7 @@ class Component extends DCLogic {
       metricToggle: mkToggle(["GMV", "Transactions"], this.state.metric, "metric"),
       statusToggle: mkToggle(["All", "Active", "Completed"], this.state.status, "status"),
       onSearch: (e) => this.setState({ q: e.target.value }),
+      measurementNote: "Measurement: every figure is attributed. A rewarded transaction (a redemption) is a verified card payment by a customer who activated the offer, at a covered location, from the settled feed. Control-group incrementality is on the roadmap.",
       freshness: "As of 7 Sep 2026, 06:00 GST · nightly run"
     };
   }
