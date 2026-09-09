@@ -770,10 +770,10 @@ code, pre, kbd { font-family: var(--font-mono); }
           <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">Why Transactions Didn't Qualify</h3><button onClick="{{ noteFn.rejections }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
           <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ rejTotal }} settled transactions from activated customers at covered locations were rejected by the cashback engine. First failing gate recorded, so counts are stable.</p>
           <div style="display: flex; flex-direction: column; gap: 13px;">
-            <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="8">
+            <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="7">
               <div>
-                <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 4px;">
-                  <span style="font-size: 13px; font-weight: 600;">{{ r.label }}</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px;">
+                  <span style="display: flex; align-items: center; gap: 7px; min-width: 0;"><span style="font-size: 13px; font-weight: 600;">{{ r.label }}</span><button onClick="{{ r.showNote }}" title="What this reason means exactly" style="display: {{ r.noteVis }}; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 9.5px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></span>
                   <span style="font-size: 12.5px; font-weight: 700; white-space: nowrap;">{{ r.count }} · {{ r.share }}</span>
                 </div>
                 <div style="height: 8px; border-radius: 3px; background: var(--neutral-50); overflow: hidden;">
@@ -784,7 +784,7 @@ code, pre, kbd { font-family: var(--font-mono); }
             </sc-for>
           </div>
           <div style="margin-top: 18px; padding: 12px 14px; border-radius: 10px; background: var(--neutral-25); border: 1px solid var(--neutral-100);">
-            <div style="font-size: 12.5px; font-weight: 600; margin-bottom: 6px;">Couldn't be assessed: {{ dqTotal }} transactions with incomplete bank data</div>
+            <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 6px;"><span style="font-size: 12.5px; font-weight: 600;">Couldn't be assessed: {{ dqTotal }} transactions with incomplete bank data</span><button onClick="{{ noteFn.dq }}" title="What this group means exactly" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 9.5px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
               <sc-for list="{{ dataQuality }}" as="d" hint-placeholder-count="3">
                 <span style="font-size: 12px; padding: 3px 10px; border-radius: 99px; background: #fff; border: 1px solid var(--neutral-100); color: var(--neutral-600);">{{ d.label }} · {{ d.count }}</span>
@@ -917,7 +917,15 @@ class Component extends DCLogic {
       newC: { title: "New Customers", why: "First purchase at this brand in the period: the acquisition half of the story, and the denominator for CAC when it is needed.", market: "New-customer acquisition is the headline claim of CLO closed-loop reporting.", sources: [S.openloyalty, S.cdlxMeasure] },
       retC: { title: "Returning Customers", why: "The retention half: repeat purchase rate lives here.", market: "Cardlytics and Upside both segment and report returning behavior.", sources: [S.cdlxMeasure, S.upsideDash] },
       lapsed: { title: "Lapsed Customers", why: "Transacted last period, absent this one: the re-engagement audience for the next campaign. Added after market validation.", market: "Taken directly from Cardlytics' segmentation (new, lapsed, heavy, omnichannel).", sources: [S.cdlxMeasure] },
-      avgValue: { title: "Avg. Customer Value", why: "GMV per transacting customer over the period: the value ceiling a per-customer cap trades against.", market: "Standard merchant analytics figure.", sources: [S.upsideDash] }
+      avgValue: { title: "Avg. Customer Value", why: "GMV per transacting customer over the period: the value ceiling a per-customer cap trades against.", market: "Standard merchant analytics figure.", sources: [S.upsideDash] },
+      r_below_minimum_spend: { title: "Minimum spend not met", why: "Engine gate 9: the transaction amount is below the campaign's minimum transaction value. Checked per transaction, never cumulatively (a customer cannot combine two baskets). Example: minimum spend AED 100, basket AED 85; the customer activated and paid at a covered location but earns nothing. The merchant owns the fix: lower the threshold or accept the loss.", market: "Fidel enforces the same rule as minTransactionAmount and records the identical rejection reason per transaction.", sources: [S.fidel, S.erd2] },
+      r_cap_reached: { title: "Per-customer cashback cap reached", why: "Engine gate 10: this customer's total cashback on this campaign has hit the per-customer cap. The transaction that crosses the line earns the remainder (clamped, marked limited_by cap); everything after it is rejected with this code. There is no earn-count limit, only this amount cap. The merchant owns the fix: raise the cap if repeat earners are wanted.", market: "Per-customer reward limits are standard CLO campaign controls (Fidel: maxRewardAmount).", sources: [S.fidel, S.erd2] },
+      r_bin_not_selected: { title: "Card not eligible for the offer", why: "Engine gate 6: the card's BIN (first 6 or 8 digits, exact match) is not in the card ranges the campaign was dispatched to. This is the known experience gap: a customer can see and activate an offer, then pay with a non-selected card and earn nothing. Missing BINs never match (fail closed), so paid cashback is never retroactively wrong. The fix sits with campaign card-range selection, agreed with the bank.", market: "Card-range targeting is the bank-channel norm; the trade-off (activation without earning) is accepted for MVP in the engine docs.", sources: [S.erd2, S.erd1] },
+      r_tid_mismatch: { title: "Terminal not configured for the campaign", why: "Engine gate 5: the location (MID) is covered, but the campaign lists specific terminals at it and this transaction's terminal id is not among them. Only fires when a campaign names terminals; a campaign with no terminal list matches the whole location. The merchant owns the fix: link the missing till to the campaign.", market: "Terminal-level narrowing below the merchant id is uncommon in comparable platforms; it exists here because campaigns can target specific tills.", sources: [S.erd1, S.erd2] },
+      r_offer_not_live: { title: "Outside the campaign window", why: "Engine gate 3: the transaction is dated before the start or after the end of the campaign. Dates compare day-level, so the first day, last day and activation day all qualify. In practice this bucket is mostly late-arriving transactions processed inside the 3-day re-run window. Informational; there is no fix beyond the window itself.", market: "Standard offer-window behavior across CLO platforms.", sources: [S.erd2] },
+      r_tid_missing: { title: "Terminal id missing on the transaction", why: "Engine gate 5: the campaign requires specific terminals, but the bank's feed sent no terminal id on this transaction, so it cannot be matched to a till. A feed-quality issue, not a campaign setting: the bank integration owns the fix. Kept separate from terminal mismatch because they are different conversations.", market: "The absent-vs-wrong distinction is deliberate in the engine so feed problems do not hide inside configuration problems.", sources: [S.erd2, S.erd1] },
+      r_budget_exhausted: { title: "Campaign budget exhausted", why: "Engine gate 10: the campaign's total accrued cashback has reached its committed budget. Transactions are processed in strict time order, the boundary transaction earns the remainder (marked limited_by budget), and everything after earns nothing, including for already-activated customers. Refund reversals restore budget, so a later transaction can earn again. The merchant owns the fix: top up the budget.", market: "Budget ceilings with first-come-first-served ordering are the standard CLO control.", sources: [S.erd2] },
+      dq: { title: "Couldn't be assessed (incomplete bank data)", why: "These transactions arrived from the bank missing a required field: the card BIN, the timestamp, or a valid currency. They ingest and appear in analytics but can never earn cashback, by design (fail closed, so money is never paid on unverifiable data). Per-field alerts fire on the bank side when this happens on a live campaign. The fix is always the bank's feed integration, never a campaign setting.", market: "A transparency differentiator: comparable platforms silently drop unmatchable transactions rather than showing merchants the gap.", sources: [S.erd1] }
     };
   }
 
@@ -1167,7 +1175,8 @@ class Component extends DCLogic {
       label: r.label, code: r.code, tip: r.tip,
       count: this.num(r.n),
       share: Math.round((r.n / rejTotal) * 100) + "%",
-      pct: Math.max(2, Math.round((r.n / rejMax) * 100))
+      pct: Math.max(2, Math.round((r.n / rejMax) * 100)),
+      showNote: showNote("r_" + r.code), noteVis
     }));
     const dq = this.dataQuality();
     const dqTotal = dq.reduce((a, r) => a + r.n, 0);
@@ -1221,7 +1230,8 @@ class Component extends DCLogic {
         chart: showNote("chart"), campaigns: showNote("campaigns"), ledger: showNote("ledger"),
         nvr: showNote("nvr"), valueDist: showNote("valueDist"), frequency: showNote("frequency"),
         funnel: showNote("funnel"), rejections: showNote("rejections"),
-        locations: showNote("locations"), channel: showNote("channel")
+        locations: showNote("locations"), channel: showNote("channel"),
+        dq: showNote("dq")
       },
       notesVis: noteVis,
       notesToggleLabel: this.state.notesOn ? "Design notes: on" : "Design notes: off",
