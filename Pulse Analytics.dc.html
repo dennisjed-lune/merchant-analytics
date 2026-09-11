@@ -604,7 +604,7 @@ code, pre, kbd { font-family: var(--font-mono); }
           <span style="font-size: 12px; color: var(--neutral-400);">{{ campaignCount }} shown</span>
         </div>
         <div style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr 16px; gap: 14px; padding: 16px 0 10px; border-bottom: 1px solid var(--neutral-100); font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
-          <span>Campaign</span><span>Status</span><span>GMV</span><span>Transactions</span><span>ROI</span><span>Cashback</span><span>Budget Used</span><span></span>
+          <span>Campaign</span><span>Status</span><span>GMV</span><span>Transactions</span><span style="display: flex; align-items: center; gap: 5px;">ROI<button onClick="{{ noteFn.campRoi }}" title="How campaign ROI is calculated" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 9px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none; text-transform: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></span><span>Cashback</span><span>Budget Used</span><span></span>
         </div>
         <sc-for list="{{ campaigns }}" as="c" hint-placeholder-count="6">
           <div onClick="{{ c.toggle }}" style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr 16px; gap: 14px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--neutral-50); cursor: pointer;" style-hover="background: var(--neutral-25);">
@@ -925,6 +925,7 @@ class Component extends DCLogic {
       r_offer_not_live: { title: "Outside the campaign window", why: "Engine gate 3: the transaction is dated before the start or after the end of the campaign. Dates compare day-level, so the first day, last day and activation day all qualify. In practice this bucket is mostly late-arriving transactions processed inside the 3-day re-run window. Informational; there is no fix beyond the window itself.", market: "Standard offer-window behavior across CLO platforms.", sources: [S.erd2] },
       r_tid_missing: { title: "Terminal id missing on the transaction", why: "Engine gate 5: the campaign requires specific terminals, but the bank's feed sent no terminal id on this transaction, so it cannot be matched to a till. A feed-quality issue, not a campaign setting: the bank integration owns the fix. Kept separate from terminal mismatch because they are different conversations.", market: "The absent-vs-wrong distinction is deliberate in the engine so feed problems do not hide inside configuration problems.", sources: [S.erd2, S.erd1] },
       r_budget_exhausted: { title: "Campaign budget exhausted", why: "Engine gate 10: the campaign's total accrued cashback has reached its committed budget. Transactions are processed in strict time order, the boundary transaction earns the remainder (marked limited_by budget), and everything after earns nothing, including for already-activated customers. Refund reversals restore budget, so a later transaction can earn again. The merchant owns the fix: top up the budget.", market: "Budget ceilings with first-come-first-served ordering are the standard CLO control.", sources: [S.erd2] },
+      campRoi: { title: "ROI per campaign (attributed)", why: "The decided formula applied per row: the campaign's GMV divided by the cashback it accrued (gross). Both inputs are columns on the same row, so every multiplier can be recomputed by eye: 331,200 / 33,115 = 10.0x. It uses gross accrued rather than net-of-reversals, matching the page KPI. When comparing rows, remember the offer rate drives the multiplier mechanically: a 5% offer yields roughly double the ROI of a 10% offer on the same spend, so ROI differences reflect the rate and clamping as much as campaign quality.", market: "Kard and Amex report per-offer sales and redemptions; per-offer ROAS is the industry's standard comparison unit.", sources: [S.kard, S.amex, S.erd2] },
       dq: { title: "Couldn't be assessed (incomplete bank data)", why: "These transactions arrived from the bank missing a required field: the card BIN, the timestamp, or a valid currency. They ingest and appear in analytics but can never earn cashback, by design (fail closed, so money is never paid on unverifiable data). Per-field alerts fire on the bank side when this happens on a live campaign. The fix is always the bank's feed integration, never a campaign setting.", market: "A transparency differentiator: comparable platforms silently drop unmatchable transactions rather than showing merchants the gap.", sources: [S.erd1] }
     };
   }
@@ -1048,6 +1049,7 @@ class Component extends DCLogic {
       newC: "Customers whose earliest qualifying transaction at this brand falls inside the period.",
       retC: "Transacting customers minus new customers.",
       dq: "COUNT of ingested transactions at this brand's outlets flagged contract-incomplete, grouped by missing field (card BIN, timestamp, currency). These rows exist in analytics but are barred from earning.",
+      campRoi: "Per row: campaign GMV (SUM of its candidate transaction amounts) divided by campaign cashback accrued (SUM of its accrual ledger entries). Same attributed basis as the page ROI; recompute it from the GMV and Cashback columns on the row.",
       r_below_minimum_spend: perGate("below_minimum_spend"),
       r_cap_reached: perGate("cap_reached"),
       r_bin_not_selected: perGate("bin_not_selected"),
@@ -1281,7 +1283,7 @@ class Component extends DCLogic {
         nvr: showNote("nvr"), valueDist: showNote("valueDist"), frequency: showNote("frequency"),
         funnel: showNote("funnel"), rejections: showNote("rejections"),
         locations: showNote("locations"), channel: showNote("channel"),
-        dq: showNote("dq")
+        dq: showNote("dq"), campRoi: showNote("campRoi")
       },
       notesVis: noteVis,
       notesToggleLabel: this.state.notesOn ? "Design notes: on" : "Design notes: off",
