@@ -861,6 +861,8 @@ code, pre, kbd { font-family: var(--font-mono); }
         <h3 style="margin: 10px 0 0; font-size: 16px; font-weight: 700;">{{ noteTitle }}</h3>
         <div style="margin-top: 12px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--neutral-400);">WHY IT IS HERE</div>
         <p style="margin: 5px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-600);">{{ noteWhy }}</p>
+        <div style="margin-top: 12px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--neutral-400);">HOW IT IS CALCULATED</div>
+        <p style="margin: 5px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-600);">{{ noteCalc }}</p>
         <div style="margin-top: 12px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--neutral-400);">WHO ELSE DOES THIS</div>
         <p style="margin: 5px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-600);">{{ noteMarket }}</p>
         <div style="margin-top: 12px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--neutral-400);">SOURCES</div>
@@ -916,7 +918,7 @@ class Component extends DCLogic {
       transactedC: { title: "Customers Who Transacted", why: "Unique customers with at least one qualifying settled transaction: the funnel's fourth stage, shown against activation to give the conversion that matters.", market: "Standard across CLO reporting.", sources: [S.openloyalty] },
       newC: { title: "New Customers", why: "First purchase at this brand in the period: the acquisition half of the story, and the denominator for CAC when it is needed.", market: "New-customer acquisition is the headline claim of CLO closed-loop reporting.", sources: [S.openloyalty, S.cdlxMeasure] },
       retC: { title: "Returning Customers", why: "The retention half: repeat purchase rate lives here.", market: "Cardlytics and Upside both segment and report returning behavior.", sources: [S.cdlxMeasure, S.upsideDash] },
-      lapsed: { title: "Lapsed Customers", why: "Transacted last period, absent this one: the re-engagement audience for the next campaign. Added after market validation.", market: "Taken directly from Cardlytics' segmentation (new, lapsed, heavy, omnichannel).", sources: [S.cdlxMeasure] },
+      lapsed: { title: "Lapsed Customers", why: "Customers with a qualifying transaction under this brand's campaigns in the previous period and none in the current one: a set difference over the cashback ledger, whose entries carry the customer, the campaign and the transaction time for exactly this kind of period reporting. Careful reading: lapsed from the program, not from the brand. A customer can lapse because a campaign ended or a new offer's frozen audience excluded them. Whether they still shop the brand outside campaigns is bank-side data Pulse does not see.", market: "Taken from Cardlytics' segmentation (new, lapsed, heavy, omnichannel); ours is auditable from the ledger rather than modelled.", sources: [S.cdlxMeasure, S.erd2] },
       avgValue: { title: "Avg. Customer Value", why: "GMV per transacting customer over the period: the value ceiling a per-customer cap trades against.", market: "Standard merchant analytics figure.", sources: [S.upsideDash] },
       r_below_minimum_spend: { title: "Minimum spend not met", why: "Engine gate 9: the transaction amount is below the campaign's minimum transaction value. Checked per transaction, never cumulatively (a customer cannot combine two baskets). Example: minimum spend AED 100, basket AED 85; the customer activated and paid at a covered outlet but earns nothing. The merchant owns the fix: lower the threshold or accept the loss.", market: "Fidel enforces the same rule as minTransactionAmount and records the identical rejection reason per transaction.", sources: [S.fidel, S.erd2] },
       r_cap_reached: { title: "Per-customer cashback cap reached", why: "Engine gate 10: this customer's total cashback on this campaign has hit the per-customer cap. The transaction that crosses the line earns the remainder (clamped, marked limited_by cap); everything after it is rejected with this code. There is no earn-count limit, only this amount cap. The merchant owns the fix: raise the cap if repeat earners are wanted.", market: "Per-customer reward limits are standard CLO campaign controls (Fidel: maxRewardAmount).", sources: [S.fidel, S.erd2] },
@@ -1016,6 +1018,46 @@ class Component extends DCLogic {
       { name: "Yas Mall, Abu Dhabi", tids: "TID-00921", gmv: 119010, tx: 561, cust: 410 },
       { name: "Dubai Mall", tids: "TID-00930", gmv: 89007, tx: 446, cust: 326 }
     ];
+  }
+
+  // How each figure is computed, in ERD terms. Rendered in the same design
+  // note popover. "Candidate transactions" = settled transactions from
+  // in-audience, activated customers at the campaign's outlets: the decision
+  // log holds one row per (campaign, transaction), rewarded or rejected.
+  calcs() {
+    const perGate = code => "COUNT of decision-log rows with gate code " + code + " for this brand's campaigns in the period. The log stores the values compared (expected vs actual), so every row can answer a dispute.";
+    return {
+      gmv: "SUM of transaction amounts over candidate transactions (decision-log rows, rewarded and rejected alike) for this brand's campaigns in the period. Amounts are minor units of the tenant currency.",
+      tx: "COUNT of decision-log rows for this brand's campaigns in the period. Keyed unique per (campaign, transaction); stacking means one card payment can count under two campaigns.",
+      roi: "Total GMV divided by Cashback Accrued, shown to one decimal as a multiplier. Both inputs are on this page, so the figure can be recomputed by hand.",
+      accrued: "SUM(amount_minor) over ledger entries of kind accrual for this brand's campaigns in the period. Balance adds the signed reversal entries.",
+      customers: "COUNT(DISTINCT customer_original_id) over the period's candidate transactions.",
+      atv: "Total GMV divided by Transactions.",
+      chart: "The same GMV and Transactions figures bucketed by week of occurred_at (falling back to the transaction date where the timestamp is absent).",
+      campaigns: "The page totals grouped by campaign (offer_dispatch_id). Budget used = the campaign's total accrued cashback divided by its committed budget; budget is cross-channel by definition.",
+      ledger: "Accrued = SUM(entries, kind accrual). Reversed = SUM(entries, kind reversal). Balance = SUM(all entries). Payable = balance of accruals whose hold_until has passed; In hold = balance minus payable. hold_until = occurred_at + refund window (30 days by default).",
+      nvr: "New = customers whose earliest qualifying transaction at this brand falls inside the period; Returning = the rest. Each segment's GMV, transactions and averages use the same partition, so the two columns sum to the page totals.",
+      valueDist: "Per-customer SUM of qualifying spend in the period, banded. Bands sum to total GMV and total customers exactly.",
+      frequency: "COUNT of qualifying transactions per customer in the period. Repeat purchase rate = customers with 2 or more divided by all transacting customers.",
+      funnel: "Reached = DISTINCT customers across the brand's audience snapshots (pulse_offer_audiences, written once at go-live). Viewed = DISTINCT customers in offer views. Activated = DISTINCT customers in offer activations. Transacted = DISTINCT customers in the decision log. Rewarded = DISTINCT customers with at least one accrual.",
+      rejections: "COUNT of decision-log rows with outcome rejected, grouped by gate code; only the first failing gate is recorded, so a transaction appears once and counts are stable across re-runs.",
+      locations: "Candidate transactions grouped by merchant_id (the outlet). Terminals are the terminal_id values seen at each outlet; AOV = outlet GMV divided by outlet transactions.",
+      channel: "Candidate transactions grouped by the validated channel field (in_store or online; a null channel is excluded from the split and would be reported separately).",
+      reached: "COUNT(DISTINCT customer_original_id) across the brand's audience snapshots. The snapshot is written once at go-live and never changes, so this figure is auditable later.",
+      lapsed: "DISTINCT customers with a qualifying transaction (ledger or decision log) at this brand in the previous period MINUS those with one in the current period. Decision-log retention (13 months proposed) bounds how far back the comparison can reach.",
+      avgValue: "Total GMV divided by unique transacting customers.",
+      transactedC: "COUNT(DISTINCT customer_original_id) in the decision log for the period.",
+      newC: "Customers whose earliest qualifying transaction at this brand falls inside the period.",
+      retC: "Transacting customers minus new customers.",
+      dq: "COUNT of ingested transactions at this brand's outlets flagged contract-incomplete, grouped by missing field (card BIN, timestamp, currency). These rows exist in analytics but are barred from earning.",
+      r_below_minimum_spend: perGate("below_minimum_spend"),
+      r_cap_reached: perGate("cap_reached"),
+      r_bin_not_selected: perGate("bin_not_selected"),
+      r_tid_mismatch: perGate("tid_mismatch"),
+      r_offer_not_live: perGate("offer_not_live"),
+      r_tid_missing: perGate("tid_missing"),
+      r_budget_exhausted: perGate("budget_exhausted")
+    };
   }
 
   money(n) {
@@ -1237,6 +1279,7 @@ class Component extends DCLogic {
       notesToggleLabel: this.state.notesOn ? "Design notes: on" : "Design notes: off",
       toggleNotes: () => this.setState({ notesOn: !this.state.notesOn, openNote: null }),
       noteOpen: !!this.state.openNote,
+      noteCalc: this.state.openNote ? (this.calcs()[this.state.openNote] || "See the ERDs linked below.") : "",
       noteTitle: this.state.openNote ? this.notes()[this.state.openNote].title : "",
       noteWhy: this.state.openNote ? this.notes()[this.state.openNote].why : "",
       noteMarket: this.state.openNote ? this.notes()[this.state.openNote].market : "",
