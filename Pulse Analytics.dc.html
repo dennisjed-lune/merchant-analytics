@@ -577,17 +577,12 @@ code, pre, kbd { font-family: var(--font-mono); }
             </sc-for>
           </div>
         </div>
-        <div style="display: flex; gap: 12px;">
-          <div style="display: flex; flex-direction: column; justify-content: space-between; height: 214px; text-align: right; flex: none; padding-bottom: 26px;">
+        <div>
+          <svg viewBox="0 0 720 240" style="width: 100%; height: auto; display: block;">
             <sc-for list="{{ chartTicks }}" as="t" hint-placeholder-count="6">
-              <span style="font-size: 11px; font-weight: 500; color: var(--neutral-400); line-height: 1;">{{ t.label }}</span>
+              <line x1="64" x2="712" y1="{{ t.y }}" y2="{{ t.y }}" stroke="var(--neutral-50)" stroke-width="1"></line>
+              <text x="56" y="{{ t.ty }}" text-anchor="end" font-size="11" font-family="inherit" fill="var(--neutral-400)">{{ t.label }}</text>
             </sc-for>
-          </div>
-          <div style="flex: 1; min-width: 0;">
-            <svg viewBox="0 0 720 240" style="width: 100%; height: auto; display: block;">
-              <sc-for list="{{ chartTicks }}" as="t" hint-placeholder-count="6">
-                <line x1="8" x2="712" y1="{{ t.y }}" y2="{{ t.y }}" stroke="var(--neutral-50)" stroke-width="1"></line>
-              </sc-for>
               <path d="{{ areaPath }}" fill="rgba(16,163,127,0.10)"></path>
               <path d="{{ linePath }}" fill="none" stroke="var(--lune-emerald)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
               <sc-for list="{{ dots }}" as="d" hint-placeholder-count="13">
@@ -596,8 +591,7 @@ code, pre, kbd { font-family: var(--font-mono); }
               <sc-for list="{{ xLabels }}" as="x" hint-placeholder-count="13">
                 <text x="{{ x.x }}" y="234" text-anchor="middle" font-size="11" font-family="inherit" fill="var(--neutral-400)">{{ x.label }}</text>
               </sc-for>
-            </svg>
-          </div>
+          </svg>
         </div>
       </div>
 
@@ -605,15 +599,15 @@ code, pre, kbd { font-family: var(--font-mono); }
         <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
           <div>
             <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">All Campaigns</h3><button onClick="{{ noteFn.campaigns }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
-            <p style="margin: 3px 0 0; font-size: 13px; color: var(--neutral-500);">Every live and completed campaign for this brand. Each campaign runs with a single bank partner.</p>
+            <p style="margin: 3px 0 0; font-size: 13px; color: var(--neutral-500);">Every live and completed campaign for this brand. Each campaign runs with a single bank partner. Click a row for its metrics.</p>
           </div>
           <span style="font-size: 12px; color: var(--neutral-400);">{{ campaignCount }} shown</span>
         </div>
-        <div style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr; gap: 14px; padding: 16px 0 10px; border-bottom: 1px solid var(--neutral-100); font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
-          <span>Campaign</span><span>Status</span><span>GMV</span><span>Transactions</span><span>ROI</span><span>Cashback</span><span>Budget Used</span>
+        <div style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr 16px; gap: 14px; padding: 16px 0 10px; border-bottom: 1px solid var(--neutral-100); font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
+          <span>Campaign</span><span>Status</span><span>GMV</span><span>Transactions</span><span>ROI</span><span>Cashback</span><span>Budget Used</span><span></span>
         </div>
         <sc-for list="{{ campaigns }}" as="c" hint-placeholder-count="6">
-          <div style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr; gap: 14px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--neutral-50);" style-hover="background: var(--neutral-25);">
+          <div onClick="{{ c.toggle }}" style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr 16px; gap: 14px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--neutral-50); cursor: pointer;" style-hover="background: var(--neutral-25);">
             <div>
               <div style="font-size: 14px; font-weight: 600;">{{ c.name }}</div>
               <div style="font-size: 12px; color: var(--neutral-400); margin-top: 2px;">{{ c.meta }}</div>
@@ -632,7 +626,22 @@ code, pre, kbd { font-family: var(--font-mono); }
               </div>
               <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 4px;">{{ c.budgetLabel }}</div>
             </div>
+            <span style="font-size: 12px; color: var(--neutral-400);">{{ c.caret }}</span>
           </div>
+          <sc-if value="{{ c.open }}" hint-placeholder-val="{{ false }}">
+            <div style="margin: 4px 0 12px; padding: 14px 16px; border: 1px solid var(--neutral-100); border-radius: 10px; background: var(--neutral-25);">
+              <div style="font-size: 12px; color: var(--neutral-500); margin-bottom: 12px;">{{ c.metaFull }}</div>
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;">
+                <sc-for list="{{ c.stats }}" as="cs" hint-placeholder-count="6">
+                  <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 8px; padding: 10px 12px;">
+                    <div style="font-size: 11px; font-weight: 500; color: var(--neutral-500);">{{ cs.label }}</div>
+                    <div style="font-size: 15px; font-weight: 700; margin-top: 3px;">{{ cs.value }}</div>
+                    <div style="font-size: 10.5px; color: var(--neutral-400); margin-top: 2px;">{{ cs.sub }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
         </sc-for>
       </div>
     </section>
@@ -868,7 +877,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;merchantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nero Coffee Group&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;freshnessLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;As of 1 Aug 2026, 06:00 UTC&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRoiGate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { metric: "GMV", status: "All", openNote: null, notesOn: true };
+  state = { metric: "GMV", status: "All", openCampaign: null, openNote: null, notesOn: true };
 
   // Design-notes layer: why each metric/module exists, market precedent,
   // sources. Toggleable; turn OFF for client-facing demos (never name
@@ -936,12 +945,12 @@ class Component extends DCLogic {
 
   campaignData() {
     return [
-      { name: "Summer Cashback", bank: "Emirates NBD", status: "Active", window: "ends 28 Sep", channel: "In-store", gmv: 331200, tx: 1380, cb: 33115, budget: 50000 },
-      { name: "Midyear Beauty Bonanza", bank: "ADIB", status: "Completed", window: "ended 12 Jul", channel: "All channels", gmv: 240260, tx: 1172, cb: 24604, budget: 26000 },
-      { name: "August Radiance Rewards", bank: "FAB", status: "Completed", window: "ended 31 Aug", channel: "In-store", gmv: 193140, tx: 1073, cb: 15023, budget: 20000 },
-      { name: "Skincare Refresh Week", bank: "Mashreq", status: "Active", window: "ends 21 Sep", channel: "Online", gmv: 172575, tx: 767, cb: 15345, budget: 22000 },
-      { name: "Beauty Flash Sale", bank: "RAKBANK", status: "Active", window: "ends 14 Sep", channel: "Online", gmv: 164910, tx: 717, cb: 20065, budget: 30000 },
-      { name: "June Glow Weekend", bank: "DIB", status: "Completed", window: "ended 28 Jun", channel: "In-store", gmv: 104940, tx: 636, cb: 15895, budget: 18000 }
+      { name: "Summer Cashback", bank: "Emirates NBD", status: "Active", window: "ends 28 Sep", channel: "In-store", gmv: 331200, tx: 1380, cb: 33115, budget: 50000, rejected: 98, reversed: 1140, payable: 18995, hold: 12980, customers: 1180 },
+      { name: "Midyear Beauty Bonanza", bank: "ADIB", status: "Completed", window: "ended 12 Jul", channel: "All channels", gmv: 240260, tx: 1172, cb: 24604, budget: 26000, rejected: 71, reversed: 590, payable: 24014, hold: 0, customers: 1004 },
+      { name: "August Radiance Rewards", bank: "FAB", status: "Completed", window: "ended 31 Aug", channel: "In-store", gmv: 193140, tx: 1073, cb: 15023, budget: 20000, rejected: 52, reversed: 380, payable: 14643, hold: 0, customers: 927 },
+      { name: "Skincare Refresh Week", bank: "Mashreq", status: "Active", window: "ends 21 Sep", channel: "Online", gmv: 172575, tx: 767, cb: 15345, budget: 22000, rejected: 61, reversed: 675, payable: 6980, hold: 7690, customers: 655 },
+      { name: "Beauty Flash Sale", bank: "RAKBANK", status: "Active", window: "ends 14 Sep", channel: "Online", gmv: 164910, tx: 717, cb: 20065, budget: 30000, rejected: 48, reversed: 872, payable: 8938, hold: 10255, customers: 612 },
+      { name: "June Glow Weekend", bank: "DIB", status: "Completed", window: "ended 28 Jun", channel: "In-store", gmv: 104940, tx: 636, cb: 15895, budget: 18000, rejected: 35, reversed: 255, payable: 15640, hold: 0, customers: 548 }
     ];
   }
 
@@ -1090,7 +1099,7 @@ class Component extends DCLogic {
     const fmtTick = v => this.state.metric === "GMV"
       ? (v >= 1000 ? "AED " + (v / 1000) + "k" : "AED " + v)
       : this.num(v);
-    const W = 720, H = 240, padL = 8, padR = 8, top = 10, bottom = 26;
+    const W = 720, H = 240, padL = 64, padR = 8, top = 10, bottom = 26;
     const plotW = W - padL - padR, plotH = H - top - bottom;
     const px = i => padL + (i * plotW) / (vals.length - 1);
     const py = v => top + plotH - (v / yMax) * plotH;
@@ -1099,7 +1108,7 @@ class Component extends DCLogic {
     const areaPath = linePath + " L" + px(vals.length - 1).toFixed(1) + "," + (top + plotH) + " L" + padL + "," + (top + plotH) + " Z";
     const chartTicks = [];
     for (let d = divisions; d >= 0; d--) {
-      chartTicks.push({ label: fmtTick(d * step), y: py(d * step).toFixed(1) });
+      chartTicks.push({ label: fmtTick(d * step), y: py(d * step).toFixed(1), ty: (py(d * step) + 3.5).toFixed(1) });
     }
     const xLabels = S.labels.map((label, i) => ({
       label: i % 2 === 0 ? label : "", x: px(i).toFixed(1)
@@ -1123,7 +1132,22 @@ class Component extends DCLogic {
     const campMax = Math.max(1, ...rows.map(c => c.gmv));
     const campaigns = rows.map(c => {
       const pct = Math.round((c.cb / c.budget) * 100);
+      const open = this.state.openCampaign === c.name;
+      const rewarded = c.tx - c.rejected;
+      const bal = c.cb - c.reversed;
       return {
+        open,
+        caret: open ? "\u25be" : "\u25b8",
+        toggle: () => this.setState({ openCampaign: open ? null : c.name }),
+        metaFull: c.bank + " \u00b7 " + c.channel + " \u00b7 " + c.window + " \u00b7 " + this.money(c.budget) + " committed budget",
+        stats: [
+          { label: "Rewarded (redemptions)", value: this.num(rewarded), sub: ((rewarded / c.tx) * 100).toFixed(1) + "% of transactions" },
+          { label: "Rejected", value: this.num(c.rejected), sub: "first failing gate recorded" },
+          { label: "Cashback Cost", value: this.money(bal), sub: this.money(c.cb) + " accrued \u2212 " + this.money(c.reversed) + " reversed" },
+          { label: "Payable / In Hold", value: this.money(c.payable) + " / " + this.money(c.hold), sub: c.status === "Completed" ? "refund window closed: all payable" : "hold inside the refund window" },
+          { label: "Effective Rate", value: ((c.cb / c.gmv) * 100).toFixed(1) + "%", sub: "cashback accrued \u00f7 GMV" },
+          { label: "Avg. Transaction", value: this.money(Math.round(c.gmv / c.tx)), sub: this.num(c.customers) + " unique customers" }
+        ],
         name: c.name,
         meta: c.bank + " · " + c.channel + " · " + c.window,
         status: c.status,
