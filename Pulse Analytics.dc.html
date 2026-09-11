@@ -656,23 +656,13 @@ code, pre, kbd { font-family: var(--font-mono); }
       <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Customer Insights</h2>
       <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Who this brand's campaigns are reaching and converting.</p>
 
-      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
-        <sc-for list="{{ insightStats }}" as="s" hint-placeholder-count="3">
-          <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
-            <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px;"><span style="font-size: 12.5px; font-weight: 500; color: var(--neutral-500);">{{ s.label }}</span><button onClick="{{ s.showNote }}" title="Why this metric is here" style="display: {{ s.noteVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></span>
-            <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">{{ s.value }}</span>
-            <span style="font-size: 11.5px; color: var(--neutral-400);">{{ s.sub }}</span>
-          </div>
-        </sc-for>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 12px; margin-top: 10px; align-items: start;">
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 12px; margin-top: 4px; align-items: start;">
         <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
-          <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">New vs. Returning Customers</h3><button onClick="{{ noteFn.nvr }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
+          <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">New vs. Returning Customers</h3><span style="font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: rgba(251,218,125,0.30); color: var(--status-warning-ink); flex: none;">Proposal · future analytics</span><button onClick="{{ noteFn.nvr }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
           <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ nvr.insight }}</p>
           <div style="display: flex; align-items: baseline; gap: 8px;">
             <span style="font-size: 28px; font-weight: 700; letter-spacing: -0.02em;">{{ nvr.total }}</span>
-            <span style="font-size: 13px; color: var(--neutral-500);">customers</span>
+            <span style="font-size: 13px; color: var(--neutral-500);">{{ nvr.totalSub }}</span>
           </div>
           <div style="display: flex; height: 12px; border-radius: 4px; overflow: hidden; margin: 12px 0 8px;">
             <div style="background: var(--lune-emerald); width: {{ nvr.newPct }}%;"></div>
@@ -901,13 +891,13 @@ class Component extends DCLogic {
       gmv: { title: "Total GMV", why: "The headline value figure: settled, campaign-qualifying spend. It is the only money metric fully observable in the transaction feed; merchant margin or revenue data does not exist in the contract, so GMV is the honest ceiling of what we can claim.", market: "Every comparable leads with driven spend: Cardlytics reports weekly impacted sales online and in-store; Amex Offers markets USD 24bn in driven spend; Kard reports attributed sales per offer.", sources: [S.cdlxMeasure, S.amex, S.kard] },
       tx: { title: "Transactions", why: "Volume, plus the integrity check: rewarded + rejected always equals this number, and the rejection panel accounts for the gap. A figure an analyst cannot reconcile is a figure they will not trust.", market: "Kard's standard reporting is redemptions by period; Amex gives merchants daily redemption counts.", sources: [S.kard, S.amex] },
       roi: { title: "Campaign ROI (attributed)", why: "GMV divided by cashback accrued, the decided formula: both sides come from the same ledger, so the multiplier is auditable on this page. Attributed means every dirham is a verified card payment by an activated customer at a covered outlet; it does not claim the counterfactual. Control-group incrementality is the roadmap item (hold out a slice of the go-live audience snapshot).", market: "Cardlytics markets 6:1 incremental ROAS measured by Nielsen test-vs-control; Upside charges only on modelled incremental profit; CLO market surveys cite 3x to 14x ROAS, so 9.7x sits inside the credible band.", sources: [S.cdlxRoas, S.upsideMeth, S.openloyalty] },
-      accrued: { title: "Cashback Accrued", why: "The true campaign cost, from the append-only ledger. Paid does not exist as a state: reversals subtract, balance is the sum, and payable is derived from the hold window.", market: "CLO platforms bill merchants monthly on actual redemptions; Fidel computes cashback per qualified transaction the same way.", sources: [S.fidel, S.openloyalty] },
+      accrued: { title: "Cashback Cost", why: "The net campaign cost with reversals already priced in: what the merchant is actually billed for. Gross accrued and the reversal split sit in the sub and in the Cashback Ledger below. ROI stays on gross accrued (the locked formula), which remains visible on the page so the multiplier can be recomputed by hand.", market: "CLO platforms bill merchants monthly on actual redemptions; Fidel computes cashback per qualified transaction the same way.", sources: [S.fidel, S.openloyalty] },
       customers: { title: "Customers", why: "Unique transacting customers, the same figure as the funnel's Transacted stage. The new vs returning split shows whether campaigns acquire or retain.", market: "Cardlytics targets and reports new, lapsed, heavy and omnichannel segments; Upside reports customer behavior by segment.", sources: [S.cdlxMeasure, S.upsideDash] },
       atv: { title: "Avg. Transaction Value", why: "Basket size: the fastest read on whether cashback shifts what customers spend per visit, and the input for setting minimum spend.", market: "Amex gives merchants average transaction size; Kard reports AOV as standard.", sources: [S.amex, S.kard] },
       chart: { title: "Performance Over Time", why: "One axis, one metric at a time. A dual-axis chart scaled to separate maxima makes cashback look as large as GMV; the toggle keeps every reading truthful.", market: "Single-metric toggles are the convention in merchant analytics (Square, Shopify, Stripe dashboards); Upside reports month-over-month by location.", sources: [S.upsideDash] },
       campaigns: { title: "All Campaigns", why: "Per-offer accountability: GMV, transactions, ROI, cashback and budget pacing per campaign, each with its single bank partner (a Pulse rule: one campaign, one bank). Budget is consumed across all channels, so it is never sliced by channel filters.", market: "Kard reports per-offer redemptions and sales; Amex provides post-campaign reports per offer.", sources: [S.kard, S.amex] },
-      ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and in hold. Figures never revise; reversals arrive as new entries. Hold equals the refund window, 30 days by default.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
-      nvr: { title: "New vs. Returning", why: "Acquisition vs retention economics: what each segment spends, how often, and the multiple between them. This is the number that justifies (or kills) a retention-flavored campaign.", market: "Closed-loop CLO reporting quantifies new customer acquisition and incremental spend per customer; Cardlytics segments explicitly.", sources: [S.openloyalty, S.cdlxMeasure] },
+      ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and in hold. Figures never revise; reversals arrive as new entries and only ever offset cashback still in hold: released cashback is never taken back. Hold equals the campaign's refund window, which is always preset on the campaign.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
+      nvr: { title: "New vs. Returning", why: "PROPOSAL, not yet buildable: the split needs each customer's first-ever qualifying transaction at the brand, which requires history since program start. Nothing in ERD-1 or ERD-2 computes it (reporting is ERD-3), at the pilot every customer is new, and it is program-new, never brand-new. Shown here to test whether the economics (what each segment spends and how often) justify the ERD-3 ask.", market: "Closed-loop CLO reporting quantifies new customer acquisition and incremental spend per customer; Cardlytics segments explicitly.", sources: [S.openloyalty, S.cdlxMeasure] },
       valueDist: { title: "Customer Value", why: "Where the money actually sits across the customer base. Directly informs minimum spend and per-customer cap settings: the levers in the campaign form.", market: "Customer-value banding is standard merchant analytics; Upside surfaces customer behavior distributions.", sources: [S.upsideDash] },
       frequency: { title: "Purchase Frequency", why: "Repeat behavior under the offer. With per-customer caps in the engine, this shows whether caps bind before habit forms.", market: "Repeat purchase rate is a standard loyalty metric across CLO and merchant analytics platforms.", sources: [S.openloyalty] },
       funnel: { title: "Engagement Funnel", why: "Unique customers at every stage, anchored on the audience snapshot frozen at go-live (the only defensible reach number). Activation is a stage because the engine contractually requires it before a customer can earn. Bars are share-of-previous so late stages stay readable.", market: "Amex and Chase offers are click-to-activate, so activation funnels are the bank-channel norm; nobody anchors theirs on an immutable go-live snapshot.", sources: [S.amex, S.erd1] },
@@ -1030,13 +1020,13 @@ class Component extends DCLogic {
       gmv: "SUM of transaction amounts over candidate transactions (decision-log rows, rewarded and rejected alike) for this brand's campaigns in the period. Amounts are minor units of the tenant currency.",
       tx: "COUNT of decision-log rows for this brand's campaigns in the period. Keyed unique per (campaign, transaction); stacking means one card payment can count under two campaigns.",
       roi: "Total GMV divided by Cashback Accrued, shown to one decimal as a multiplier. Both inputs are on this page, so the figure can be recomputed by hand.",
-      accrued: "SUM(amount_minor) over ledger entries of kind accrual for this brand's campaigns in the period. Balance adds the signed reversal entries.",
+      accrued: "SUM over ALL ledger entries (accruals plus signed reversals) for this brand's campaigns in the period: the net cost the merchant is billed on. Gross accrued = SUM of accrual entries only; both appear in the Cashback Ledger.",
       customers: "COUNT(DISTINCT customer_original_id) over the period's candidate transactions.",
       atv: "Total GMV divided by Transactions.",
       chart: "The same GMV and Transactions figures bucketed by week of occurred_at (falling back to the transaction date where the timestamp is absent).",
       campaigns: "The page totals grouped by campaign (offer_dispatch_id). Budget used = the campaign's total accrued cashback divided by its committed budget; budget is cross-channel by definition.",
-      ledger: "Accrued = SUM(entries, kind accrual). Reversed = SUM(entries, kind reversal). Balance = SUM(all entries). Payable = balance of accruals whose hold_until has passed; In hold = balance minus payable. hold_until = occurred_at + refund window (30 days by default).",
-      nvr: "New = customers whose earliest qualifying transaction at this brand falls inside the period; Returning = the rest. Each segment's GMV, transactions and averages use the same partition, so the two columns sum to the page totals.",
+      ledger: "Accrued = SUM(entries, kind accrual). Reversed = SUM(entries, kind reversal). Balance = SUM(all entries). Payable = balance of accruals whose hold_until has passed; In hold = balance minus payable. hold_until = occurred_at + the campaign's preset refund window. A reversal takes back the original award in proportion to the refunded share of the purchase (AED 41,270 of purchases were refunded this period, producing AED 3,912 of reversals), rounded on the residual and clamped to the award.",
+      nvr: "New = customers whose earliest qualifying transaction at this brand falls inside the period; Returning = the rest; segment GMV, transactions and averages use the same partition and sum to the page totals. Requires decision-log or ledger history since program start: an ERD-3 reporting ask, not built in ERD-1/2. Empty at the pilot, where every customer is new.",
       valueDist: "Per-customer SUM of qualifying spend in the period, banded. Bands sum to total GMV and total customers exactly.",
       frequency: "COUNT of qualifying transactions per customer in the period. Repeat purchase rate = customers with 2 or more divided by all transacting customers.",
       funnel: "Reached = DISTINCT customers across the brand's audience snapshots (pulse_offer_audiences, written once at go-live). Viewed = DISTINCT customers in offer views. Activated = DISTINCT customers in offer activations. Transacted = DISTINCT customers in the decision log. Rewarded = DISTINCT customers with at least one accrual.",
@@ -1078,8 +1068,8 @@ class Component extends DCLogic {
       withNote("gmv", { label: "Total GMV", value: this.money(T.gmv), sub: "+12.5% vs previous 90 days" }),
       withNote("tx", { label: "Transactions", value: this.num(T.tx), sub: this.num(T.rewarded) + " rewarded · " + this.num(T.tx - T.rewarded) + " rejected" }),
       withNote("roi", { label: "Campaign ROI (attributed)", value: (T.gmv / T.accrued).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" }),
-      withNote("accrued", { label: "Cashback Accrued", value: this.money(T.accrued), sub: this.money(T.balance) + " balance after reversals" }),
-      withNote("customers", { label: "Customers", value: this.num(T.customers), sub: this.num(T.newC) + " new · " + this.num(T.retC) + " returning" }),
+      withNote("accrued", { label: "Cashback Cost", value: this.money(T.balance), sub: this.money(T.accrued) + " accrued − " + this.money(T.reversed) + " reversed" }),
+      withNote("customers", { label: "Customers", value: this.num(T.customers), sub: ((T.customers / T.activated) * 100).toFixed(1) + "% of activated customers" }),
       withNote("atv", { label: "Avg. Transaction Value", value: this.money(Math.round(T.gmv / T.tx)), sub: "Across all campaigns" })
     ];
 
@@ -1154,18 +1144,15 @@ class Component extends DCLogic {
     });
 
     // ---- Customer insights ----
-    // Only figures no other module carries: transacted/new/returning live in
-    // the Customers KPI, the New vs. Returning module and the funnel; the
-    // repeat rate lives in Purchase Frequency.
-    const insightStats = [
-      withNote("reached", { label: "Customers Reached", value: this.num(T.audience), sub: "Audience snapshot, frozen at go-live" }),
-      withNote("lapsed", { label: "Lapsed Customers", value: this.num(612), sub: "Transacted last period, not this one" }),
-      withNote("avgValue", { label: "Avg. Customer Value", value: this.money(Math.round(T.gmv / T.customers)), sub: "GMV per transacting customer" })
-    ];
+    // No stat row here: reached lives in the funnel, transacted/new/returning
+    // in the Customers KPI and the module below, repeat rate in Purchase
+    // Frequency. Lapsed was cut (no producer in ERD-1/2; cold start; audience
+    // churn pollutes it).
     const newAvg = T.newGmv / T.newTx;
     const retPerCust = T.retGmv / T.retC;
     const nvr = {
       total: this.num(T.customers),
+      totalSub: "customers · " + this.money(Math.round(T.gmv / T.customers)) + " average value",
       newPct: Math.round((T.newC / T.customers) * 100),
       retPct: 100 - Math.round((T.newC / T.customers) * 100),
       newCount: this.num(T.newC), retCount: this.num(T.retC),
@@ -1227,9 +1214,9 @@ class Component extends DCLogic {
     // ---- Ledger ----
     const ledger = [
       { label: "Accrued", value: this.money(T.accrued), sub: "All cashback awarded" },
-      { label: "Reversed", value: "− " + this.money(T.reversed), sub: this.num(T.refundEvents) + " refunds · " + this.money(T.refundedValue) + " returned" },
+      { label: "Reversed", value: "− " + this.money(T.reversed), sub: "Cashback on " + this.num(T.refundEvents) + " refunded purchases" },
       { label: "Balance", value: this.money(T.balance), sub: "Accrued minus reversals" },
-      { label: "Payable Now", value: this.money(T.payable), sub: "Past the 30-day hold window" },
+      { label: "Payable Now", value: this.money(T.payable), sub: "Past the campaign's refund window" },
       { label: "In Hold", value: this.money(T.hold), sub: "Inside the refund window" }
     ];
 
@@ -1256,7 +1243,7 @@ class Component extends DCLogic {
     ];
 
     return {
-      kpis, campaigns, insightStats, nvr, valueDist, frequency, funnel, reasons, dataQuality, ledger,
+      kpis, campaigns, nvr, valueDist, frequency, funnel, reasons, dataQuality, ledger,
       topLocations, locationRows, channels,
       repeatRate,
       chartTicks, xLabels, dots, linePath, areaPath,
