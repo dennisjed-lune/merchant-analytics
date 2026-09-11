@@ -541,7 +541,6 @@ code, pre, kbd { font-family: var(--font-mono); }
     </header>
 
     <section style="display: flex; align-items: center; gap: 10px;">
-      <input onInput="{{ onSearch }}" placeholder="Search campaign or bank" style="height: 38px; width: 240px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); font-size: 13.5px; color: var(--lune-teal); outline: none;">
       <div style="display: flex; gap: 2px; padding: 3px; background: var(--neutral-50); border-radius: 8px;">
         <sc-for list="{{ statusToggle }}" as="s" hint-placeholder-count="3">
           <button onClick="{{ s.pick }}" style="height: 30px; padding: 0 14px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; background: {{ s.bg }}; color: {{ s.fg }}; box-shadow: {{ s.shadow }};">{{ s.label }}</button>
@@ -869,7 +868,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;merchantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nero Coffee Group&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;freshnessLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;As of 1 Aug 2026, 06:00 UTC&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRoiGate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { metric: "GMV", q: "", status: "All", openNote: null, notesOn: true };
+  state = { metric: "GMV", status: "All", openNote: null, notesOn: true };
 
   // Design-notes layer: why each metric/module exists, market precedent,
   // sources. Toggleable; turn OFF for client-facing demos (never name
@@ -1119,10 +1118,8 @@ class Component extends DCLogic {
     }));
 
     // ---- Campaign table (search + status filter) ----
-    const q = this.state.q.trim().toLowerCase();
     const rows = this.campaignData()
-      .filter(c => (this.state.status === "All" || c.status === this.state.status))
-      .filter(c => !q || c.name.toLowerCase().includes(q) || c.bank.toLowerCase().includes(q));
+      .filter(c => (this.state.status === "All" || c.status === this.state.status));
     const campMax = Math.max(1, ...rows.map(c => c.gmv));
     const campaigns = rows.map(c => {
       const pct = Math.round((c.cb / c.budget) * 100);
@@ -1272,7 +1269,6 @@ class Component extends DCLogic {
       noteMarket: this.state.openNote ? this.notes()[this.state.openNote].market : "",
       noteSources: this.state.openNote ? this.notes()[this.state.openNote].sources : [],
       closeNote: () => this.setState({ openNote: null }),
-      onSearch: (e) => this.setState({ q: e.target.value }),
       measurementNote: "Measurement: every figure is attributed. A rewarded transaction (a redemption) is a verified card payment by a customer who activated the offer, at a covered outlet, from the settled feed. Control-group incrementality is on the roadmap.",
       freshness: "As of 7 Sep 2026, 06:00 GST · nightly run"
     };
