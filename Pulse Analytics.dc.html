@@ -577,21 +577,23 @@ code, pre, kbd { font-family: var(--font-mono); }
             </sc-for>
           </div>
         </div>
-        <div>
+        <div style="position: relative;">
           <svg viewBox="0 0 720 240" style="width: 100%; height: auto; display: block;">
             <sc-for list="{{ chartTicks }}" as="t" hint-placeholder-count="6">
               <line x1="64" x2="712" y1="{{ t.y }}" y2="{{ t.y }}" stroke="var(--neutral-50)" stroke-width="1"></line>
-              <text x="56" y="{{ t.ty }}" text-anchor="end" font-size="11" font-family="inherit" fill="var(--neutral-400)">{{ t.label }}</text>
             </sc-for>
               <path d="{{ areaPath }}" fill="rgba(16,163,127,0.10)"></path>
               <path d="{{ linePath }}" fill="none" stroke="var(--lune-emerald)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
               <sc-for list="{{ dots }}" as="d" hint-placeholder-count="13">
                 <circle cx="{{ d.cx }}" cy="{{ d.cy }}" r="3.5" fill="#fff" stroke="var(--lune-emerald)" stroke-width="2"><title>{{ d.tip }}</title></circle>
               </sc-for>
-              <sc-for list="{{ xLabels }}" as="x" hint-placeholder-count="13">
-                <text x="{{ x.x }}" y="234" text-anchor="middle" font-size="11" font-family="inherit" fill="var(--neutral-400)">{{ x.label }}</text>
-              </sc-for>
           </svg>
+          <sc-for list="{{ chartTicks }}" as="t" hint-placeholder-count="6">
+            <span style="position: absolute; left: 7.2%; top: {{ t.pctY }}; transform: translate(-100%, -50%); font-size: 11px; font-weight: 500; color: var(--neutral-400); white-space: nowrap;">{{ t.label }}</span>
+          </sc-for>
+          <sc-for list="{{ xLabels }}" as="x" hint-placeholder-count="13">
+            <span style="position: absolute; left: {{ x.pctX }}; top: 91%; transform: translate(-50%, 0); font-size: 11px; font-weight: 500; color: var(--neutral-400); white-space: nowrap;">{{ x.label }}</span>
+          </sc-for>
         </div>
       </div>
 
@@ -604,7 +606,7 @@ code, pre, kbd { font-family: var(--font-mono); }
           <span style="font-size: 12px; color: var(--neutral-400);">{{ campaignCount }} shown</span>
         </div>
         <div style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr 16px; gap: 14px; padding: 16px 0 10px; border-bottom: 1px solid var(--neutral-100); font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
-          <span>Campaign</span><span>Status</span><span>GMV</span><span>Transactions</span><span style="display: flex; align-items: center; gap: 5px;">ROI<button onClick="{{ noteFn.campRoi }}" title="How campaign ROI is calculated" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 9px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none; text-transform: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></span><span>Cashback</span><span>Budget Used</span><span></span>
+          <span>Campaign</span><span>Status</span><span>GMV</span><span>Redemptions</span><span style="display: flex; align-items: center; gap: 5px;">ROI<button onClick="{{ noteFn.campRoi }}" title="How campaign ROI is calculated" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 9px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none; text-transform: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></span><span>Cashback</span><span>Budget Used</span><span></span>
         </div>
         <sc-for list="{{ campaigns }}" as="c" hint-placeholder-count="6">
           <div onClick="{{ c.toggle }}" style="display: grid; grid-template-columns: 1.7fr 0.8fr 1.1fr 0.8fr 0.6fr 0.9fr 1.2fr 16px; gap: 14px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--neutral-50); cursor: pointer;" style-hover="background: var(--neutral-25);">
@@ -766,7 +768,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 
         <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
           <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">Why Transactions Didn't Qualify</h3><button onClick="{{ noteFn.rejections }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
-          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ rejTotal }} settled transactions from activated customers at covered outlets were rejected by the cashback engine. First failing gate recorded, so counts are stable.</p>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ rejTotal }} attempted transactions worth {{ rejValue }}, from activated customers at covered outlets, were rejected by the cashback engine: on top of the rewarded totals, never inside them. First failing gate recorded, so counts are stable.</p>
           <div style="display: flex; flex-direction: column; gap: 13px;">
             <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="7">
               <div>
@@ -896,8 +898,8 @@ class Component extends DCLogic {
       erd2: { label: "ERD-2: The Engine (internal)", url: "https://docs.google.com/document/d/1uSzTy_6slzBqCrqt1tqdaFOwqndEkt6Y4H0Q3hnSnfI" }
     };
     return {
-      gmv: { title: "Total GMV", why: "The headline value figure: settled, campaign-qualifying spend. It is the only money metric fully observable in the transaction feed; merchant margin or revenue data does not exist in the contract, so GMV is the honest ceiling of what we can claim.", market: "Every comparable leads with driven spend: Cardlytics reports weekly impacted sales online and in-store; Amex Offers markets USD 24bn in driven spend; Kard reports attributed sales per offer.", sources: [S.cdlxMeasure, S.amex, S.kard] },
-      tx: { title: "Transactions", why: "Volume, plus the integrity check: rewarded + rejected always equals this number, and the rejection panel accounts for the gap. A figure an analyst cannot reconcile is a figure they will not trust.", market: "Kard's standard reporting is redemptions by period; Amex gives merchants daily redemption counts.", sources: [S.kard, S.amex] },
+      gmv: { title: "Total GMV", why: "The headline value figure: settled spend that earned cashback (rewarded basis). Rejected attempts are excluded so ROI is never credited with spend the campaign did not pay for; they are counted, with their value, in the rejection panel. Merchant margin or revenue data does not exist in the contract, so GMV is the honest ceiling of what we can claim.", market: "Every comparable leads with driven spend: Cardlytics reports weekly impacted sales online and in-store; Amex Offers markets USD 24bn in driven spend; Kard reports attributed sales per offer.", sources: [S.cdlxMeasure, S.amex, S.kard] },
+      tx: { title: "Redemptions", why: "Rewarded transactions only: each one is backed by a ledger accrual, matching the industry meaning of a redemption. Rejected attempts sit on top (redemptions + rejections = all decided attempts) and are itemised in the rejection panel, so the page still reconciles without mixing bases.", market: "Kard's standard reporting is redemptions by period; Amex gives merchants daily redemption counts.", sources: [S.kard, S.amex] },
       roi: { title: "Campaign ROI (attributed)", why: "GMV divided by cashback accrued, the decided formula: both sides come from the same ledger, so the multiplier is auditable on this page. Attributed means every dirham is a verified card payment by an activated customer at a covered outlet; it does not claim the counterfactual. Control-group incrementality is the roadmap item (hold out a slice of the go-live audience snapshot).", market: "This metric is structurally a ROAS (return on ad spend: attributed sales divided by marketing cost, here the cashback), not a profit-based ROI. Cardlytics markets 6:1 incremental ROAS measured by Nielsen test-vs-control; Upside charges only on modelled incremental profit; CLO market surveys cite 3x to 14x ROAS, so 9.7x sits inside the credible band.", sources: [S.cdlxRoas, S.upsideMeth, S.openloyalty] },
       accrued: { title: "Cashback Cost", why: "The net campaign cost with reversals already priced in: what the merchant is actually billed for. Gross accrued and the reversal split sit in the sub and in the Cashback Ledger below. ROI stays on gross accrued (the locked formula), which remains visible on the page so the multiplier can be recomputed by hand.", market: "CLO platforms bill merchants monthly on actual redemptions; Fidel computes cashback per qualified transaction the same way.", sources: [S.fidel, S.openloyalty] },
       customers: { title: "Customers", why: "Unique transacting customers, the same figure as the funnel's Transacted stage. The new vs returning split shows whether campaigns acquire or retain.", market: "Cardlytics targets and reports new, lapsed, heavy and omnichannel segments; Upside reports customer behavior by segment.", sources: [S.cdlxMeasure, S.upsideDash] },
@@ -936,7 +938,7 @@ class Component extends DCLogic {
   // payable (derived, past hold), decision-log gate codes, audience snapshot.
   totals() {
     return {
-      gmv: 1207025, tx: 5745, rewarded: 5380, customers: 4195,
+      gmv: 1207025, tx: 5745, rejected: 365, rejectedValue: 54720, customers: 4195,
       accrued: 124047, reversed: 3912, balance: 120135, payable: 89210, hold: 30925,
       newC: 3418, retC: 777, newGmv: 735000, retGmv: 472025, newTx: 3418, retTx: 2327,
       refundEvents: 214, refundedValue: 41270,
@@ -1026,12 +1028,12 @@ class Component extends DCLogic {
   calcs() {
     const perGate = code => "COUNT of decision-log rows with gate code " + code + " for this brand's campaigns in the period. The log stores the values compared (expected vs actual), so every row can answer a dispute.";
     return {
-      gmv: "SUM of transaction amounts over candidate transactions (decision-log rows, rewarded and rejected alike) for this brand's campaigns in the period. Amounts are minor units of the tenant currency.",
-      tx: "COUNT of decision-log rows for this brand's campaigns in the period. Keyed unique per (campaign, transaction); stacking means one card payment can count under two campaigns.",
+      gmv: "SUM of transaction amounts over REWARDED transactions (decision-log rows with an accrual) for this brand's campaigns in the period. Rejected attempts are excluded. Amounts are minor units of the tenant currency.",
+      tx: "COUNT of decision-log rows with outcome rewarded for this brand's campaigns in the period. Keyed unique per (campaign, transaction); stacking means one card payment can count under two campaigns.",
       roi: "Total GMV divided by Cashback Accrued, shown to one decimal as a multiplier. Both inputs are on this page, so the figure can be recomputed by hand.",
       accrued: "SUM over ALL ledger entries (accruals plus signed reversals) for this brand's campaigns in the period: the net cost the merchant is billed on. Gross accrued = SUM of accrual entries only; both appear in the Cashback Ledger.",
       customers: "COUNT(DISTINCT customer_original_id) over the period's candidate transactions.",
-      atv: "Total GMV divided by Transactions.",
+      atv: "Total GMV divided by Redemptions.",
       chart: "The same GMV and Transactions figures bucketed by week of occurred_at (falling back to the transaction date where the timestamp is absent).",
       campaigns: "The page totals grouped by campaign (offer_dispatch_id). Budget used = the campaign's total accrued cashback divided by its committed budget; budget is cross-channel by definition.",
       ledger: "Accrued = SUM(entries, kind accrual). Reversed = SUM(entries, kind reversal). Balance = SUM(all entries). Payable = balance of accruals whose hold_until has passed; In hold = balance minus payable. hold_until = occurred_at + the campaign's preset refund window. A reversal takes back the original award in proportion to the refunded share of the purchase (AED 41,270 of purchases were refunded this period, producing AED 3,912 of reversals), rounded on the residual and clamped to the award.",
@@ -1039,7 +1041,7 @@ class Component extends DCLogic {
       valueDist: "Per-customer SUM of qualifying spend in the period, banded. Bands sum to total GMV and total customers exactly.",
       frequency: "COUNT of qualifying transactions per customer in the period. Repeat purchase rate = customers with 2 or more divided by all transacting customers.",
       funnel: "Reached = DISTINCT customers across the brand's audience snapshots (pulse_offer_audiences, written once at go-live). Viewed = DISTINCT customers in offer views. Activated = DISTINCT customers in offer activations. Transacted = DISTINCT customers in the decision log. Rewarded = DISTINCT customers with at least one accrual.",
-      rejections: "COUNT of decision-log rows with outcome rejected, grouped by gate code; only the first failing gate is recorded, so a transaction appears once and counts are stable across re-runs.",
+      rejections: "COUNT of decision-log rows with outcome rejected, grouped by gate code, ON TOP of the rewarded totals (redemptions + rejections = all decided attempts). Only the first failing gate is recorded, so a transaction appears once and counts are stable across re-runs.",
       locations: "Candidate transactions grouped by merchant_id (the outlet). Terminals are the terminal_id values seen at each outlet; AOV = outlet GMV divided by outlet transactions.",
       channel: "Candidate transactions grouped by the validated channel field (in_store or online; a null channel is excluded from the split and would be reported separately).",
       reached: "COUNT(DISTINCT customer_original_id) across the brand's audience snapshots. The snapshot is written once at go-live and never changes, so this figure is auditable later.",
@@ -1076,7 +1078,7 @@ class Component extends DCLogic {
 
     const kpis = [
       withNote("gmv", { label: "Total GMV", value: this.money(T.gmv), sub: "+12.5% vs previous 90 days" }),
-      withNote("tx", { label: "Transactions", value: this.num(T.tx), sub: this.num(T.rewarded) + " rewarded · " + this.num(T.tx - T.rewarded) + " rejected" }),
+      withNote("tx", { label: "Redemptions", value: this.num(T.tx), sub: this.num(T.rejected) + " attempted transactions were rejected" }),
       withNote("roi", { label: "Campaign ROI (attributed)", value: (T.gmv / T.accrued).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" }),
       withNote("accrued", { label: "Cashback Cost", value: this.money(T.balance), sub: this.money(T.accrued) + " accrued − " + this.money(T.reversed) + " reversed" }),
       withNote("customers", { label: "Customers", value: this.num(T.customers), sub: ((T.customers / T.activated) * 100).toFixed(1) + "% of activated customers" }),
@@ -1110,10 +1112,10 @@ class Component extends DCLogic {
     const areaPath = linePath + " L" + px(vals.length - 1).toFixed(1) + "," + (top + plotH) + " L" + padL + "," + (top + plotH) + " Z";
     const chartTicks = [];
     for (let d = divisions; d >= 0; d--) {
-      chartTicks.push({ label: fmtTick(d * step), y: py(d * step).toFixed(1), ty: (py(d * step) + 3.5).toFixed(1) });
+      chartTicks.push({ label: fmtTick(d * step), y: py(d * step).toFixed(1), pctY: ((py(d * step) / H) * 100).toFixed(2) + "%" });
     }
     const xLabels = S.labels.map((label, i) => ({
-      label: i % 2 === 0 ? label : "", x: px(i).toFixed(1)
+      label: i % 2 === 0 ? label : "", pctX: ((px(i) / W) * 100).toFixed(2) + "%"
     }));
     const dots = vals.map((v, i) => ({
       cx: px(i).toFixed(1), cy: py(v).toFixed(1),
@@ -1135,7 +1137,7 @@ class Component extends DCLogic {
     const campaigns = rows.map(c => {
       const pct = Math.round((c.cb / c.budget) * 100);
       const open = this.state.openCampaign === c.name;
-      const rewarded = c.tx - c.rejected;
+      const attempts = c.tx + c.rejected;
       const bal = c.cb - c.reversed;
       return {
         open,
@@ -1143,11 +1145,10 @@ class Component extends DCLogic {
         toggle: () => this.setState({ openCampaign: open ? null : c.name }),
         metaFull: c.bank + " \u00b7 " + c.channel + " \u00b7 " + c.window + " \u00b7 " + this.money(c.budget) + " committed budget",
         stats: [
-          { label: "Rewarded (redemptions)", value: this.num(rewarded), sub: ((rewarded / c.tx) * 100).toFixed(1) + "% of transactions" },
+          { label: "Redemptions", value: this.num(c.tx), sub: ((c.tx / attempts) * 100).toFixed(1) + "% of " + this.num(attempts) + " attempts" },
           { label: "Rejected", value: this.num(c.rejected), sub: "first failing gate recorded" },
           { label: "Cashback Cost", value: this.money(bal), sub: this.money(c.cb) + " accrued \u2212 " + this.money(c.reversed) + " reversed" },
           { label: "Payable / In Hold", value: this.money(c.payable) + " / " + this.money(c.hold), sub: c.status === "Completed" ? "refund window closed: all payable" : "hold inside the refund window" },
-          { label: "Effective Rate", value: ((c.cb / c.gmv) * 100).toFixed(1) + "%", sub: "cashback accrued \u00f7 GMV" },
           { label: "Avg. Transaction", value: this.money(Math.round(c.gmv / c.tx)), sub: this.num(c.customers) + " unique customers" }
         ],
         name: c.name,
@@ -1274,6 +1275,7 @@ class Component extends DCLogic {
       dropoff: biggest.lost + "% lost",
       dropoffNote: "between " + biggest.from + " → " + biggest.to,
       rejTotal: this.num(rejTotal),
+      rejValue: this.money(T.rejectedValue),
       dqTotal: this.num(dqTotal),
       campaignCount: campaigns.length,
       metricToggle: mkToggle(["GMV", "Transactions"], this.state.metric, "metric"),
@@ -1295,7 +1297,7 @@ class Component extends DCLogic {
       noteMarket: this.state.openNote ? this.notes()[this.state.openNote].market : "",
       noteSources: this.state.openNote ? this.notes()[this.state.openNote].sources : [],
       closeNote: () => this.setState({ openNote: null }),
-      measurementNote: "Measurement: every figure is attributed. A rewarded transaction (a redemption) is a verified card payment by a customer who activated the offer, at a covered outlet, from the settled feed. Control-group incrementality is on the roadmap.",
+      measurementNote: "Measurement: every figure is attributed and rewarded-basis. GMV, redemptions and ROI count only transactions that earned cashback: a verified card payment by an activated customer at a covered outlet, from the settled feed. Rejected attempts are excluded and accounted for separately in the rejection panel. Control-group incrementality is on the roadmap.",
       freshness: "As of 7 Sep 2026, 06:00 GST · nightly run"
     };
   }
