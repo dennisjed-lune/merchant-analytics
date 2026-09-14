@@ -651,8 +651,8 @@ code, pre, kbd { font-family: var(--font-mono); }
     <section style="display: flex; flex-direction: column; gap: 6px;">
       <div style="display: flex; align-items: center; gap: 8px;"><h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Cashback Ledger</h2><button onClick="{{ noteFn.ledger }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
       <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Append-only: every figure is a ledger entry, payable is derived from the hold window, and reversals are apportioned on the refunded share.</p>
-      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;">
-        <sc-for list="{{ ledger }}" as="l" hint-placeholder-count="5">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
+        <sc-for list="{{ ledger }}" as="l" hint-placeholder-count="3">
           <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
             <span style="font-size: 12.5px; font-weight: 500; color: var(--neutral-500);">{{ l.label }}</span>
             <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">{{ l.value }}</span>
@@ -906,7 +906,7 @@ class Component extends DCLogic {
       atv: { title: "Avg. Transaction Value", why: "Basket size: the fastest read on whether cashback shifts what customers spend per visit, and the input for setting minimum spend.", market: "Amex gives merchants average transaction size; Kard reports AOV as standard.", sources: [S.amex, S.kard] },
       chart: { title: "Performance Over Time", why: "One axis, one metric at a time. A dual-axis chart scaled to separate maxima makes cashback look as large as GMV; the toggle keeps every reading truthful.", market: "Single-metric toggles are the convention in merchant analytics (Square, Shopify, Stripe dashboards); Upside reports month-over-month by location.", sources: [S.upsideDash] },
       campaigns: { title: "All Campaigns", why: "Per-offer accountability: GMV, transactions, ROI, cashback and budget pacing per campaign, each with its single bank partner (a Pulse rule: one campaign, one bank). Budget is consumed across all channels, so it is never sliced by channel filters.", market: "Kard reports per-offer redemptions and sales; Amex provides post-campaign reports per offer.", sources: [S.kard, S.amex] },
-      ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and in hold. Figures never revise; reversals arrive as new entries and only ever offset cashback still in hold: released cashback is never taken back. Hold equals the campaign's refund window, which is always preset on the campaign.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
+      ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and on hold. Figures never revise; reversals arrive as new entries and only ever offset cashback still in hold: released cashback is never taken back. Hold equals the campaign's refund window, which is always preset on the campaign.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
       nvr: { title: "New vs. Returning", why: "PROPOSAL, not yet buildable: the split needs each customer's first-ever qualifying transaction at the brand, which requires history since program start. Nothing in ERD-1 or ERD-2 computes it (reporting is ERD-3), at the pilot every customer is new, and it is program-new, never brand-new. Shown here to test whether the economics (what each segment spends and how often) justify the ERD-3 ask.", market: "Closed-loop CLO reporting quantifies new customer acquisition and incremental spend per customer; Cardlytics segments explicitly.", sources: [S.openloyalty, S.cdlxMeasure] },
       valueDist: { title: "Customer Value", why: "Where the money actually sits across the customer base. Directly informs minimum spend and per-customer cap settings: the levers in the campaign form.", market: "Customer-value banding is standard merchant analytics; Upside surfaces customer behavior distributions.", sources: [S.upsideDash] },
       frequency: { title: "Purchase Frequency", why: "Repeat behavior under the offer. With per-customer caps in the engine, this shows whether caps bind before habit forms.", market: "Repeat purchase rate is a standard loyalty metric across CLO and merchant analytics platforms.", sources: [S.openloyalty] },
@@ -1036,7 +1036,7 @@ class Component extends DCLogic {
       atv: "Total GMV divided by Redemptions.",
       chart: "The same GMV and Transactions figures bucketed by week of occurred_at (falling back to the transaction date where the timestamp is absent).",
       campaigns: "The page totals grouped by campaign (offer_dispatch_id). Budget used = the campaign's total accrued cashback divided by its committed budget; budget is cross-channel by definition.",
-      ledger: "Accrued = SUM(entries, kind accrual). Reversed = SUM(entries, kind reversal). Balance = SUM(all entries). Payable = balance of accruals whose hold_until has passed; In hold = balance minus payable. hold_until = occurred_at + the campaign's preset refund window. A reversal takes back the original award in proportion to the refunded share of the purchase (AED 41,270 of purchases were refunded this period, producing AED 3,912 of reversals), rounded on the residual and clamped to the award.",
+      ledger: "Accrued = SUM(entries, kind accrual). Reversed = SUM(entries, kind reversal). Balance = SUM(all entries). Payable = balance of accruals whose hold_until has passed; On hold = balance minus payable. hold_until = occurred_at + the campaign's preset refund window. A reversal takes back the original award in proportion to the refunded share of the purchase (AED 41,270 of purchases were refunded this period, producing AED 3,912 of reversals), rounded on the residual and clamped to the award.",
       nvr: "New = customers whose earliest qualifying transaction at this brand falls inside the period; Returning = the rest; segment GMV, transactions and averages use the same partition and sum to the page totals. Requires decision-log or ledger history since program start: an ERD-3 reporting ask, not built in ERD-1/2. Empty at the pilot, where every customer is new.",
       valueDist: "Per-customer SUM of qualifying spend in the period, banded. Bands sum to total GMV and total customers exactly.",
       frequency: "COUNT of qualifying transactions per customer in the period. Repeat purchase rate = customers with 2 or more divided by all transacting customers.",
@@ -1148,7 +1148,7 @@ class Component extends DCLogic {
           { label: "Redemptions", value: this.num(c.tx), sub: ((c.tx / attempts) * 100).toFixed(1) + "% of " + this.num(attempts) + " attempts" },
           { label: "Rejected", value: this.num(c.rejected), sub: "first failing gate recorded" },
           { label: "Cashback Cost", value: this.money(bal), sub: this.money(c.cb) + " accrued \u2212 " + this.money(c.reversed) + " reversed" },
-          { label: "Payable / In Hold", value: this.money(c.payable) + " / " + this.money(c.hold), sub: c.status === "Completed" ? "refund window closed: all payable" : "hold inside the refund window" },
+          { label: "Payable / On Hold", value: this.money(c.payable) + " / " + this.money(c.hold), sub: c.status === "Completed" ? "refund window closed: all payable" : "on hold inside the refund window" },
           { label: "Avg. Transaction", value: this.money(Math.round(c.gmv / c.tx)), sub: this.num(c.customers) + " unique customers" }
         ],
         name: c.name,
@@ -1237,11 +1237,9 @@ class Component extends DCLogic {
 
     // ---- Ledger ----
     const ledger = [
-      { label: "Accrued", value: this.money(T.accrued), sub: "All cashback awarded" },
-      { label: "Reversed", value: "− " + this.money(T.reversed), sub: "Cashback on " + this.num(T.refundEvents) + " refunded purchases" },
-      { label: "Balance", value: this.money(T.balance), sub: "Accrued minus reversals" },
+      { label: "Balance", value: this.money(T.balance), sub: this.money(T.accrued) + " accrued − " + this.money(T.reversed) + " reversed (" + this.num(T.refundEvents) + " refunds)" },
       { label: "Payable Now", value: this.money(T.payable), sub: "Past the campaign's refund window" },
-      { label: "In Hold", value: this.money(T.hold), sub: "Inside the refund window" }
+      { label: "On Hold", value: this.money(T.hold), sub: "Inside the refund window" }
     ];
 
     // ---- Locations & channel ----
