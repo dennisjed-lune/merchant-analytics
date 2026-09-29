@@ -546,11 +546,27 @@ code, pre, kbd { font-family: var(--font-mono); }
           <button onClick="{{ s.pick }}" style="height: 30px; padding: 0 14px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; background: {{ s.bg }}; color: {{ s.fg }}; box-shadow: {{ s.shadow }};">{{ s.label }}</button>
         </sc-for>
       </div>
-      <div style="display: flex; gap: 2px; padding: 3px; background: var(--neutral-50); border-radius: 8px; margin-left: auto;">
-        <sc-for list="{{ periodToggle }}" as="pd" hint-placeholder-count="3">
-          <button onClick="{{ pd.pick }}" style="height: 30px; padding: 0 14px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; background: {{ pd.bg }}; color: {{ pd.fg }}; box-shadow: {{ pd.shadow }};">{{ pd.label }}</button>
-        </sc-for>
+      <div style="position: relative;">
+        <button onClick="{{ toggleCampaignFilter }}" style="height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--lune-teal); cursor: pointer; display: flex; align-items: center; gap: 8px;" style-hover="border-color: var(--neutral-300);">{{ campaignFilterLabel }}<span style="font-size: 10px; color: var(--neutral-400);">{{ campaignFilterChevron }}</span></button>
+        <sc-if value="{{ campaignFilterOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; top: calc(100% + 6px); left: 0; width: 300px; background: #fff; border: 1px solid var(--neutral-200); border-radius: 12px; padding: 6px; box-shadow: 0 16px 40px rgba(7,3,18,0.14); z-index: 40;">
+            <div onClick="{{ selectAllCampaigns }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; border-bottom: 1px solid var(--neutral-50);" style-hover="background: var(--neutral-25);">
+              <span style="font-size: 13px; font-weight: 600;">All campaigns</span>
+              <span style="margin-left: auto; font-size: 12px; font-weight: 700; color: var(--lune-emerald);">{{ allChecked }}</span>
+            </div>
+            <sc-for list="{{ campaignOptions }}" as="co" hint-placeholder-count="6">
+              <div onClick="{{ co.pick }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer;" style-hover="background: var(--neutral-25);">
+                <span style="width: 16px; height: 16px; border-radius: 4px; border: 1px solid {{ co.boxBorder }}; background: {{ co.boxBg }}; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex: none;">{{ co.checked }}</span>
+                <span style="min-width: 0;">
+                  <span style="display: block; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ co.name }}</span>
+                  <span style="display: block; font-size: 11px; color: var(--neutral-400);">{{ co.sub }}</span>
+                </span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
       </div>
+      <span style="margin-left: auto; font-size: 13px; font-weight: 600; color: var(--neutral-600); padding: 8px 14px; border: 1px solid var(--neutral-200); border-radius: 8px; background: #fff;">Last 90 days</span>
     </section>
 
     <section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
@@ -604,7 +620,7 @@ code, pre, kbd { font-family: var(--font-mono); }
       <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px; margin-top: 10px;">
         <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
           <div>
-            <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">All Campaigns</h3><button onClick="{{ noteFn.campaigns }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
+            <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">Campaigns</h3><button onClick="{{ noteFn.campaigns }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
             <p style="margin: 3px 0 0; font-size: 13px; color: var(--neutral-500);">Every live and completed campaign for this brand. Each campaign runs with a single bank partner. Click a row for its metrics.</p>
           </div>
           <span style="font-size: 12px; color: var(--neutral-400);">{{ campaignCount }} shown</span>
@@ -654,7 +670,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 
     <section style="display: flex; flex-direction: column; gap: 6px;">
       <div style="display: flex; align-items: center; gap: 8px;"><h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Cashback Ledger</h2><button onClick="{{ noteFn.ledger }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
-      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Append-only: every figure is a ledger entry, payable is derived from the hold window, and reversals are apportioned on the refunded share. This is the position as of the latest nightly run; the period filter does not apply here.</p>
+      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Append-only: every figure is a ledger entry, payable is derived from the hold window, and reversals are apportioned on the refunded share. This is the position as of the latest nightly run.</p>
       <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
         <sc-for list="{{ ledger }}" as="l" hint-placeholder-count="3">
           <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
@@ -670,38 +686,10 @@ code, pre, kbd { font-family: var(--font-mono); }
       <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Customer Insights</h2>
       <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Who this brand's campaigns are reaching and converting.</p>
 
-      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 12px; margin-top: 4px; align-items: start;">
-        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
-          <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">New vs. Returning Customers</h3><span style="font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: rgba(251,218,125,0.30); color: var(--status-warning-ink); flex: none;">Proposal · future analytics</span><button onClick="{{ noteFn.nvr }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
-          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ nvr.insight }}</p>
-          <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 28px; font-weight: 700; letter-spacing: -0.02em;">{{ nvr.total }}</span>
-            <span style="font-size: 13px; color: var(--neutral-500);">{{ nvr.totalSub }}</span>
-          </div>
-          <div style="display: flex; height: 12px; border-radius: 4px; overflow: hidden; margin: 12px 0 8px;">
-            <div style="background: var(--lune-emerald); width: {{ nvr.newPct }}%;"></div>
-            <div style="background: var(--lune-mint); width: {{ nvr.retPct }}%;"></div>
-          </div>
-          <div style="display: flex; gap: 16px; font-size: 12.5px; color: var(--neutral-600); margin-bottom: 16px;">
-            <span style="display: flex; align-items: center; gap: 6px;"><i style="width: 9px; height: 9px; border-radius: 2px; background: var(--lune-emerald); display: block;"></i>New {{ nvr.newPct }}% ({{ nvr.newCount }})</span>
-            <span style="display: flex; align-items: center; gap: 6px;"><i style="width: 9px; height: 9px; border-radius: 2px; background: var(--lune-mint); display: block;"></i>Returning {{ nvr.retPct }}% ({{ nvr.retCount }})</span>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <sc-for list="{{ nvr.cols }}" as="col" hint-placeholder-count="2">
-              <div style="border: 1px solid var(--neutral-100); border-radius: 10px; padding: 12px;">
-                <div style="font-size: 12.5px; font-weight: 600; margin-bottom: 8px;">{{ col.title }}</div>
-                <div style="display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0;"><span style="color: var(--neutral-500);">GMV</span><span style="font-weight: 600;">{{ col.gmv }}</span></div>
-                <div style="display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0;"><span style="color: var(--neutral-500);">Transactions</span><span style="font-weight: 600;">{{ col.tx }}</span></div>
-                <div style="display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0;"><span style="color: var(--neutral-500);">Avg. spend / tx</span><span style="font-weight: 600;">{{ col.avg }}</span></div>
-                <div style="display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0;"><span style="color: var(--neutral-500);">Purchases / customer</span><span style="font-weight: 600;">{{ col.freq }}</span></div>
-              </div>
-            </sc-for>
-          </div>
-        </div>
-
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 4px; align-items: start;">
         <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
           <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">Customer Value</h3><button onClick="{{ noteFn.valueDist }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
-          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">How much customers spend, in total, across all campaigns.</p>
+          <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ valueDistSub }}</p>
           <div style="display: flex; flex-direction: column; gap: 13px;">
             <sc-for list="{{ valueDist }}" as="v" hint-placeholder-count="5">
               <div>
@@ -883,7 +871,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;merchantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nero Coffee Group&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;freshnessLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;As of 1 Aug 2026, 06:00 UTC&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRoiGate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { metric: "GMV", status: "All", period: "Last 90 days", openCampaign: null, openNote: null, notesOn: true };
+  state = { metric: "GMV", status: "All", period: "Last 90 days", selected: null, filterOpen: false, openCampaign: null, openNote: null, notesOn: true };
 
   // Design-notes layer: why each metric/module exists, market precedent,
   // sources. Toggleable; turn OFF for client-facing demos (never name
@@ -910,7 +898,7 @@ class Component extends DCLogic {
       atv: { title: "Avg. Transaction Value", why: "Basket size: the fastest read on whether cashback shifts what customers spend per visit, and the input for setting minimum spend.", market: "Amex gives merchants average transaction size; Kard reports AOV as standard.", sources: [S.amex, S.kard] },
       chart: { title: "Performance Over Time", why: "One axis, one metric at a time. A dual-axis chart scaled to separate maxima makes cashback look as large as GMV; the toggle keeps every reading truthful.", market: "Single-metric toggles are the convention in merchant analytics (Square, Shopify, Stripe dashboards); Upside reports month-over-month by location.", sources: [S.upsideDash] },
       campaigns: { title: "All Campaigns", why: "Per-offer accountability: GMV, transactions, ROI, cashback and budget pacing per campaign, each with its single bank partner (a Pulse rule: one campaign, one bank). Budget is consumed across all channels, so it is never sliced by channel filters.", market: "Kard reports per-offer redemptions and sales; Amex provides post-campaign reports per offer.", sources: [S.kard, S.amex] },
-      ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and on hold. Figures never revise; reversals arrive as new entries and only ever offset cashback still in hold: released cashback is never taken back. Hold equals the campaign's refund window, which is always preset on the campaign. The period filter does not apply here: the ledger is a position as of the latest run, not a flow.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
+      ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and on hold. Figures never revise; reversals arrive as new entries and only ever offset cashback still in hold: released cashback is never taken back. Hold equals the campaign's refund window, which is always preset on the campaign. The ledger is a position as of the latest run, not a period flow.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
       nvr: { title: "New vs. Returning", why: "PROPOSAL, not yet buildable: the split needs each customer's first-ever qualifying transaction at the brand, which requires history since program start. Nothing in ERD-1 or ERD-2 computes it (reporting is ERD-3), at the pilot every customer is new, and it is program-new, never brand-new. Shown here to test whether the economics (what each segment spends and how often) justify the ERD-3 ask.", market: "Closed-loop CLO reporting quantifies new customer acquisition and incremental spend per customer; Cardlytics segments explicitly.", sources: [S.openloyalty, S.cdlxMeasure] },
       valueDist: { title: "Customer Value", why: "Where the money actually sits across the customer base. Directly informs minimum spend and per-customer cap settings: the levers in the campaign form.", market: "Customer-value banding is standard merchant analytics; Upside surfaces customer behavior distributions.", sources: [S.upsideDash] },
       frequency: { title: "Purchase Frequency", why: "Repeat behavior under the offer. With per-customer caps in the engine, this shows whether caps bind before habit forms.", market: "Repeat purchase rate is a standard loyalty metric across CLO and merchant analytics platforms.", sources: [S.openloyalty] },
@@ -950,10 +938,10 @@ class Component extends DCLogic {
     };
   }
 
-  // ===== Period datasets. Every flow figure comes from the selected period
-  // and cross-foots within it: campaign slices sum to the totals, new +
-  // returning = customers, distributions sum to GMV and customers, series
-  // sum to GMV and redemptions.
+  // ===== Period datasets. The page-level period filter was built and then
+  // removed (Dennis, 2026-09-29): per-campaign visibility answered the need.
+  // The reporting period is fixed at Last 90 days; the 7/30-day datasets are
+  // retained, fully cross-footed, in case the filter is ever revived.
   periods() {
     return {
       "Last 7 days": {
@@ -1021,39 +1009,39 @@ class Component extends DCLogic {
   campaignData() {
     return [
       { name: "Summer Cashback", bank: "Emirates NBD", status: "Active", channel: "In-store", budget: 50000,
-        daysText: "21 days left", endingSoon: false, cbLife: 33115, payable: 18995, hold: 12980, customers: 1180,
+        daysText: "21 days left", endingSoon: false, cbLife: 33115, reversed: 1140, payable: 18995, hold: 12980, customers: 1180,
         periods: {
           "Last 90 days": { gmv: 331200, tx: 1380, cb: 33115, rejected: 72 },
           "Last 30 days": { gmv: 118400, tx: 495, cb: 11830, rejected: 33 },
           "Last 7 days": { gmv: 29600, tx: 124, cb: 2960, rejected: 10 }
         } },
       { name: "Midyear Beauty Bonanza", bank: "ADIB", status: "Completed", channel: "All channels", budget: 26000,
-        daysText: "ended 57 days ago", endingSoon: false, cbLife: 24604, payable: 24014, hold: 0, customers: 1004,
+        daysText: "ended 57 days ago", endingSoon: false, cbLife: 24604, reversed: 590, payable: 24014, hold: 0, customers: 1004,
         periods: {
           "Last 90 days": { gmv: 240260, tx: 1172, cb: 24604, rejected: 64 }
         } },
       { name: "August Radiance Rewards", bank: "FAB", status: "Completed", channel: "In-store", budget: 20000,
-        daysText: "ended 7 days ago", endingSoon: false, cbLife: 15023, payable: 14643, hold: 0, customers: 927,
+        daysText: "ended 7 days ago", endingSoon: false, cbLife: 15023, reversed: 380, payable: 14643, hold: 0, customers: 927,
         periods: {
           "Last 90 days": { gmv: 193140, tx: 1073, cb: 15023, rejected: 36 },
           "Last 30 days": { gmv: 41900, tx: 232, cb: 3260, rejected: 11 }
         } },
       { name: "Skincare Refresh Week", bank: "Mashreq", status: "Active", channel: "Online", budget: 22000,
-        daysText: "14 days left", endingSoon: false, cbLife: 15345, payable: 6980, hold: 7690, customers: 655,
+        daysText: "14 days left", endingSoon: false, cbLife: 15345, reversed: 675, payable: 6980, hold: 7690, customers: 655,
         periods: {
           "Last 90 days": { gmv: 172575, tx: 767, cb: 15345, rejected: 59 },
           "Last 30 days": { gmv: 64300, tx: 287, cb: 5720, rejected: 21 },
           "Last 7 days": { gmv: 15800, tx: 71, cb: 1405, rejected: 8 }
         } },
       { name: "Beauty Flash Sale", bank: "RAKBANK", status: "Active", channel: "Online", budget: 30000,
-        daysText: "7 days left", endingSoon: true, cbLife: 20065, payable: 8938, hold: 10255, customers: 612,
+        daysText: "7 days left", endingSoon: true, cbLife: 20065, reversed: 872, payable: 8938, hold: 10255, customers: 612,
         periods: {
           "Last 90 days": { gmv: 164910, tx: 717, cb: 20065, rejected: 47 },
           "Last 30 days": { gmv: 60210, tx: 262, cb: 7320, rejected: 19 },
           "Last 7 days": { gmv: 15100, tx: 66, cb: 1835, rejected: 7 }
         } },
       { name: "June Glow Weekend", bank: "DIB", status: "Completed", channel: "In-store", budget: 18000,
-        daysText: "ended 71 days ago", endingSoon: false, cbLife: 15895, payable: 15640, hold: 0, customers: 548,
+        daysText: "ended 71 days ago", endingSoon: false, cbLife: 15895, reversed: 255, payable: 15640, hold: 0, customers: 548,
         periods: {
           "Last 90 days": { gmv: 104940, tx: 636, cb: 15895, rejected: 22 }
         } }
@@ -1112,22 +1100,44 @@ class Component extends DCLogic {
   renderVals() {
     const T = this.totals();
     const P = this.periods()[this.state.period];
+    const ALL = this.campaignData();
+    const allNames = ALL.map(c => c.name);
+    const sel = this.state.selected; // null = all campaigns
+    const isSel = c => !sel || sel.indexOf(c.name) >= 0;
+    const selCount = sel ? sel.length : allNames.length;
+    const subset = !!sel;
+    // Aggregate the selected campaigns' 90-day slices for the top cards.
+    const chosen = ALL.filter(isSel);
+    const agg = chosen.reduce((a, c) => {
+      const s = c.periods["Last 90 days"];
+      return { gmv: a.gmv + s.gmv, tx: a.tx + s.tx, cb: a.cb + s.cb, rejected: a.rejected + s.rejected,
+               rev: a.rev + c.reversed, customers: a.customers + c.customers };
+    }, { gmv: 0, tx: 0, cb: 0, rejected: 0, rev: 0, customers: 0 });
+    const K = subset ? agg : { gmv: P.gmv, tx: P.tx, cb: P.accrued, rejected: P.rejected, rev: P.reversed, customers: P.customers };
     const showNote = id => () => this.setState({ openNote: id });
     const noteVis = this.state.notesOn ? "inline-flex" : "none";
     const withNote = (id, o) => Object.assign(o, { showNote: showNote(id), noteVis });
 
     const kpis = [
-      withNote("gmv", { label: "Total GMV", value: this.money(P.gmv), sub: P.gmvDelta }),
-      withNote("tx", { label: "Redemptions", value: this.num(P.tx), sub: this.num(P.rejected) + " attempted transactions were rejected" }),
-      withNote("roi", { label: "Campaign ROI (attributed)", value: (P.gmv / P.accrued).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" }),
-      withNote("accrued", { label: "Cashback Cost", value: this.money(P.accrued - P.reversed), sub: this.money(P.accrued) + " accrued − " + this.money(P.reversed) + " reversed" }),
-      withNote("customers", { label: "Customers", value: this.num(P.customers), sub: ((P.customers / T.activated) * 100).toFixed(1) + "% of activated customers" }),
-      withNote("atv", { label: "Avg. Transaction Value", value: this.money(Math.round(P.gmv / P.tx)), sub: "Across all campaigns" })
+      withNote("gmv", { label: "Total GMV", value: this.money(K.gmv), sub: subset ? selCount + " of " + allNames.length + " campaigns selected" : P.gmvDelta }),
+      withNote("tx", { label: "Redemptions", value: this.num(K.tx), sub: this.num(K.rejected) + " attempted transactions were rejected" }),
+      withNote("roi", { label: "Campaign ROI (attributed)", value: (K.gmv / K.cb).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" }),
+      withNote("accrued", { label: "Cashback Cost", value: this.money(K.cb - K.rev), sub: this.money(K.cb) + " accrued − " + this.money(K.rev) + " reversed" }),
+      withNote("customers", { label: "Customers", value: this.num(K.customers), sub: subset && selCount > 1 ? "Across selected campaigns" : ((K.customers / T.activated) * 100).toFixed(1) + "% of activated customers" }),
+      withNote("atv", { label: "Avg. Transaction Value", value: this.money(Math.round(K.gmv / K.tx)), sub: subset ? "Across selected campaigns" : "Across all campaigns" })
     ];
 
-    // ---- Performance-over-time chart (single axis; metric toggle) ----
+    // ---- Performance-over-time chart (single axis; metric toggle). Under a
+    // campaign selection the brand series is scaled to the selection's share,
+    // with the last point corrected so the series still sums exactly. ----
     const S = P.series;
-    const vals = S[this.state.metric];
+    let vals = S[this.state.metric];
+    if (subset) {
+      const target = this.state.metric === "GMV" ? K.gmv : K.tx;
+      const base = vals.reduce((a, v) => a + v, 0);
+      vals = vals.map(v => Math.max(1, Math.round((v * target) / base)));
+      vals[vals.length - 1] += target - vals.reduce((a, v) => a + v, 0);
+    }
     const maxV = Math.max(...vals);
     const niceStep = max => {
       const mag = Math.pow(10, Math.floor(Math.log10(max / 4)));
@@ -1170,8 +1180,9 @@ class Component extends DCLogic {
       pick: () => this.setState({ [key]: label })
     }));
 
-    // ---- Campaign table (status filter + period slices) ----
-    const rows = this.campaignData()
+    // ---- Campaigns table (campaign selection + status filter) ----
+    const rows = ALL
+      .filter(isSel)
       .filter(c => (this.state.status === "All" || c.status === this.state.status))
       .map(c => ({ c, s: c.periods[this.state.period] }))
       .filter(x => x.s);
@@ -1188,7 +1199,7 @@ class Component extends DCLogic {
         stats: [
           { label: "Redemptions", value: this.num(s.tx), sub: ((s.tx / attempts) * 100).toFixed(1) + "% of " + this.num(attempts) + " attempts" },
           { label: "Rejected", value: this.num(s.rejected), sub: "first failing gate recorded" },
-          { label: "Cashback Accrued", value: this.money(s.cb), sub: "in the selected period" },
+          { label: "Cashback Accrued", value: this.money(s.cb), sub: "in the reporting period" },
           { label: "Payable / On Hold", value: this.money(c.payable) + " / " + this.money(c.hold), sub: c.status === "Completed" ? "refund window closed: all payable" : "as of the latest nightly run" },
           { label: "Avg. Transaction", value: this.money(Math.round(s.gmv / s.tx)), sub: this.num(c.customers) + " customers all time" }
         ],
@@ -1209,21 +1220,10 @@ class Component extends DCLogic {
       };
     });
 
-    // ---- Customer insights (period-scoped) ----
-    const newAvg = P.newGmv / P.newTx;
-    const retPerCust = P.retGmv / P.retC;
-    const nvr = {
-      total: this.num(P.customers),
-      totalSub: "customers · " + this.money(Math.round(P.gmv / P.customers)) + " average value",
-      newPct: Math.round((P.newC / P.customers) * 100),
-      retPct: 100 - Math.round((P.newC / P.customers) * 100),
-      newCount: this.num(P.newC), retCount: this.num(P.retC),
-      insight: "Returning customers spend " + (retPerCust / newAvg).toFixed(1) + "× more over the period than a new customer's first purchase.",
-      cols: [
-        { title: "New Customers", gmv: this.money(P.newGmv), tx: this.num(P.newTx), avg: this.money(Math.round(newAvg)), freq: "1.0" },
-        { title: "Returning Customers", gmv: this.money(P.retGmv), tx: this.num(P.retTx), avg: this.money(Math.round(P.retGmv / P.retTx)), freq: (P.retTx / P.retC).toFixed(1) }
-      ]
-    };
+    // ---- Customer insights (period-scoped). New vs Returning was cut
+    // (Dennis, 2026-09-29): the split needs history since program start,
+    // which does not exist yet. Value distribution and purchase frequency
+    // are period-internal and stay.
     const VD_LABELS = ["< AED 100", "AED 100–250", "AED 250–500", "AED 500–1,000", "AED 1,000+"];
     const vdMax = Math.max(...P.valueDist.map(v => v[0]));
     const valueDist = P.valueDist.map((v, i) => ({
@@ -1322,7 +1322,7 @@ class Component extends DCLogic {
     ];
 
     return {
-      kpis, campaigns, nvr, valueDist, frequency, funnel, reasons, dataQuality, ledger,
+      kpis, campaigns, valueDist, frequency, funnel, reasons, dataQuality, ledger,
       topLocations, locationRows, channels,
       repeatRate,
       chartTicks, xLabels, dots, linePath, areaPath,
@@ -1335,7 +1335,28 @@ class Component extends DCLogic {
       campaignCount: campaigns.length,
       metricToggle: mkToggle(["GMV", "Transactions"], this.state.metric, "metric"),
       statusToggle: mkToggle(["All", "Active", "Completed"], this.state.status, "status"),
-      periodToggle: mkToggle(["Last 7 days", "Last 30 days", "Last 90 days"], this.state.period, "period"),
+      valueDistSub: "How much customers spend, in total, across all campaigns. Average " + this.money(Math.round(P.gmv / P.customers)) + " per customer.",
+      campaignFilterLabel: subset ? "Campaigns: " + selCount + " of " + allNames.length : "Campaigns: All",
+      campaignFilterChevron: this.state.filterOpen ? "\u25be" : "\u25b4",
+      toggleCampaignFilter: () => this.setState({ filterOpen: !this.state.filterOpen }),
+      campaignFilterOpen: this.state.filterOpen,
+      selectAllCampaigns: () => this.setState({ selected: null }),
+      allChecked: sel ? "" : "\u2713",
+      campaignOptions: ALL.map(c => {
+        const eff = sel || allNames;
+        const on = eff.indexOf(c.name) >= 0;
+        return {
+          name: c.name, sub: c.daysText,
+          checked: on ? "\u2713" : "",
+          boxBg: on ? "var(--lune-emerald)" : "#fff",
+          boxBorder: on ? "var(--lune-emerald)" : "var(--neutral-300)",
+          pick: () => {
+            let next = on ? eff.filter(n => n !== c.name) : eff.concat([c.name]);
+            if (next.length === 0 || next.length === allNames.length) next = null;
+            this.setState({ selected: next });
+          }
+        };
+      }),
       noteFn: {
         chart: showNote("chart"), campaigns: showNote("campaigns"), ledger: showNote("ledger"),
         nvr: showNote("nvr"), valueDist: showNote("valueDist"), frequency: showNote("frequency"),
@@ -1353,7 +1374,7 @@ class Component extends DCLogic {
       noteMarket: this.state.openNote ? this.notes()[this.state.openNote].market : "",
       noteSources: this.state.openNote ? this.notes()[this.state.openNote].sources : [],
       closeNote: () => this.setState({ openNote: null }),
-      measurementNote: "Measurement: every figure is attributed and rewarded-basis, over the selected period. GMV, redemptions and ROI count only transactions that earned cashback: a verified card payment by an activated customer at a covered outlet, from the settled feed. Rejected attempts are excluded and accounted for separately in the rejection panel. Control-group incrementality is on the roadmap.",
+      measurementNote: "Measurement: every figure is attributed and rewarded-basis, over the reporting period. GMV, redemptions and ROI count only transactions that earned cashback: a verified card payment by an activated customer at a covered outlet, from the settled feed. Rejected attempts are excluded and accounted for separately in the rejection panel. Control-group incrementality is on the roadmap.",
       freshness: "As of 7 Sep 2026, 06:00 GST · nightly run"
     };
   }
