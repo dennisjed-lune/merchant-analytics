@@ -546,7 +546,11 @@ code, pre, kbd { font-family: var(--font-mono); }
           <button onClick="{{ s.pick }}" style="height: 30px; padding: 0 14px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; background: {{ s.bg }}; color: {{ s.fg }}; box-shadow: {{ s.shadow }};">{{ s.label }}</button>
         </sc-for>
       </div>
-      <span style="margin-left: auto; font-size: 13px; font-weight: 600; color: var(--neutral-600); padding: 8px 14px; border: 1px solid var(--neutral-200); border-radius: 8px; background: #fff;">Last 90 days</span>
+      <div style="display: flex; gap: 2px; padding: 3px; background: var(--neutral-50); border-radius: 8px; margin-left: auto;">
+        <sc-for list="{{ periodToggle }}" as="pd" hint-placeholder-count="3">
+          <button onClick="{{ pd.pick }}" style="height: 30px; padding: 0 14px; border: none; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; background: {{ pd.bg }}; color: {{ pd.fg }}; box-shadow: {{ pd.shadow }};">{{ pd.label }}</button>
+        </sc-for>
+      </div>
     </section>
 
     <section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
@@ -614,7 +618,7 @@ code, pre, kbd { font-family: var(--font-mono); }
               <div style="font-size: 14px; font-weight: 600;">{{ c.name }}</div>
               <div style="font-size: 12px; color: var(--neutral-400); margin-top: 2px;">{{ c.meta }}</div>
             </div>
-            <span style="justify-self: start; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: {{ c.statusBg }}; color: {{ c.statusFg }};">{{ c.status }}</span>
+            <span style="justify-self: start; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: {{ c.statusBg }}; color: {{ c.statusFg }};">{{ c.statusLabel }}</span>
             <div style="display: flex; align-items: center; gap: 8px;">
               <div style="height: 8px; border-radius: 3px; background: var(--lune-emerald); width: {{ c.gmvPct }}%; min-width: 2px;"></div>
               <span style="font-size: 13px; font-weight: 600; white-space: nowrap;">{{ c.gmv }}</span>
@@ -650,7 +654,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 
     <section style="display: flex; flex-direction: column; gap: 6px;">
       <div style="display: flex; align-items: center; gap: 8px;"><h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Cashback Ledger</h2><button onClick="{{ noteFn.ledger }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
-      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Append-only: every figure is a ledger entry, payable is derived from the hold window, and reversals are apportioned on the refunded share.</p>
+      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Append-only: every figure is a ledger entry, payable is derived from the hold window, and reversals are apportioned on the refunded share. This is the position as of the latest nightly run; the period filter does not apply here.</p>
       <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
         <sc-for list="{{ ledger }}" as="l" hint-placeholder-count="3">
           <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
@@ -879,7 +883,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;merchantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nero Coffee Group&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;freshnessLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;As of 1 Aug 2026, 06:00 UTC&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRoiGate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { metric: "GMV", status: "All", openCampaign: null, openNote: null, notesOn: true };
+  state = { metric: "GMV", status: "All", period: "Last 90 days", openCampaign: null, openNote: null, notesOn: true };
 
   // Design-notes layer: why each metric/module exists, market precedent,
   // sources. Toggleable; turn OFF for client-facing demos (never name
@@ -906,7 +910,7 @@ class Component extends DCLogic {
       atv: { title: "Avg. Transaction Value", why: "Basket size: the fastest read on whether cashback shifts what customers spend per visit, and the input for setting minimum spend.", market: "Amex gives merchants average transaction size; Kard reports AOV as standard.", sources: [S.amex, S.kard] },
       chart: { title: "Performance Over Time", why: "One axis, one metric at a time. A dual-axis chart scaled to separate maxima makes cashback look as large as GMV; the toggle keeps every reading truthful.", market: "Single-metric toggles are the convention in merchant analytics (Square, Shopify, Stripe dashboards); Upside reports month-over-month by location.", sources: [S.upsideDash] },
       campaigns: { title: "All Campaigns", why: "Per-offer accountability: GMV, transactions, ROI, cashback and budget pacing per campaign, each with its single bank partner (a Pulse rule: one campaign, one bank). Budget is consumed across all channels, so it is never sliced by channel filters.", market: "Kard reports per-offer redemptions and sales; Amex provides post-campaign reports per offer.", sources: [S.kard, S.amex] },
-      ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and on hold. Figures never revise; reversals arrive as new entries and only ever offset cashback still in hold: released cashback is never taken back. Hold equals the campaign's refund window, which is always preset on the campaign.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
+      ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and on hold. Figures never revise; reversals arrive as new entries and only ever offset cashback still in hold: released cashback is never taken back. Hold equals the campaign's refund window, which is always preset on the campaign. The period filter does not apply here: the ledger is a position as of the latest run, not a flow.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
       nvr: { title: "New vs. Returning", why: "PROPOSAL, not yet buildable: the split needs each customer's first-ever qualifying transaction at the brand, which requires history since program start. Nothing in ERD-1 or ERD-2 computes it (reporting is ERD-3), at the pilot every customer is new, and it is program-new, never brand-new. Shown here to test whether the economics (what each segment spends and how often) justify the ERD-3 ask.", market: "Closed-loop CLO reporting quantifies new customer acquisition and incremental spend per customer; Cardlytics segments explicitly.", sources: [S.openloyalty, S.cdlxMeasure] },
       valueDist: { title: "Customer Value", why: "Where the money actually sits across the customer base. Directly informs minimum spend and per-customer cap settings: the levers in the campaign form.", market: "Customer-value banding is standard merchant analytics; Upside surfaces customer behavior distributions.", sources: [S.upsideDash] },
       frequency: { title: "Purchase Frequency", why: "Repeat behavior under the offer. With per-customer caps in the engine, this shows whether caps bind before habit forms.", market: "Repeat purchase rate is a standard loyalty metric across CLO and merchant analytics platforms.", sources: [S.openloyalty] },
@@ -936,86 +940,123 @@ class Component extends DCLogic {
   // One set of totals; every module below derives from it and cross-foots.
   // Vocabulary follows the cashback ERDs: accrued / reversed / balance /
   // payable (derived, past hold), decision-log gate codes, audience snapshot.
+  // ===== As-of position (latest nightly run). The period filter never
+  // applies here: the ledger and audience figures are positions, not flows.
   totals() {
     return {
-      gmv: 1207025, tx: 5745, rejected: 300, rejectedValue: 45000, customers: 4195,
       accrued: 124047, reversed: 3912, balance: 120135, payable: 89210, hold: 30925,
-      newC: 3418, retC: 777, newGmv: 735000, retGmv: 472025, newTx: 3418, retTx: 2327,
       refundEvents: 214, refundedValue: 41270,
-      audience: 54022, viewed: 22940, activated: 9410, transactedC: 4195, rewardedC: 3978
+      audience: 54022, viewed: 22940, activated: 9410
     };
   }
 
+  // ===== Period datasets. Every flow figure comes from the selected period
+  // and cross-foots within it: campaign slices sum to the totals, new +
+  // returning = customers, distributions sum to GMV and customers, series
+  // sum to GMV and redemptions.
+  periods() {
+    return {
+      "Last 7 days": {
+        gmv: 60500, tx: 261, rejected: 25, rejectedValue: 3750,
+        accrued: 6200, reversed: 210,
+        customers: 247, newC: 139, retC: 108, newGmv: 32100, retGmv: 28400, newTx: 139, retTx: 122,
+        transactedC: 247, rewardedC: 234,
+        gmvDelta: "+4.6% vs previous 7 days",
+        rejections: [13, 6, 5, 1], dq: [4, 1, 1, 1],
+        valueDist: [[9, 640], [125, 21860], [88, 26300], [21, 9200], [4, 2500]],
+        freq: [234, 12, 1, 0],
+        locations: [[31400, 140, 170], [19000, 76, 89], [6300, 28, 27], [3800, 17, 15]],
+        chCust: ["170", "92"], chRepeat: ["5%", "6%"],
+        series: {
+          labels: ["Sep 1", "Sep 2", "Sep 3", "Sep 4", "Sep 5", "Sep 6", "Sep 7"],
+          GMV: [8050, 8420, 8730, 8510, 9120, 9480, 8190],
+          Transactions: [35, 36, 38, 37, 39, 41, 35],
+          showEvery: 1
+        }
+      },
+      "Last 30 days": {
+        gmv: 284810, tx: 1276, rejected: 84, rejectedValue: 12600,
+        accrued: 28130, reversed: 920,
+        customers: 1102, newC: 668, retC: 434, newGmv: 158100, retGmv: 126710, newTx: 668, retTx: 608,
+        transactedC: 1102, rewardedC: 1044,
+        gmvDelta: "+9.1% vs previous 30 days",
+        rejections: [42, 21, 18, 3], dq: [12, 4, 2, 4],
+        valueDist: [[40, 3010], [552, 97300], [392, 115600], [94, 52900], [24, 16000]],
+        freq: [968, 104, 22, 8],
+        locations: [[148900, 663, 660], [87300, 378, 320], [28200, 131, 98], [20410, 104, 75]],
+        chCust: ["660", "590"], chRepeat: ["11%", "13%"],
+        series: {
+          labels: ["Aug 9", "Aug 10", "Aug 11", "Aug 12", "Aug 13", "Aug 14", "Aug 15", "Aug 16", "Aug 17", "Aug 18", "Aug 19", "Aug 20", "Aug 21", "Aug 22", "Aug 23", "Aug 24", "Aug 25", "Aug 26", "Aug 27", "Aug 28", "Aug 29", "Aug 30", "Aug 31", "Sep 1", "Sep 2", "Sep 3", "Sep 4", "Sep 5", "Sep 6", "Sep 7"],
+          GMV: [9200, 9547, 9876, 10168, 10409, 10585, 10688, 10713, 10659, 10530, 10335, 10086, 9797, 9486, 9171, 8872, 8605, 8387, 8232, 8148, 8142, 8215, 8363, 8580, 8854, 9170, 9512, 9862, 9740, 10878],
+          Transactions: [41, 45, 46, 46, 46, 50, 49, 48, 47, 49, 47, 45, 43, 44, 42, 39, 37, 39, 38, 36, 35, 38, 38, 38, 38, 42, 42, 43, 43, 42],
+          showEvery: 5
+        }
+      },
+      "Last 90 days": {
+        gmv: 1207025, tx: 5745, rejected: 300, rejectedValue: 45000,
+        accrued: 124047, reversed: 3912,
+        customers: 4195, newC: 3418, retC: 777, newGmv: 735000, retGmv: 472025, newTx: 3418, retTx: 2327,
+        transactedC: 4195, rewardedC: 3978,
+        gmvDelta: "+12.5% vs previous 90 days",
+        rejections: [148, 77, 68, 7], dq: [41, 12, 5, 12],
+        valueDist: [[126, 9025], [2056, 415000], [1510, 445000], [378, 231000], [125, 107000]],
+        freq: [3418, 420, 210, 147],
+        locations: [[629765, 2959, 2161], [369243, 1779, 1299], [119010, 561, 410], [89007, 446, 326]],
+        chCust: ["2,158", "2,084"], chRepeat: ["17%", "19%"],
+        series: {
+          labels: ["Jun 8", "Jun 15", "Jun 22", "Jun 29", "Jul 6", "Jul 13", "Jul 20", "Jul 27", "Aug 3", "Aug 10", "Aug 17", "Aug 24", "Aug 31"],
+          GMV: [76400, 79800, 83500, 80900, 87200, 91600, 95400, 90100, 97800, 101900, 105400, 109300, 107725],
+          Transactions: [364, 380, 397, 385, 415, 436, 454, 429, 466, 485, 502, 520, 512],
+          showEvery: 2
+        }
+      }
+    };
+  }
+
+  // Campaign catalogue: static facts plus per-period slices. A campaign with
+  // no slice for the selected period had no qualifying activity in it and
+  // drops out of the table. Days-left counts to the end date (an end date is
+  // always required); the budget can finish a campaign earlier, which the
+  // budget column carries. Ending soon = 7 days left or fewer.
   campaignData() {
     return [
-      { name: "Summer Cashback", bank: "Emirates NBD", status: "Active", window: "ends 28 Sep", channel: "In-store", gmv: 331200, tx: 1380, cb: 33115, budget: 50000, rejected: 72, reversed: 1140, payable: 18995, hold: 12980, customers: 1180 },
-      { name: "Midyear Beauty Bonanza", bank: "ADIB", status: "Completed", window: "ended 12 Jul", channel: "All channels", gmv: 240260, tx: 1172, cb: 24604, budget: 26000, rejected: 64, reversed: 590, payable: 24014, hold: 0, customers: 1004 },
-      { name: "August Radiance Rewards", bank: "FAB", status: "Completed", window: "ended 31 Aug", channel: "In-store", gmv: 193140, tx: 1073, cb: 15023, budget: 20000, rejected: 36, reversed: 380, payable: 14643, hold: 0, customers: 927 },
-      { name: "Skincare Refresh Week", bank: "Mashreq", status: "Active", window: "ends 21 Sep", channel: "Online", gmv: 172575, tx: 767, cb: 15345, budget: 22000, rejected: 59, reversed: 675, payable: 6980, hold: 7690, customers: 655 },
-      { name: "Beauty Flash Sale", bank: "RAKBANK", status: "Active", window: "ends 14 Sep", channel: "Online", gmv: 164910, tx: 717, cb: 20065, budget: 30000, rejected: 47, reversed: 872, payable: 8938, hold: 10255, customers: 612 },
-      { name: "June Glow Weekend", bank: "DIB", status: "Completed", window: "ended 28 Jun", channel: "In-store", gmv: 104940, tx: 636, cb: 15895, budget: 18000, rejected: 22, reversed: 255, payable: 15640, hold: 0, customers: 548 }
-    ];
-  }
-
-  series() {
-    return {
-      labels: ["Jun 8", "Jun 15", "Jun 22", "Jun 29", "Jul 6", "Jul 13", "Jul 20", "Jul 27", "Aug 3", "Aug 10", "Aug 17", "Aug 24", "Aug 31"],
-      GMV: [76400, 79800, 83500, 80900, 87200, 91600, 95400, 90100, 97800, 101900, 105400, 109300, 107725],
-      Transactions: [364, 380, 397, 385, 415, 436, 454, 429, 466, 485, 502, 520, 512]
-    };
-  }
-
-  // Decision-log rejection reasons: the engine's gates, fixed order, first
-  // failure recorded (ERD-2 D-1). Only reasons that can actually appear in
-  // the log are shown: the candidate query already filters to settled
-  // transactions at the campaign's MIDs from activated, in-audience
-  // customers, so activation, audience, settlement and location codes never
-  // produce a row (Dennis, 2026-09-09: the location row was removed as
-  // inaccurate; location coverage is a locations-module story, not a
-  // rejection).
-  rejections() {
-    return [
-      { code: "below_minimum_spend", label: "Minimum spend not met", n: 148, tip: "Consider lowering the minimum spend threshold to make more baskets eligible." },
-      { code: "cap_reached", label: "Per-customer cashback cap reached", n: 77, tip: "Raise the per-customer cap if you want repeat customers to keep earning." },
-      { code: "bin_not_selected", label: "Card not eligible for the offer", n: 68, tip: "The customer activated but paid with a card outside the offer's selected ranges. Check that the selected card ranges cover the cards your customers actually use." },
-      { code: "budget_exhausted", label: "Campaign budget exhausted", n: 7, tip: "Top up the budget to keep rewarding eligible transactions." }
-    ];
-  }
-
-  dataQuality() {
-    return [
-      { code: "card_bin_missing", label: "Card BIN missing", n: 41 },
-      { code: "occurred_at_missing", label: "Timestamp missing", n: 12 },
-      { code: "currency_missing", label: "Invalid currency", n: 5 },
-      { code: "tid_missing", label: "Terminal id missing", n: 12 }
-    ];
-  }
-
-  valueDist() {
-    return [
-      { label: "< AED 100", c: 126, gmv: 9025 },
-      { label: "AED 100–250", c: 2056, gmv: 415000 },
-      { label: "AED 250–500", c: 1510, gmv: 445000 },
-      { label: "AED 500–1,000", c: 378, gmv: 231000 },
-      { label: "AED 1,000+", c: 125, gmv: 107000 }
-    ];
-  }
-
-  frequency() {
-    return [
-      { label: "1 purchase", c: 3418 },
-      { label: "2 purchases", c: 420 },
-      { label: "3 purchases", c: 210 },
-      { label: "4+ purchases", c: 147 }
-    ];
-  }
-
-  locations() {
-    return [
-      { name: "faces.ae checkout", tids: "TID-00922", gmv: 629765, tx: 2959, cust: 2161 },
-      { name: "Mall of the Emirates", tids: "TID-00931 · TID-00932", gmv: 369243, tx: 1779, cust: 1299 },
-      { name: "Yas Mall, Abu Dhabi", tids: "TID-00921", gmv: 119010, tx: 561, cust: 410 },
-      { name: "Dubai Mall", tids: "TID-00930", gmv: 89007, tx: 446, cust: 326 }
+      { name: "Summer Cashback", bank: "Emirates NBD", status: "Active", channel: "In-store", budget: 50000,
+        daysText: "21 days left", endingSoon: false, cbLife: 33115, payable: 18995, hold: 12980, customers: 1180,
+        periods: {
+          "Last 90 days": { gmv: 331200, tx: 1380, cb: 33115, rejected: 72 },
+          "Last 30 days": { gmv: 118400, tx: 495, cb: 11830, rejected: 33 },
+          "Last 7 days": { gmv: 29600, tx: 124, cb: 2960, rejected: 10 }
+        } },
+      { name: "Midyear Beauty Bonanza", bank: "ADIB", status: "Completed", channel: "All channels", budget: 26000,
+        daysText: "ended 57 days ago", endingSoon: false, cbLife: 24604, payable: 24014, hold: 0, customers: 1004,
+        periods: {
+          "Last 90 days": { gmv: 240260, tx: 1172, cb: 24604, rejected: 64 }
+        } },
+      { name: "August Radiance Rewards", bank: "FAB", status: "Completed", channel: "In-store", budget: 20000,
+        daysText: "ended 7 days ago", endingSoon: false, cbLife: 15023, payable: 14643, hold: 0, customers: 927,
+        periods: {
+          "Last 90 days": { gmv: 193140, tx: 1073, cb: 15023, rejected: 36 },
+          "Last 30 days": { gmv: 41900, tx: 232, cb: 3260, rejected: 11 }
+        } },
+      { name: "Skincare Refresh Week", bank: "Mashreq", status: "Active", channel: "Online", budget: 22000,
+        daysText: "14 days left", endingSoon: false, cbLife: 15345, payable: 6980, hold: 7690, customers: 655,
+        periods: {
+          "Last 90 days": { gmv: 172575, tx: 767, cb: 15345, rejected: 59 },
+          "Last 30 days": { gmv: 64300, tx: 287, cb: 5720, rejected: 21 },
+          "Last 7 days": { gmv: 15800, tx: 71, cb: 1405, rejected: 8 }
+        } },
+      { name: "Beauty Flash Sale", bank: "RAKBANK", status: "Active", channel: "Online", budget: 30000,
+        daysText: "7 days left", endingSoon: true, cbLife: 20065, payable: 8938, hold: 10255, customers: 612,
+        periods: {
+          "Last 90 days": { gmv: 164910, tx: 717, cb: 20065, rejected: 47 },
+          "Last 30 days": { gmv: 60210, tx: 262, cb: 7320, rejected: 19 },
+          "Last 7 days": { gmv: 15100, tx: 66, cb: 1835, rejected: 7 }
+        } },
+      { name: "June Glow Weekend", bank: "DIB", status: "Completed", channel: "In-store", budget: 18000,
+        daysText: "ended 71 days ago", endingSoon: false, cbLife: 15895, payable: 15640, hold: 0, customers: 548,
+        periods: {
+          "Last 90 days": { gmv: 104940, tx: 636, cb: 15895, rejected: 22 }
+        } }
     ];
   }
 
@@ -1070,21 +1111,22 @@ class Component extends DCLogic {
 
   renderVals() {
     const T = this.totals();
+    const P = this.periods()[this.state.period];
     const showNote = id => () => this.setState({ openNote: id });
     const noteVis = this.state.notesOn ? "inline-flex" : "none";
     const withNote = (id, o) => Object.assign(o, { showNote: showNote(id), noteVis });
 
     const kpis = [
-      withNote("gmv", { label: "Total GMV", value: this.money(T.gmv), sub: "+12.5% vs previous 90 days" }),
-      withNote("tx", { label: "Redemptions", value: this.num(T.tx), sub: this.num(T.rejected) + " attempted transactions were rejected" }),
-      withNote("roi", { label: "Campaign ROI (attributed)", value: (T.gmv / T.accrued).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" }),
-      withNote("accrued", { label: "Cashback Cost", value: this.money(T.balance), sub: this.money(T.accrued) + " accrued − " + this.money(T.reversed) + " reversed" }),
-      withNote("customers", { label: "Customers", value: this.num(T.customers), sub: ((T.customers / T.activated) * 100).toFixed(1) + "% of activated customers" }),
-      withNote("atv", { label: "Avg. Transaction Value", value: this.money(Math.round(T.gmv / T.tx)), sub: "Across all campaigns" })
+      withNote("gmv", { label: "Total GMV", value: this.money(P.gmv), sub: P.gmvDelta }),
+      withNote("tx", { label: "Redemptions", value: this.num(P.tx), sub: this.num(P.rejected) + " attempted transactions were rejected" }),
+      withNote("roi", { label: "Campaign ROI (attributed)", value: (P.gmv / P.accrued).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" }),
+      withNote("accrued", { label: "Cashback Cost", value: this.money(P.accrued - P.reversed), sub: this.money(P.accrued) + " accrued − " + this.money(P.reversed) + " reversed" }),
+      withNote("customers", { label: "Customers", value: this.num(P.customers), sub: ((P.customers / T.activated) * 100).toFixed(1) + "% of activated customers" }),
+      withNote("atv", { label: "Avg. Transaction Value", value: this.money(Math.round(P.gmv / P.tx)), sub: "Across all campaigns" })
     ];
 
     // ---- Performance-over-time chart (single axis; metric toggle) ----
-    const S = this.series();
+    const S = P.series;
     const vals = S[this.state.metric];
     const maxV = Math.max(...vals);
     const niceStep = max => {
@@ -1113,7 +1155,7 @@ class Component extends DCLogic {
       chartTicks.push({ label: fmtTick(d * step), y: py(d * step).toFixed(1), pctY: ((py(d * step) / H) * 100).toFixed(2) + "%" });
     }
     const xLabels = S.labels.map((label, i) => ({
-      label: i % 2 === 0 ? label : "", pctX: ((px(i) / W) * 100).toFixed(2) + "%"
+      label: i % S.showEvery === 0 ? label : "", pctX: ((px(i) / W) * 100).toFixed(2) + "%"
     }));
     const dots = vals.map((v, i) => ({
       cx: px(i).toFixed(1), cy: py(v).toFixed(1),
@@ -1128,82 +1170,87 @@ class Component extends DCLogic {
       pick: () => this.setState({ [key]: label })
     }));
 
-    // ---- Campaign table (search + status filter) ----
+    // ---- Campaign table (status filter + period slices) ----
     const rows = this.campaignData()
-      .filter(c => (this.state.status === "All" || c.status === this.state.status));
-    const campMax = Math.max(1, ...rows.map(c => c.gmv));
-    const campaigns = rows.map(c => {
-      const pct = Math.round((c.cb / c.budget) * 100);
+      .filter(c => (this.state.status === "All" || c.status === this.state.status))
+      .map(c => ({ c, s: c.periods[this.state.period] }))
+      .filter(x => x.s);
+    const campMax = Math.max(1, ...rows.map(x => x.s.gmv));
+    const campaigns = rows.map(({ c, s }) => {
+      const pct = Math.round((c.cbLife / c.budget) * 100);
       const open = this.state.openCampaign === c.name;
-      const attempts = c.tx + c.rejected;
-      const bal = c.cb - c.reversed;
+      const attempts = s.tx + s.rejected;
       return {
         open,
         caret: open ? "\u25be" : "\u25b8",
         toggle: () => this.setState({ openCampaign: open ? null : c.name }),
-        metaFull: c.bank + " \u00b7 " + c.channel + " \u00b7 " + c.window + " \u00b7 " + this.money(c.budget) + " committed budget",
+        metaFull: c.bank + " \u00b7 " + c.channel + " \u00b7 " + c.daysText + " \u00b7 " + this.money(c.budget) + " committed budget",
         stats: [
-          { label: "Redemptions", value: this.num(c.tx), sub: ((c.tx / attempts) * 100).toFixed(1) + "% of " + this.num(attempts) + " attempts" },
-          { label: "Rejected", value: this.num(c.rejected), sub: "first failing gate recorded" },
-          { label: "Cashback Cost", value: this.money(bal), sub: this.money(c.cb) + " accrued \u2212 " + this.money(c.reversed) + " reversed" },
-          { label: "Payable / On Hold", value: this.money(c.payable) + " / " + this.money(c.hold), sub: c.status === "Completed" ? "refund window closed: all payable" : "on hold inside the refund window" },
-          { label: "Avg. Transaction", value: this.money(Math.round(c.gmv / c.tx)), sub: this.num(c.customers) + " unique customers" }
+          { label: "Redemptions", value: this.num(s.tx), sub: ((s.tx / attempts) * 100).toFixed(1) + "% of " + this.num(attempts) + " attempts" },
+          { label: "Rejected", value: this.num(s.rejected), sub: "first failing gate recorded" },
+          { label: "Cashback Accrued", value: this.money(s.cb), sub: "in the selected period" },
+          { label: "Payable / On Hold", value: this.money(c.payable) + " / " + this.money(c.hold), sub: c.status === "Completed" ? "refund window closed: all payable" : "as of the latest nightly run" },
+          { label: "Avg. Transaction", value: this.money(Math.round(s.gmv / s.tx)), sub: this.num(c.customers) + " customers all time" }
         ],
         name: c.name,
-        meta: c.bank + " · " + c.channel + " · " + c.window,
+        meta: c.bank + " · " + c.channel + " · " + c.daysText,
         status: c.status,
-        statusBg: c.status === "Active" ? "var(--status-success)" : "var(--neutral-100)",
-        statusFg: c.status === "Active" ? "var(--status-success-ink)" : "var(--neutral-500)",
-        gmv: this.money(c.gmv),
-        gmvPct: Math.round((c.gmv / campMax) * 76),
-        tx: this.num(c.tx),
-        roi: (c.gmv / c.cb).toFixed(1) + "×",
-        cashback: this.money(c.cb),
+        statusLabel: c.endingSoon ? "Ending soon" : c.status,
+        statusBg: c.endingSoon ? "var(--status-warning)" : c.status === "Active" ? "var(--status-success)" : "var(--neutral-100)",
+        statusFg: c.endingSoon ? "var(--status-warning-ink)" : c.status === "Active" ? "var(--status-success-ink)" : "var(--neutral-500)",
+        gmv: this.money(s.gmv),
+        gmvPct: Math.round((s.gmv / campMax) * 76),
+        tx: this.num(s.tx),
+        roi: (s.gmv / s.cb).toFixed(1) + "×",
+        cashback: this.money(s.cb),
         budgetPct: pct,
         budgetColor: pct > 80 ? "var(--status-error)" : pct > 60 ? "var(--lune-emerald)" : "var(--lune-sea)",
-        budgetLabel: this.money(c.cb) + " of " + this.money(c.budget) + " · " + pct + "%"
+        budgetLabel: this.money(c.cbLife) + " of " + this.money(c.budget) + " · " + pct + "%"
       };
     });
 
-    // ---- Customer insights ----
-    // No stat row here: reached lives in the funnel, transacted/new/returning
-    // in the Customers KPI and the module below, repeat rate in Purchase
-    // Frequency. Lapsed was cut (no producer in ERD-1/2; cold start; audience
-    // churn pollutes it).
-    const newAvg = T.newGmv / T.newTx;
-    const retPerCust = T.retGmv / T.retC;
+    // ---- Customer insights (period-scoped) ----
+    const newAvg = P.newGmv / P.newTx;
+    const retPerCust = P.retGmv / P.retC;
     const nvr = {
-      total: this.num(T.customers),
-      totalSub: "customers · " + this.money(Math.round(T.gmv / T.customers)) + " average value",
-      newPct: Math.round((T.newC / T.customers) * 100),
-      retPct: 100 - Math.round((T.newC / T.customers) * 100),
-      newCount: this.num(T.newC), retCount: this.num(T.retC),
+      total: this.num(P.customers),
+      totalSub: "customers · " + this.money(Math.round(P.gmv / P.customers)) + " average value",
+      newPct: Math.round((P.newC / P.customers) * 100),
+      retPct: 100 - Math.round((P.newC / P.customers) * 100),
+      newCount: this.num(P.newC), retCount: this.num(P.retC),
       insight: "Returning customers spend " + (retPerCust / newAvg).toFixed(1) + "× more over the period than a new customer's first purchase.",
       cols: [
-        { title: "New Customers", gmv: this.money(T.newGmv), tx: this.num(T.newTx), avg: this.money(Math.round(newAvg)), freq: "1.0" },
-        { title: "Returning Customers", gmv: this.money(T.retGmv), tx: this.num(T.retTx), avg: this.money(Math.round(T.retGmv / T.retTx)), freq: (T.retTx / T.retC).toFixed(1) }
+        { title: "New Customers", gmv: this.money(P.newGmv), tx: this.num(P.newTx), avg: this.money(Math.round(newAvg)), freq: "1.0" },
+        { title: "Returning Customers", gmv: this.money(P.retGmv), tx: this.num(P.retTx), avg: this.money(Math.round(P.retGmv / P.retTx)), freq: (P.retTx / P.retC).toFixed(1) }
       ]
     };
-    const vdMax = Math.max(...this.valueDist().map(v => v.c));
-    const valueDist = this.valueDist().map(v => ({
-      label: v.label,
-      pct: Math.max(1, Math.round((v.c / vdMax) * 100)),
-      note: Math.round((v.c / T.customers) * 100) + "% of customers · " + this.money(v.gmv) + " (" + Math.round((v.gmv / T.gmv) * 100) + "% of GMV)"
+    const VD_LABELS = ["< AED 100", "AED 100–250", "AED 250–500", "AED 500–1,000", "AED 1,000+"];
+    const vdMax = Math.max(...P.valueDist.map(v => v[0]));
+    const valueDist = P.valueDist.map((v, i) => ({
+      label: VD_LABELS[i],
+      pct: Math.max(1, Math.round((v[0] / vdMax) * 100)),
+      note: Math.round((v[0] / P.customers) * 100) + "% of customers · " + this.money(v[1]) + " (" + Math.round((v[1] / P.gmv) * 100) + "% of GMV)"
     }));
-    const frequency = this.frequency().map(f => ({
-      label: f.label,
-      pct: Math.max(1, Math.round((f.c / T.customers) * 100)),
-      note: Math.round((f.c / T.customers) * 100) + "% · " + this.num(f.c) + " customers"
-    }));
-    const repeatRate = Math.round((T.retC / T.customers) * 100);
+    const FREQ_LABELS = ["1 purchase", "2 purchases", "3 purchases", "4+ purchases"];
+    const frequency = P.freq
+      .map((n, i) => ({ n, label: FREQ_LABELS[i] }))
+      .filter(f => f.n > 0)
+      .map(f => ({
+        label: f.label,
+        pct: Math.max(1, Math.round((f.n / P.customers) * 100)),
+        note: Math.round((f.n / P.customers) * 100) + "% · " + this.num(f.n) + " customers"
+      }));
+    const repeaters = P.freq.slice(1).reduce((a, n) => a + n, 0);
+    const repeatRate = Math.round((repeaters / P.customers) * 100);
 
-    // ---- Engagement funnel (unique customers; bars are % of previous) ----
+    // ---- Engagement funnel: top three stages are program positions (as-of);
+    // transacted and rewarded follow the period. ----
     const stages = [
       ["Audience Reached", T.audience, "Snapshot at go-live, aggregated across campaigns"],
       ["Viewed an Offer", T.viewed, null],
       ["Activated", T.activated, null],
-      ["Transacted", T.transactedC, null],
-      ["Rewarded", T.rewardedC, null]
+      ["Transacted", P.transactedC, null],
+      ["Rewarded", P.rewardedC, null]
     ];
     let biggest = { lost: 0, from: "", to: "" };
     const funnel = stages.map(([label, v, note], i) => {
@@ -1218,48 +1265,60 @@ class Component extends DCLogic {
       };
     });
 
-    // ---- Rejections (decision log) + data quality ----
-    const rej = this.rejections();
-    const rejTotal = rej.reduce((a, r) => a + r.n, 0);
-    const rejMax = rej[0].n;
-    const reasons = rej.map(r => ({
+    // ---- Rejections (decision log) + data quality, period-scoped ----
+    const REASONS = [
+      { code: "below_minimum_spend", label: "Minimum spend not met", tip: "Consider lowering the minimum spend threshold to make more baskets eligible." },
+      { code: "cap_reached", label: "Per-customer cashback cap reached", tip: "Raise the per-customer cap if you want repeat customers to keep earning." },
+      { code: "bin_not_selected", label: "Card not eligible for the offer", tip: "The customer activated but paid with a card outside the offer's selected ranges. Check that the selected card ranges cover the cards your customers actually use." },
+      { code: "budget_exhausted", label: "Campaign budget exhausted", tip: "Top up the budget to keep rewarding eligible transactions." }
+    ];
+    const rejTotal = P.rejections.reduce((a, n) => a + n, 0);
+    const rejMax = Math.max(...P.rejections);
+    const reasons = REASONS.map((r, i) => ({
       label: r.label, code: r.code, tip: r.tip,
-      count: this.num(r.n),
-      share: Math.round((r.n / rejTotal) * 100) + "%",
-      pct: Math.max(2, Math.round((r.n / rejMax) * 100)),
+      count: this.num(P.rejections[i]),
+      share: Math.round((P.rejections[i] / rejTotal) * 100) + "%",
+      pct: Math.max(2, Math.round((P.rejections[i] / rejMax) * 100)),
       showNote: showNote("r_" + r.code), noteVis
     }));
-    const dq = this.dataQuality();
-    const dqTotal = dq.reduce((a, r) => a + r.n, 0);
-    const dataQuality = dq.map(r => ({ label: r.label, code: r.code, count: this.num(r.n) }));
+    const DQ_LABELS = ["Card BIN missing", "Timestamp missing", "Invalid currency", "Terminal id missing"];
+    const dqTotal = P.dq.reduce((a, n) => a + n, 0);
+    const dataQuality = P.dq.map((n, i) => ({ label: DQ_LABELS[i], count: this.num(n) }));
 
-    // ---- Ledger ----
+    // ---- Ledger: position as of the latest run; the period filter never
+    // applies here. ----
     const ledger = [
       { label: "Balance", value: this.money(T.balance), sub: this.money(T.accrued) + " accrued − " + this.money(T.reversed) + " reversed (" + this.num(T.refundEvents) + " refunds)" },
       { label: "Payable Now", value: this.money(T.payable), sub: "Past the campaign's refund window" },
       { label: "On Hold", value: this.money(T.hold), sub: "Inside the refund window" }
     ];
 
-    // ---- Locations & channel ----
-    const locs = this.locations();
-    const locMax = locs[0].gmv;
-    const topLocations = locs.map((l, i) => ({
-      rank: i + 1, name: l.name,
-      note: this.money(l.gmv) + " · " + this.num(l.tx) + " transactions",
-      pct: Math.max(2, Math.round((l.gmv / locMax) * 100))
+    // ---- Outlets & channel (period-scoped) ----
+    const LOC_META = [
+      ["faces.ae checkout", "TID-00922"],
+      ["Mall of the Emirates", "TID-00931 · TID-00932"],
+      ["Yas Mall, Abu Dhabi", "TID-00921"],
+      ["Dubai Mall", "TID-00930"]
+    ];
+    const locMax = P.locations[0][0];
+    const topLocations = P.locations.map((l, i) => ({
+      rank: i + 1, name: LOC_META[i][0],
+      note: this.money(l[0]) + " · " + this.num(l[1]) + " transactions",
+      pct: Math.max(2, Math.round((l[0] / locMax) * 100))
     }));
-    const locationRows = locs.map(l => ({
-      name: l.name, tids: l.tids,
-      gmv: this.money(l.gmv), tx: this.num(l.tx),
-      aov: this.money(Math.round(l.gmv / l.tx)), cust: this.num(l.cust)
+    const locationRows = P.locations.map((l, i) => ({
+      name: LOC_META[i][0], tids: LOC_META[i][1],
+      gmv: this.money(l[0]), tx: this.num(l[1]),
+      aov: this.money(Math.round(l[0] / l[1])), cust: this.num(l[2])
     }));
-    const onG = 629765, onT = 2959, inG = T.gmv - onG, inT = T.tx - onT;
+    const onG = P.locations[0][0], onT = P.locations[0][1];
+    const inG = P.gmv - onG, inT = P.tx - onT;
     const channels = [
       { metric: "GMV", online: this.money(onG), instore: this.money(inG) },
       { metric: "Transactions", online: this.num(onT), instore: this.num(inT) },
-      { metric: "Customers", online: "2,158", instore: "2,084" },
+      { metric: "Customers", online: P.chCust[0], instore: P.chCust[1] },
       { metric: "AOV", online: this.money(Math.round(onG / onT)), instore: this.money(Math.round(inG / inT)) },
-      { metric: "Repeat rate", online: "17%", instore: "19%" }
+      { metric: "Repeat rate", online: P.chRepeat[0], instore: P.chRepeat[1] }
     ];
 
     return {
@@ -1271,11 +1330,12 @@ class Component extends DCLogic {
       dropoff: biggest.lost + "% lost",
       dropoffNote: "between " + biggest.from + " → " + biggest.to,
       rejTotal: this.num(rejTotal),
-      rejValue: this.money(T.rejectedValue),
+      rejValue: this.money(P.rejectedValue),
       dqTotal: this.num(dqTotal),
       campaignCount: campaigns.length,
       metricToggle: mkToggle(["GMV", "Transactions"], this.state.metric, "metric"),
       statusToggle: mkToggle(["All", "Active", "Completed"], this.state.status, "status"),
+      periodToggle: mkToggle(["Last 7 days", "Last 30 days", "Last 90 days"], this.state.period, "period"),
       noteFn: {
         chart: showNote("chart"), campaigns: showNote("campaigns"), ledger: showNote("ledger"),
         nvr: showNote("nvr"), valueDist: showNote("valueDist"), frequency: showNote("frequency"),
@@ -1293,7 +1353,7 @@ class Component extends DCLogic {
       noteMarket: this.state.openNote ? this.notes()[this.state.openNote].market : "",
       noteSources: this.state.openNote ? this.notes()[this.state.openNote].sources : [],
       closeNote: () => this.setState({ openNote: null }),
-      measurementNote: "Measurement: every figure is attributed and rewarded-basis. GMV, redemptions and ROI count only transactions that earned cashback: a verified card payment by an activated customer at a covered outlet, from the settled feed. Rejected attempts are excluded and accounted for separately in the rejection panel. Control-group incrementality is on the roadmap.",
+      measurementNote: "Measurement: every figure is attributed and rewarded-basis, over the selected period. GMV, redemptions and ROI count only transactions that earned cashback: a verified card payment by an activated customer at a covered outlet, from the settled feed. Rejected attempts are excluded and accounted for separately in the rejection panel. Control-group incrementality is on the roadmap.",
       freshness: "As of 7 Sep 2026, 06:00 GST · nightly run"
     };
   }
