@@ -527,18 +527,38 @@ code, pre, kbd { font-family: var(--font-mono); }
     <header style="display: flex; flex-direction: column; gap: 14px;">
       <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em;">Analytics</h1>
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <span style="width: 36px; height: 36px; border-radius: 9px; background: var(--lune-ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;">FA</span>
-          <span style="font-size: 20px; font-weight: 700;">Faces</span>
-          <span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; background: var(--neutral-50); color: var(--neutral-600);">Chalhoub Group</span>
+        <div style="position: relative;">
+          <button onClick="{{ toggleBrand }}" style="display: flex; align-items: center; gap: 12px; padding: 6px 12px 6px 6px; border-radius: 10px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); cursor: pointer; text-align: left;" style-hover="border-color: var(--neutral-300); background: var(--neutral-25);">
+            <span style="width: 36px; height: 36px; border-radius: 9px; background: var(--lune-ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex: none;">{{ brandInitials }}</span>
+            <span style="font-size: 20px; font-weight: 700; color: var(--lune-teal);">{{ brandName }}</span>
+            <span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; background: var(--neutral-50); color: var(--neutral-600);">{{ brandGroup }}</span>
+            <span style="font-size: 11px; color: var(--neutral-400);">{{ brandChevron }}</span>
+          </button>
+          <sc-if value="{{ brandOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; top: calc(100% + 6px); left: 0; width: 320px; background: #fff; border: 1px solid var(--neutral-200); border-radius: 12px; padding: 6px; box-shadow: 0 16px 40px rgba(7,3,18,0.14); z-index: 50;">
+              <div style="padding: 8px 10px 6px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--neutral-400);">SHOW ANALYTICS FOR</div>
+              <sc-for list="{{ brandOptions }}" as="b" hint-placeholder-count="3">
+                <div onClick="{{ b.pick }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer;" style-hover="background: var(--neutral-25);">
+                  <span style="width: 28px; height: 28px; border-radius: 7px; background: {{ b.avatarBg }}; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex: none;">{{ b.initials }}</span>
+                  <span style="min-width: 0;">
+                    <span style="display: block; font-size: 13.5px; font-weight: 600;">{{ b.name }}</span>
+                    <span style="display: block; font-size: 11px; color: var(--neutral-400);">{{ b.note }}</span>
+                  </span>
+                  <span style="margin-left: auto; font-size: 12px; font-weight: 700; color: var(--lune-emerald);">{{ b.checked }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
         </div>
         <div style="display: flex; gap: 8px;">
           <button onClick="{{ toggleNotes }}" style="height: 38px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--neutral-200); background: var(--neutral-25); font-family: var(--font-sans); font-size: 12.5px; font-weight: 600; color: var(--neutral-500); cursor: pointer;" style-hover="border-color: var(--neutral-300);">{{ notesToggleLabel }}</button>
           <button style="height: 38px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--neutral-200); background: #fff; font-family: var(--font-sans); font-size: 13.5px; font-weight: 600; color: var(--lune-teal); cursor: pointer;" style-hover="border-color: var(--neutral-300); background: var(--neutral-25);">Download report</button>
         </div>
       </div>
-      <p style="margin: 0; font-size: 14px; color: var(--neutral-500);">Performance and customer insights for Faces.</p>
+      <p style="margin: 0; font-size: 14px; color: var(--neutral-500);">{{ brandSub }}</p>
     </header>
+
+    <sc-if value="{{ brandLive }}" hint-placeholder-val="{{ true }}">
 
     <section style="display: flex; align-items: center; gap: 10px;">
       <div style="display: flex; gap: 2px; padding: 3px; background: var(--neutral-50); border-radius: 8px;">
@@ -879,6 +899,15 @@ code, pre, kbd { font-family: var(--font-mono); }
       </div>
     </section>
 
+    </sc-if>
+
+    <sc-if value="{{ brandEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 40px; text-align: center;">
+        <div style="font-size: 17px; font-weight: 700;">{{ brandEmptyTitle }}</div>
+        <p style="margin: 8px auto 0; max-width: 560px; font-size: 13.5px; line-height: 1.6; color: var(--neutral-500);">{{ brandEmptyBody }}</p>
+      </div>
+    </sc-if>
+
 
     <sc-if value="{{ noteOpen }}" hint-placeholder-val="{{ false }}">
       <div style="position: fixed; right: 24px; bottom: 24px; width: 400px; max-height: 72vh; overflow: auto; background: #fff; border: 1px solid var(--neutral-200); border-radius: 14px; box-shadow: 0 24px 64px rgba(7,3,18,0.18); padding: 20px; z-index: 60;">
@@ -907,7 +936,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;merchantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nero Coffee Group&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;freshnessLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;As of 1 Aug 2026, 06:00 UTC&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRoiGate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { metric: "GMV", status: "All", period: "Last 90 days", selected: null, filterOpen: false, openCampaign: null, openNote: null, notesOn: true, lookupQ: "", openLookup: null };
+  state = { metric: "GMV", status: "All", period: "Last 90 days", selected: null, filterOpen: false, openCampaign: null, openNote: null, notesOn: true, lookupQ: "", openLookup: null, brand: "Faces", brandOpen: false };
 
   // Design-notes layer: why each metric/module exists, market precedent,
   // sources. Toggleable; turn OFF for client-facing demos (never name
@@ -959,6 +988,19 @@ class Component extends DCLogic {
       campRoi: { title: "ROI per campaign (attributed)", why: "The decided formula applied per row: the campaign's GMV divided by the cashback it accrued (gross). Both inputs are columns on the same row, so every multiplier can be recomputed by eye: 331,200 / 33,115 = 10.0x. It uses gross accrued rather than net-of-reversals, matching the page KPI. When comparing rows, remember the offer rate drives the multiplier mechanically: a 5% offer yields roughly double the ROI of a 10% offer on the same spend, so ROI differences reflect the rate and clamping as much as campaign quality.", market: "Kard and Amex report per-offer sales and redemptions; per-offer ROAS is the industry's standard comparison unit.", sources: [S.kard, S.amex, S.erd2] },
       dq: { title: "Couldn't be assessed (incomplete bank data)", why: "These transactions arrived from the bank missing a required field: the card BIN, the timestamp, a valid currency, or the terminal id where a campaign targets specific terminals. They ingest and appear in analytics but can never earn cashback, by design (fail closed, so money is never paid on unverifiable data). Per-field alerts fire on the bank side when this happens on a live campaign. The fix is always the bank's feed integration, never a campaign setting.", market: "A transparency differentiator: comparable platforms silently drop unmatchable transactions rather than showing merchants the gap.", sources: [S.erd1] }
     };
+  }
+
+  // Brands this merchant account can report on. Analytics is per BRAND, never
+  // per merchant group: the selector makes that scope an explicit choice
+  // rather than something the reader has to infer. Only Faces has run Pulse
+  // campaigns, so the others land on an honest cold-start state instead of
+  // borrowed numbers.
+  brandList() {
+    return [
+      { name: "Faces", initials: "FA", group: "Chalhoub Group", live: true, note: "6 campaigns" },
+      { name: "Level Shoes", initials: "LS", group: "Chalhoub Group", live: false, note: "No campaigns yet" },
+      { name: "Wojooh", initials: "WO", group: "Chalhoub Group", live: false, note: "No campaigns yet" }
+    ];
   }
 
   // ===== Ground truth (Faces · Chalhoub Group · last 90 days, AED) =====
@@ -1182,6 +1224,8 @@ class Component extends DCLogic {
   }
 
   renderVals() {
+    const BRANDS = this.brandList();
+    const cur = BRANDS.filter(b => b.name === this.state.brand)[0] || BRANDS[0];
     const T = this.totals();
     const P = this.periods()[this.state.period];
     const ALL = this.campaignData();
@@ -1466,6 +1510,29 @@ class Component extends DCLogic {
         locations: showNote("locations"), channel: showNote("channel"),
         dq: showNote("dq"), campRoi: showNote("campRoi"), lookup: showNote("lookup")
       },
+      // Brand selector: analytics is scoped to exactly one brand at a time.
+      brandName: cur.name,
+      brandInitials: cur.initials,
+      brandGroup: cur.group,
+      brandSub: cur.live
+        ? "Performance and customer insights for " + cur.name + "."
+        : "No Pulse campaigns have run for " + cur.name + " yet.",
+      brandLive: cur.live,
+      brandEmpty: !cur.live,
+      brandChevron: this.state.brandOpen ? "▾" : "▴",
+      brandOpen: this.state.brandOpen,
+      toggleBrand: () => this.setState({ brandOpen: !this.state.brandOpen }),
+      brandOptions: BRANDS.map(b => ({
+        name: b.name, initials: b.initials, note: b.note,
+        checked: b.name === cur.name ? "✓" : "",
+        avatarBg: b.name === cur.name ? "var(--lune-ink)" : "var(--neutral-200)",
+        pick: () => this.setState({
+          brand: b.name, brandOpen: false,
+          selected: null, openCampaign: null, openLookup: null, lookupQ: "", openNote: null
+        })
+      })),
+      brandEmptyTitle: "No campaigns to report on yet",
+      brandEmptyBody: cur.live ? "" : cur.name + " has not run a Pulse cashback campaign yet. Once a campaign goes live, this page fills in the morning after the first settled transactions arrive: what the campaign drove, what it cost, and why any transactions earned nothing.",
       notesVis: noteVis,
       // Brand-level sections (ledger, insights, engagement, outlets, lookup)
       // are never scoped by the campaign filter. When a filter is active that
