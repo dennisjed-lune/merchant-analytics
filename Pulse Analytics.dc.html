@@ -788,6 +788,40 @@ code, pre, kbd { font-family: var(--font-mono); }
           </div>
         </div>
       </div>
+
+      <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px; margin-top: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">Dispute Lookup</h3><button onClick="{{ noteFn.lookup }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
+        <p style="margin: 3px 0 14px; font-size: 13px; color: var(--neutral-500);">{{ lookupSub }}</p>
+        <input onInput="{{ setLookupQ }}" placeholder="Search by card last 4, amount, outlet or campaign — e.g. 4821, 96, faces.ae" style="width: 100%; box-sizing: border-box; padding: 10px 14px; border: 1px solid var(--neutral-200); border-radius: 9px; font-size: 13px; font-family: var(--font-sans); color: var(--neutral-800); background: #fff; outline: none;" />
+        <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 6px;">{{ lookupResult }}</div>
+        <div style="display: grid; grid-template-columns: 0.9fr 1.3fr 0.6fr 0.7fr 1.3fr 1.5fr 16px; gap: 12px; padding: 12px 0 8px; border-bottom: 1px solid var(--neutral-100); font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
+          <span>Time</span><span>Outlet</span><span>Card</span><span>Amount</span><span>Campaign</span><span>Why it earned nothing</span><span></span>
+        </div>
+        <sc-for list="{{ lookupRows }}" as="lr" hint-placeholder-count="16">
+          <div>
+            <div onClick="{{ lr.toggle }}" style="display: grid; grid-template-columns: 0.9fr 1.3fr 0.6fr 0.7fr 1.3fr 1.5fr 16px; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--neutral-50); font-size: 12.5px; cursor: pointer;" style-hover="background: var(--neutral-25);">
+              <span style="color: var(--neutral-500);">{{ lr.time }}</span>
+              <span style="font-weight: 600;">{{ lr.outlet }}</span>
+              <span style="color: var(--neutral-500);">{{ lr.card }}</span>
+              <span style="font-weight: 600;">{{ lr.amountFmt }}</span>
+              <span style="color: var(--neutral-600);">{{ lr.campaign }}</span>
+              <span><span style="font-size: 11.5px; padding: 2px 9px; border-radius: 99px; background: rgba(234,116,81,0.10); color: var(--status-warning-ink); font-weight: 600; white-space: nowrap;">{{ lr.reason }}</span></span>
+              <span style="color: var(--neutral-400);">{{ lr.chevron }}</span>
+            </div>
+            <sc-if value="{{ lr.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 14px 16px; margin: 8px 0 10px; border-radius: 10px; background: var(--neutral-25); border: 1px solid var(--neutral-100);">
+                <div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--neutral-400);">WHAT THE ENGINE DECIDED</div>
+                <p style="margin: 4px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-700);">{{ lr.verdict }}</p>
+                <div style="margin-top: 10px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--lune-teal-700);">WHAT TO TELL THE CUSTOMER</div>
+                <p style="margin: 4px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-700);">{{ lr.tell }}</p>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ lookupEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 22px 0 10px; font-size: 13px; color: var(--neutral-500);">No rejected attempt matches. Settled transactions can take up to two days to appear, and transactions that earned cashback are not listed here — check the Campaigns table for those.</div>
+        </sc-if>
+      </div>
     </section>
 
     <section style="display: flex; flex-direction: column; gap: 6px;">
@@ -873,7 +907,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;merchantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nero Coffee Group&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;freshnessLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;As of 1 Aug 2026, 06:00 UTC&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showRoiGate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { metric: "GMV", status: "All", period: "Last 90 days", selected: null, filterOpen: false, openCampaign: null, openNote: null, notesOn: true };
+  state = { metric: "GMV", status: "All", period: "Last 90 days", selected: null, filterOpen: false, openCampaign: null, openNote: null, notesOn: true, lookupQ: "", openLookup: null };
 
   // Design-notes layer: why each metric/module exists, market precedent,
   // sources. Toggleable; turn OFF for client-facing demos (never name
@@ -902,10 +936,11 @@ class Component extends DCLogic {
       campaigns: { title: "All Campaigns", why: "Per-offer accountability: GMV, transactions, ROI, cashback and budget pacing per campaign, each with its single bank partner (a Pulse rule: one campaign, one bank). Budget is consumed across all channels, so it is never sliced by channel filters.", market: "Kard reports per-offer redemptions and sales; Amex provides post-campaign reports per offer.", sources: [S.kard, S.amex] },
       ledger: { title: "Cashback Ledger", why: "The engine's append-only ledger, surfaced: accrued minus reversed equals balance, split into payable (past the hold window) and on hold. Figures never revise; reversals arrive as new entries and only ever offset cashback still in hold: released cashback is never taken back. Hold equals the campaign's refund window, which is always preset on the campaign. The ledger is a position as of the latest run, not a period flow.", market: "Fidel's returnPeriod works identically: transactions qualify only after the return period passes. No comparable dashboard shows the full ledger to merchants.", sources: [S.fidel, S.erd2] },
       nvr: { title: "New vs. Returning", why: "PROPOSAL, not yet buildable: the split needs each customer's first-ever qualifying transaction at the brand, which requires history since program start. Nothing in ERD-1 or ERD-2 computes it (reporting is ERD-3), at the pilot every customer is new, and it is program-new, never brand-new. Shown here to test whether the economics (what each segment spends and how often) justify the ERD-3 ask.", market: "Closed-loop CLO reporting quantifies new customer acquisition and incremental spend per customer; Cardlytics segments explicitly.", sources: [S.openloyalty, S.cdlxMeasure] },
-      valueDist: { title: "Customer Value", why: "Where the money actually sits across the customer base. Directly informs minimum spend and per-customer cap settings: the levers in the campaign form.", market: "Customer-value banding is standard merchant analytics; Upside surfaces customer behavior distributions.", sources: [S.upsideDash] },
+      valueDist: { title: "Customer Value", why: "Where the money actually sits across the customer base. Directly informs minimum spend and per-customer cap: the settings in the campaign form.", market: "Customer-value banding is standard merchant analytics; Upside surfaces customer behavior distributions.", sources: [S.upsideDash] },
       frequency: { title: "Purchase Frequency", why: "Repeat behavior under the offer. With per-customer caps in the engine, this shows whether caps bind before habit forms.", market: "Repeat purchase rate is a standard loyalty metric across CLO and merchant analytics platforms.", sources: [S.openloyalty] },
       funnel: { title: "Engagement Funnel", why: "Unique customers at every stage, anchored on the audience snapshot frozen at go-live (the only defensible reach number). Activation is a stage because the engine contractually requires it before a customer can earn. Bars are share-of-previous so late stages stay readable.", market: "Amex and Chase offers are click-to-activate, so activation funnels are the bank-channel norm; nobody anchors theirs on an immutable go-live snapshot.", sources: [S.amex, S.erd1] },
       rejections: { title: "Why Transactions Didn't Qualify", why: "Every row is a near-miss: an activated, in-audience customer paying at a covered outlet and terminal who expected cashback and did not get it. It closes the rewarded-vs-transacted gap, maps each reason to a campaign setting the merchant controls, and deflects disputes (the engine doc calls rejections 'the support ticket'). Targeting choices are never shown as failures: outlet, terminal and date-window scoping is the merchant's own configuration, so spend outside it is out of scope here (a drift alert for unlinked terminals accumulating volume is a future proposal). Missing terminal ids are a feed fault and report in the data-quality group.", market: "A differentiator: Fidel records a rejection reason per non-qualified transaction but exposes it API-only to the program operator. No comparable merchant dashboard shows gate-level reasons.", sources: [S.fidel, S.erd2] },
+      lookup: { title: "Dispute Lookup", why: "The rejection panel answers 'what should I change'; this answers 'what happened to this one customer'. Disputes arrive as a receipt ('AED 96 at faces.ae on the 29th'), never as an id - customer ids in the contract are pseudonymous and masked cards are all a merchant can match - so the search keys are the customer's own receipt facts. Each row carries the failing gate as a verdict the merchant can read back. Deliberately per-transaction search, never a browsable per-customer history: that would drift into profiling the data contract avoids.", market: "A differentiator: Fidel records a rejection reason per non-qualified transaction but exposes it API-only to the program operator; Kard routes disputes through its support team. No comparable merchant dashboard offers self-serve dispute lookup.", sources: [S.fidel, S.erd2] },
       locations: { title: "Top Outlets", why: "Performance by outlet: an outlet is a merchant identifier (MID) the acquirer assigns, physical store or online storefront alike, with its terminals (TIDs) beneath it. This matches how campaigns are configured: a MID list, optionally narrowed to terminals. This view is the natural consumer of the terminal data the contract collects.", market: "Upside compares promotion participation between locations; location tables are standard in merchant analytics.", sources: [S.upsideDash, S.erd1] },
       channel: { title: "Channel Behaviour", why: "In-store vs online, validated at ingestion (channel is a controlled value in the contract and can be null). Channel-level AOV and repeat rate show where the offer actually changes behavior.", market: "Cardlytics reports omni-channel performance, online and in-store, as a core capability.", sources: [S.cdlxMeasure, S.erd1] },
       reached: { title: "Customers Reached", why: "The audience snapshot, frozen at go-live and immutable: the only reach figure that can be audited later. Not impressions, not views.", market: "Comparables report reach as impressions, which drifts; the snapshot is stronger evidence.", sources: [S.erd1] },
@@ -1008,6 +1043,52 @@ class Component extends DCLogic {
   // drops out of the table. Days-left counts to the end date (an end date is
   // always required); the budget can finish a campaign earlier, which the
   // budget column carries. Ending soon = 7 days left or fewer.
+  // Dispute lookup sample: the most recent rejected attempts from the decision
+  // log. Search keys are what a disputing customer can actually supply (date,
+  // amount, card last 4, outlet) - customer ids are pseudonymous and useless
+  // to the merchant. Per-transaction search only, never per-customer history.
+  // No budget_exhausted rows in this recent sample: all-or-nothing boundary
+  // rejections cluster at campaign ends, none of which fall in these days.
+  lookupData() {
+    const V = {
+      min: (amt, min) => ({
+        verdict: "The basket of AED " + amt + " was below the campaign's AED " + min + " minimum spend, so the engine rejected it at the minimum-spend gate.",
+        tell: "Cashback on this offer needs a single receipt of AED " + min + " or more."
+      }),
+      cap: cap => ({
+        verdict: "This customer had already earned the campaign's AED " + cap + " per-customer cashback cap on earlier purchases. Rewards are all-or-nothing, so this transaction earned nothing.",
+        tell: "The offer's cashback limit per customer was already reached on earlier purchases."
+      }),
+      bin: () => ({
+        verdict: "Paid with a card outside the offer's selected card ranges. The customer activated the offer, but on a different card than the one used here.",
+        tell: "The offer is linked to the card it was activated on; this purchase used another card."
+      })
+    };
+    const R = { min: "Minimum spend not met", cap: "Per-customer cashback cap reached", bin: "Card not eligible for the offer" };
+    const rows = [
+      ["Sep 6, 18:42", "faces.ae checkout", "4821", 96, "Skincare Refresh Week", "min", V.min(96, 200)],
+      ["Sep 6, 11:05", "Mall of the Emirates", "7310", 132, "Summer Cashback", "min", V.min(132, 150)],
+      ["Sep 5, 20:17", "faces.ae checkout", "2258", 410, "Beauty Flash Sale", "cap", V.cap(100)],
+      ["Sep 5, 16:03", "Dubai Mall", "9944", 245, "Summer Cashback", "bin", V.bin()],
+      ["Sep 4, 19:26", "faces.ae checkout", "3067", 88, "Beauty Flash Sale", "min", V.min(88, 250)],
+      ["Sep 4, 13:44", "Mall of the Emirates", "5502", 620, "Summer Cashback", "cap", V.cap(120)],
+      ["Sep 3, 21:09", "faces.ae checkout", "8135", 152, "Skincare Refresh Week", "min", V.min(152, 200)],
+      ["Sep 3, 10:31", "Yas Mall, Abu Dhabi", "6079", 305, "Summer Cashback", "bin", V.bin()],
+      ["Sep 2, 17:58", "faces.ae checkout", "1440", 199, "Skincare Refresh Week", "min", V.min(199, 200)],
+      ["Sep 1, 15:12", "faces.ae checkout", "7726", 340, "Beauty Flash Sale", "bin", V.bin()],
+      ["Aug 31, 16:40", "Mall of the Emirates", "3391", 118, "August Radiance Rewards", "min", V.min(118, 150)],
+      ["Aug 31, 12:25", "faces.ae checkout", "6618", 510, "Skincare Refresh Week", "cap", V.cap(90)],
+      ["Aug 30, 09:53", "Dubai Mall", "2874", 64, "Summer Cashback", "min", V.min(64, 150)],
+      ["Aug 29, 16:37", "Mall of the Emirates", "9165", 288, "August Radiance Rewards", "cap", V.cap(80)],
+      ["Aug 28, 14:21", "faces.ae checkout", "4407", 142, "Beauty Flash Sale", "min", V.min(142, 250)],
+      ["Aug 27, 11:16", "Yas Mall, Abu Dhabi", "5023", 176, "Summer Cashback", "bin", V.bin()]
+    ];
+    return rows.map(([time, outlet, last4, amt, campaign, code, v]) => ({
+      time, outlet, last4, amount: amt, campaign,
+      reason: R[code], verdict: v.verdict, tell: v.tell
+    }));
+  }
+
   campaignData() {
     return [
       { name: "Summer Cashback", bank: "Emirates NBD", status: "Active", channel: "In-store", budget: 50000,
@@ -1064,6 +1145,7 @@ class Component extends DCLogic {
       customers: "COUNT(DISTINCT customer_original_id) over the period's candidate transactions.",
       atv: "Total GMV divided by Redemptions.",
       chart: "The same GMV and Transactions figures bucketed by week of occurred_at (falling back to the transaction date where the timestamp is absent).",
+      lookup: "SELECT over decision-log rows with outcome rejected for this brand's campaigns, newest first, filtered client-side by the search text against occurred_at, outlet, masked-card last 4, amount and campaign. Each row's verdict renders the gate code plus the stored values compared (expected vs actual) in plain English. The log already keeps both, so no new data is collected for this.",
       campaigns: "The page totals grouped by campaign (offer_dispatch_id). Budget used = the campaign's total accrued cashback divided by its committed budget; budget is cross-channel by definition.",
       ledger: "Accrued = SUM(entries, kind accrual). Reversed = SUM(entries, kind reversal). Balance = SUM(all entries). Payable = balance of accruals whose hold_until has passed; On hold = balance minus payable. hold_until = occurred_at + the campaign's preset refund window. A reversal takes back the original award in proportion to the refunded share of the purchase (AED 41,270 of purchases were refunded this period, producing AED 3,912 of reversals), rounded on the residual and clamped to the award.",
       nvr: "New = customers whose earliest qualifying transaction at this brand falls inside the period; Returning = the rest; segment GMV, transactions and averages use the same partition and sum to the page totals. Requires decision-log or ledger history since program start: an ERD-3 reporting ask, not built in ERD-1/2. Empty at the pilot, where every customer is new.",
@@ -1287,6 +1369,25 @@ class Component extends DCLogic {
     const dqTotal = P.dq.reduce((a, n) => a + n, 0);
     const dataQuality = P.dq.map((n, i) => ({ label: DQ_LABELS[i], count: this.num(n) }));
 
+    // ---- Dispute lookup: recent rejected attempts from the decision log,
+    // searchable by the customer's own receipt facts (time, outlet, card
+    // last 4, amount, campaign). Per-transaction search only; brand-level
+    // like the rejection panel, never scoped by the campaign filter. ----
+    const lq = (this.state.lookupQ || "").trim().toLowerCase();
+    const lookupAll = this.lookupData();
+    const lookupRows = lookupAll
+      .filter(r => !lq || (r.time + " | " + r.outlet + " | " + r.last4 + " | " + r.amount + " | aed " + r.amount + " | " + r.campaign + " | " + r.reason).toLowerCase().indexOf(lq) >= 0)
+      .map(r => {
+        const key = r.time + "|" + r.last4;
+        return Object.assign({}, r, {
+          amountFmt: this.money(r.amount),
+          card: "•• " + r.last4,
+          open: this.state.openLookup === key,
+          chevron: this.state.openLookup === key ? "▾" : "›",
+          toggle: () => this.setState({ openLookup: this.state.openLookup === key ? null : key })
+        });
+      });
+
     // ---- Ledger: position as of the latest run; the period filter never
     // applies here. ----
     const ledger = [
@@ -1334,6 +1435,11 @@ class Component extends DCLogic {
       rejTotal: this.num(rejTotal),
       rejValue: this.money(P.rejectedValue),
       dqTotal: this.num(dqTotal),
+      lookupRows,
+      lookupEmpty: lookupRows.length === 0,
+      lookupSub: "Answer “where is my cashback?” in one search. Find a rejected attempt by what the customer can tell you: card last 4, amount, outlet or campaign. Showing the " + lookupAll.length + " most recent of " + this.num(rejTotal) + " rejected attempts this period.",
+      lookupResult: lq ? lookupRows.length + (lookupRows.length === 1 ? " match" : " matches") + " for “" + this.state.lookupQ.trim() + "”" : "",
+      setLookupQ: e => this.setState({ lookupQ: e && e.target ? e.target.value : "", openLookup: null }),
       campaignCount: campaigns.length,
       metricToggle: mkToggle(["GMV", "Transactions"], this.state.metric, "metric"),
       statusToggle: mkToggle(["All", "Active", "Completed"], this.state.status, "status"),
@@ -1364,7 +1470,7 @@ class Component extends DCLogic {
         nvr: showNote("nvr"), valueDist: showNote("valueDist"), frequency: showNote("frequency"),
         funnel: showNote("funnel"), rejections: showNote("rejections"),
         locations: showNote("locations"), channel: showNote("channel"),
-        dq: showNote("dq"), campRoi: showNote("campRoi")
+        dq: showNote("dq"), campRoi: showNote("campRoi"), lookup: showNote("lookup")
       },
       notesVis: noteVis,
       notesToggleLabel: this.state.notesOn ? "Design notes: on" : "Design notes: off",
