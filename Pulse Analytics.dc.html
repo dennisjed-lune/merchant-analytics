@@ -753,11 +753,6 @@ code, pre, kbd { font-family: var(--font-mono); }
               </div>
             </sc-for>
           </div>
-          <div style="margin-top: 18px; padding: 12px 14px; border-radius: 10px; background: rgba(251,218,125,0.20);">
-            <div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--status-warning-ink);">BIGGEST DROP-OFF</div>
-            <div style="font-size: 18px; font-weight: 700; color: var(--status-warning-ink); margin-top: 2px;">{{ dropoff }}</div>
-            <div style="font-size: 12px; color: var(--status-warning-ink); margin-top: 2px;">{{ dropoffNote }}</div>
-          </div>
         </div>
 
         <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
@@ -789,39 +784,6 @@ code, pre, kbd { font-family: var(--font-mono); }
         </div>
       </div>
 
-      <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px; margin-top: 12px;">
-        <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">Dispute Lookup</h3><button onClick="{{ noteFn.lookup }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
-        <p style="margin: 3px 0 14px; font-size: 13px; color: var(--neutral-500);">{{ lookupSub }}</p>
-        <input onInput="{{ setLookupQ }}" placeholder="Search by card last 4, amount, outlet or campaign — e.g. 4821, 96, faces.ae" style="width: 100%; box-sizing: border-box; padding: 10px 14px; border: 1px solid var(--neutral-200); border-radius: 9px; font-size: 13px; font-family: var(--font-sans); color: var(--neutral-800); background: #fff; outline: none;" />
-        <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 6px;">{{ lookupResult }}</div>
-        <div style="display: grid; grid-template-columns: 0.9fr 1.3fr 0.6fr 0.7fr 1.3fr 1.5fr 16px; gap: 12px; padding: 12px 0 8px; border-bottom: 1px solid var(--neutral-100); font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
-          <span>Time</span><span>Outlet</span><span>Card</span><span>Amount</span><span>Campaign</span><span>Why it earned nothing</span><span></span>
-        </div>
-        <sc-for list="{{ lookupRows }}" as="lr" hint-placeholder-count="16">
-          <div>
-            <div onClick="{{ lr.toggle }}" style="display: grid; grid-template-columns: 0.9fr 1.3fr 0.6fr 0.7fr 1.3fr 1.5fr 16px; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--neutral-50); font-size: 12.5px; cursor: pointer;" style-hover="background: var(--neutral-25);">
-              <span style="color: var(--neutral-500);">{{ lr.time }}</span>
-              <span style="font-weight: 600;">{{ lr.outlet }}</span>
-              <span style="color: var(--neutral-500);">{{ lr.card }}</span>
-              <span style="font-weight: 600;">{{ lr.amountFmt }}</span>
-              <span style="color: var(--neutral-600);">{{ lr.campaign }}</span>
-              <span><span style="font-size: 11.5px; padding: 2px 9px; border-radius: 99px; background: rgba(234,116,81,0.10); color: var(--status-warning-ink); font-weight: 600; white-space: nowrap;">{{ lr.reason }}</span></span>
-              <span style="color: var(--neutral-400);">{{ lr.chevron }}</span>
-            </div>
-            <sc-if value="{{ lr.open }}" hint-placeholder-val="{{ false }}">
-              <div style="padding: 14px 16px; margin: 8px 0 10px; border-radius: 10px; background: var(--neutral-25); border: 1px solid var(--neutral-100);">
-                <div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--neutral-400);">WHAT THE ENGINE DECIDED</div>
-                <p style="margin: 4px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-700);">{{ lr.verdict }}</p>
-                <div style="margin-top: 10px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--lune-teal-700);">WHAT TO TELL THE CUSTOMER</div>
-                <p style="margin: 4px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-700);">{{ lr.tell }}</p>
-              </div>
-            </sc-if>
-          </div>
-        </sc-for>
-        <sc-if value="{{ lookupEmpty }}" hint-placeholder-val="{{ false }}">
-          <div style="padding: 22px 0 10px; font-size: 13px; color: var(--neutral-500);">No rejected attempt matches. Settled transactions can take up to two days to appear, and transactions that earned cashback are not listed here — check the Campaigns table for those.</div>
-        </sc-if>
-      </div>
     </section>
 
     <section style="display: flex; flex-direction: column; gap: 6px;">
@@ -876,6 +838,44 @@ code, pre, kbd { font-family: var(--font-mono); }
             </sc-for>
           </div>
         </div>
+      </div>
+    </section>
+
+
+    <section style="display: flex; flex-direction: column; gap: 6px;">
+      <div style="display: flex; align-items: center; gap: 8px;"><h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Dispute Lookup</h2><button onClick="{{ noteFn.lookup }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
+      <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">{{ lookupSub }}</p>
+
+      <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+        <input onInput="{{ setLookupQ }}" placeholder="Search by card last 4, amount, outlet or campaign — e.g. 4821, 96, faces.ae" style="width: 100%; box-sizing: border-box; padding: 10px 14px; border: 1px solid var(--neutral-200); border-radius: 9px; font-size: 13px; font-family: var(--font-sans); color: var(--neutral-800); background: #fff; outline: none;" />
+        <div style="font-size: 11.5px; color: var(--neutral-500); margin-top: 6px;">{{ lookupResult }}</div>
+        <div style="display: grid; grid-template-columns: 0.9fr 1.3fr 0.6fr 0.7fr 1.3fr 1.5fr 16px; gap: 12px; padding: 12px 0 8px; border-bottom: 1px solid var(--neutral-100); font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--neutral-400);">
+          <span>Time</span><span>Outlet</span><span>Card</span><span>Amount</span><span>Campaign</span><span>Why it earned nothing</span><span></span>
+        </div>
+        <sc-for list="{{ lookupRows }}" as="lr" hint-placeholder-count="16">
+          <div>
+            <div onClick="{{ lr.toggle }}" style="display: grid; grid-template-columns: 0.9fr 1.3fr 0.6fr 0.7fr 1.3fr 1.5fr 16px; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--neutral-50); font-size: 12.5px; cursor: pointer;" style-hover="background: var(--neutral-25);">
+              <span style="color: var(--neutral-500);">{{ lr.time }}</span>
+              <span style="font-weight: 600;">{{ lr.outlet }}</span>
+              <span style="color: var(--neutral-500);">{{ lr.card }}</span>
+              <span style="font-weight: 600;">{{ lr.amountFmt }}</span>
+              <span style="color: var(--neutral-600);">{{ lr.campaign }}</span>
+              <span><span style="font-size: 11.5px; padding: 2px 9px; border-radius: 99px; background: rgba(234,116,81,0.10); color: var(--status-warning-ink); font-weight: 600; white-space: nowrap;">{{ lr.reason }}</span></span>
+              <span style="color: var(--neutral-400);">{{ lr.chevron }}</span>
+            </div>
+            <sc-if value="{{ lr.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 14px 16px; margin: 8px 0 10px; border-radius: 10px; background: var(--neutral-25); border: 1px solid var(--neutral-100);">
+                <div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--neutral-400);">WHAT THE ENGINE DECIDED</div>
+                <p style="margin: 4px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-700);">{{ lr.verdict }}</p>
+                <div style="margin-top: 10px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--lune-teal-700);">WHAT TO TELL THE CUSTOMER</div>
+                <p style="margin: 4px 0 0; font-size: 13px; line-height: 1.55; color: var(--neutral-700);">{{ lr.tell }}</p>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ lookupEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 22px 0 10px; font-size: 13px; color: var(--neutral-500);">No rejected attempt matches. Settled transactions can take up to two days to appear, and transactions that earned cashback are not listed here — check the Campaigns table for those.</div>
+        </sc-if>
       </div>
     </section>
 
@@ -1336,12 +1336,8 @@ class Component extends DCLogic {
       ["Transacted", P.transactedC, null],
       ["Rewarded", P.rewardedC, null]
     ];
-    let biggest = { lost: 0, from: "", to: "" };
     const funnel = stages.map(([label, v, note], i) => {
       const pctPrev = i === 0 ? 100 : Math.round((v / stages[i - 1][1]) * 100);
-      if (i > 0 && 100 - pctPrev > biggest.lost) {
-        biggest = { lost: 100 - pctPrev, from: stages[i - 1][0], to: label };
-      }
       return {
         label, value: this.num(v),
         note: note || pctPrev + "% of " + stages[i - 1][0], hasNote: true,
@@ -1430,8 +1426,6 @@ class Component extends DCLogic {
       repeatRate,
       chartTicks, xLabels, dots, linePath, areaPath,
       chartW: W, chartH: H,
-      dropoff: biggest.lost + "% lost",
-      dropoffNote: "between " + biggest.from + " → " + biggest.to,
       rejTotal: this.num(rejTotal),
       rejValue: this.money(P.rejectedValue),
       dqTotal: this.num(dqTotal),
