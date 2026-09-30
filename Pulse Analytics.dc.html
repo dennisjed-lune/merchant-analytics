@@ -686,11 +686,11 @@ code, pre, kbd { font-family: var(--font-mono); }
       <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">Customer Insights</h2>
       <p style="margin: 0 0 8px; font-size: 13.5px; color: var(--neutral-500);">Who this brand's campaigns are reaching and converting.</p>
 
-      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 4px; align-items: start;">
-        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px;">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 4px; align-items: stretch;">
+        <div style="background: #fff; border: 1px solid var(--neutral-100); border-radius: 12px; padding: 20px; display: flex; flex-direction: column;">
           <div style="display: flex; align-items: center; gap: 8px;"><h3 style="margin: 0; font-size: 16px; font-weight: 600;">Customer Value</h3><button onClick="{{ noteFn.valueDist }}" title="Why this module is here" style="display: {{ notesVis }}; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 99px; border: 1px solid var(--neutral-200); background: #fff; color: var(--neutral-400); font-size: 10px; font-weight: 700; font-family: var(--font-sans); cursor: pointer; padding: 0; line-height: 1; flex: none;" style-hover="border-color: var(--lune-emerald); color: var(--lune-emerald);">i</button></div>
           <p style="margin: 3px 0 16px; font-size: 13px; color: var(--neutral-500);">{{ valueDistSub }}</p>
-          <div style="display: flex; flex-direction: column; gap: 13px;">
+          <div style="display: flex; flex-direction: column; gap: 13px; flex: 1; justify-content: space-between;">
             <sc-for list="{{ valueDist }}" as="v" hint-placeholder-count="5">
               <div>
                 <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px;">
@@ -1262,7 +1262,7 @@ class Component extends DCLogic {
       }
       return {
         label, value: this.num(v),
-        note: note || "", hasNote: !!note,
+        note: note || pctPrev + "% of " + stages[i - 1][0], hasNote: true,
         pct: Math.max(2, pctPrev)
       };
     });
