@@ -1028,7 +1028,6 @@ class Component extends DCLogic {
         accrued: 6200, reversed: 210,
         customers: 247, newC: 139, retC: 108, newGmv: 32100, retGmv: 28400, newTx: 139, retTx: 122,
         transactedC: 247, rewardedC: 234,
-        gmvDelta: "+4.6% vs previous 7 days",
         rejections: [13, 6, 5, 1], dq: [4, 1, 1, 1],
         valueDist: [[9, 640], [125, 21860], [88, 26300], [21, 9200], [4, 2500]],
         freq: [234, 12, 1, 0],
@@ -1046,7 +1045,6 @@ class Component extends DCLogic {
         accrued: 28130, reversed: 920,
         customers: 1102, newC: 668, retC: 434, newGmv: 158100, retGmv: 126710, newTx: 668, retTx: 608,
         transactedC: 1102, rewardedC: 1044,
-        gmvDelta: "+9.1% vs previous 30 days",
         rejections: [42, 21, 18, 3], dq: [12, 4, 2, 4],
         valueDist: [[40, 3010], [552, 97300], [392, 115600], [94, 52900], [24, 16000]],
         freq: [968, 104, 22, 8],
@@ -1064,7 +1062,6 @@ class Component extends DCLogic {
         accrued: 124047, reversed: 3912,
         customers: 4195, newC: 3418, retC: 777, newGmv: 735000, retGmv: 472025, newTx: 3418, retTx: 2327,
         transactedC: 4195, rewardedC: 3978,
-        gmvDelta: "+12.5% vs previous 90 days",
         rejections: [148, 77, 68, 7], dq: [41, 12, 5, 12],
         valueDist: [[126, 9025], [2056, 415000], [1510, 445000], [378, 231000], [125, 107000]],
         freq: [3418, 420, 210, 147],
@@ -1247,7 +1244,7 @@ class Component extends DCLogic {
     const withNote = (id, o) => Object.assign(o, { showNote: showNote(id), noteVis });
 
     const kpis = [
-      withNote("gmv", { label: "Total GMV", value: this.money(K.gmv), sub: subset ? selCount + " of " + allNames.length + " campaigns selected" : P.gmvDelta }),
+      withNote("gmv", { label: "Total GMV", value: this.money(K.gmv), sub: subset ? selCount + " of " + allNames.length + " campaigns selected" : "Settled spend that earned cashback" }),
       withNote("tx", { label: "Redemptions", value: this.num(K.tx), sub: this.num(K.rejected) + " attempted transactions were rejected" }),
       withNote("roi", { label: "Campaign ROI (attributed)", value: (K.gmv / K.cb).toFixed(1) + "×", sub: "GMV ÷ cashback accrued" }),
       withNote("accrued", { label: "Cashback Cost", value: this.money(K.cb - K.rev), sub: this.money(K.cb) + " accrued − " + this.money(K.rev) + " reversed" }),
